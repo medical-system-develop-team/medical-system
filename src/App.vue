@@ -14,7 +14,7 @@
 </template>
 
 <script>
-// import Navmenu from '@/components/navmenu.vue'
+// import Navmenu from '@/components/student/navmenu.vue'
 
 export default {
   name: 'App',

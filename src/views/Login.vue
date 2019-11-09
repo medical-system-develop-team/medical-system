@@ -59,7 +59,7 @@ export default {
             if (response.msg === 'success') {
               this.$message.success('登录成功')
               sessionStorage.setItem('loginStatus', true)
-              this.$router.push('/home')
+              this.$router.push('/stdhome')
             }
           }
         )

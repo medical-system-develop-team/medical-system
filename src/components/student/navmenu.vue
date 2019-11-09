@@ -16,8 +16,9 @@ export default {
     return {
       activeIndex: '0',
       menus: [
-        { label: '录入报销凭证', path: '/home' },
-        { label: '查看报销记录', path: '/about' },
+        { label: '录入报销凭证', path: '/stdhome'},
+        { label: '我的报销记录', path: '/myRecords' },
+        { label: '我的个人信息', path: '/myInfo' },
         { label: '退出系统', path: '/login', class: 'right-menu' }
       ]
     }
