@@ -1,7 +1,7 @@
 <template>
   <div class="nav-menu">
     <el-menu :default-active="activeIndex" mode="horizontal" @select="onSelectMenu">
-      <el-menu-item v-for="(menu, index) in menus" :key="index" :index="index.toString()">
+      <el-menu-item v-for="(menu, index) in menus" :class="menu.class || ''" :key="index" :index="index.toString()">
         {{ menu.label }}
       </el-menu-item>
     </el-menu>
@@ -16,8 +16,9 @@ export default {
     return {
       activeIndex: '0',
       menus: [
-        { label: '首页', path: '/' },
-        { label: '登录', path: '/login' }
+        { label: '录入报销凭证', path: '/home' },
+        { label: '查看报销记录', path: '/about' },
+        { label: '退出系统', path: '/login', class: 'right-menu' }
       ]
     }
   },
@@ -31,6 +32,7 @@ export default {
   },
   methods: {
     onSelectMenu(key) {
+      console.log(key)
       this.$router.push(this.menus[key].path)
     }
   }
@@ -38,5 +40,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
+.right-menu {
+  float: right;
+}
+.right-menu + .right-menu {
+  margin-left: 20px;
+}
 </style>

@@ -2,8 +2,8 @@
   <div class="login-views">
     <div class="login-form-container">
       <p class="form-title">(公费)医疗自助报销系统</p>
-      <el-form :model="loginForm" :rules="rules">
-        <el-form-item class="form-input">
+      <el-form ref="form" :model="loginForm" :rules="rules">
+        <el-form-item class="form-input" prop="username">
           <el-input v-model="loginForm.username" placeholder="请输入用户名" />
         </el-form-item>
         <el-form-item class="form-input" prop="password">
@@ -25,7 +25,6 @@ export default {
   components: {},
   data() {
     const validatePassword = (rule, value, callback) => {
-      console.log(/^[0-9a-zA-Z]*$/g.test(value))
       if (!(/^[0-9a-zA-Z]*$/g.test(value))) callback(Error('密码只能输入字母、数字'))
       callback()
     }
@@ -35,7 +34,11 @@ export default {
         password: ''
       },
       rules: {
+        username: [
+          { required: true, message: '请填写用户名', trigger: 'change' }
+        ],
         password: [
+          { required: true, message: '请填写密码', trigger: 'change' },
           { validator: validatePassword, trigger: 'change' },
           { min: 6, message: '密码长度不能小于6位', trigger: 'change' }
         ]
@@ -44,20 +47,23 @@ export default {
   },
   methods: {
     onLogin() {
-      serviceLogin(this.loginForm).then(
-        response => {
-          console.log('Login 接口返回数据为：', response)
-          if (!response.ret) {
-            this.$message.error(response.msg || '接口出错')
-            return
+      this.$refs.form.validate( valid => {
+        if (!valid) return
+        serviceLogin(this.loginForm).then(
+          response => {
+            console.log('Login 接口返回数据为：', response)
+            if (!response.ret) {
+              this.$message.error(response.msg || '接口出错')
+              return
+            }
+            if (response.msg === 'success') {
+              this.$message.success('登录成功')
+              sessionStorage.setItem('loginStatus', true)
+              this.$router.push('/home')
+            }
           }
-          if (response.msg === 'success') {
-            this.$message.success('登录成功')
-            sessionStorage.setItem('loginStatus', true)
-            this.$router.push('/home')
-          }
-        }
-      )
+        )
+      })
     }
   }
 }
