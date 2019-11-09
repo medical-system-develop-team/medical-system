@@ -63,9 +63,9 @@ export default {
 }
 </script>
 
-<style lang="scss">
-$containerPadding: 40px;
-$mainColor: #409eff;
+<style lang="less">
+@containerPadding: 40px;
+@mainColor: #409eff;
 
 .login-views {
   display: flex;
@@ -74,7 +74,7 @@ $mainColor: #409eff;
     font-size: 20px;
     margin-top: 0px;
     text-align: left;
-    border-left: 4px solid $mainColor;
+    border-left: 4px solid @mainColor;
     padding-left: 10px;
     margin-bottom: 40px;
   }
@@ -92,8 +92,8 @@ $mainColor: #409eff;
   .form-button {
     position: absolute;
     bottom: 20px;
-    left: $containerPadding;
-    right: $containerPadding;
+    left: @containerPadding;
+    right: @containerPadding;
     button {
       margin-top: 20px;
       width: 100%;
@@ -109,7 +109,7 @@ $mainColor: #409eff;
   min-height: 300px;
   margin-top: 25vh;
   border-radius: 5px;
-  padding: $containerPadding;
+  padding: @containerPadding;
   box-sizing: border-box;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
