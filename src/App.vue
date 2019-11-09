@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <el-container>
+    <!-- <el-container>
       <el-header>
         <navmenu />
       </el-header>
@@ -8,16 +8,18 @@
         <router-view />
       </el-main>
       <el-footer>Footer</el-footer>
-    </el-container>
+    </el-container> -->
+    <router-view />
   </div>
 </template>
 
 <script>
-import Navmenu from '@/components/navmenu.vue'
+// import Navmenu from '@/components/navmenu.vue'
 
 export default {
   name: 'App',
-  components: { Navmenu },
+  components: { },
+  // components: { Navmenu },
   data() {
     return {}
   }

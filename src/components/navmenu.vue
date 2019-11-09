@@ -1,5 +1,5 @@
 <template>
-  <div class="navmenu">
+  <div class="nav-menu">
     <el-menu :default-active="activeIndex" mode="horizontal" @select="onSelectMenu">
       <el-menu-item v-for="(menu, index) in menus" :key="index" :index="index.toString()">
         {{ menu.label }}
