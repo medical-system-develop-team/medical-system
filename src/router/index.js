@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import { Message } from 'element-ui'
+//import { Message } from 'element-ui'
 
 Vue.use(VueRouter)
 
@@ -15,6 +15,12 @@ const routes = [
     name: 'stdhome',
     component: () => import('../views/student/stdHome.vue')
   },
+  {
+    path: '/uploadVoucher',
+    name: 'uploadVoucher',
+    component: () => import('../views/student/uploadVoucher.vue')
+  },
+  
   {
     path: '/myRecords',
     name: 'myRecords',
@@ -35,8 +41,10 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (notNeedAuthPath.indexOf(to.path) < 0 && !sessionStorage.getItem('loginStatus')) {
-    Message({ message: '请先登录', type: 'warning' })
-    next('/login')
+    //为方便前端代码合作，此处暂时可以未登录进入主页，与后台连接后再进行设置
+    //Message({ message: '请先登录', type: 'warning' })
+    //next('/login')
+    next()
   } else {
     next()
   }

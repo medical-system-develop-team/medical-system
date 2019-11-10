@@ -1,8 +1,8 @@
 <template>
   <div class="nav-menu">
-    <el-menu :default-active="activeIndex" mode="horizontal" @select="onSelectMenu">
+    <el-menu :default-active="activeIndex" mode="horizontal" @select="onSelectMenu" active-text-color="#409EFF">
       <el-menu-item v-for="(menu, index) in menus" :class="menu.class || ''" :key="index" :index="index.toString()">
-        {{ menu.label }}
+        <i :class="menu.icon || ''"></i> {{ menu.label }}
       </el-menu-item>
     </el-menu>
   </div>
@@ -16,10 +16,12 @@ export default {
     return {
       activeIndex: '0',
       menus: [
-        { label: '录入报销凭证', path: '/stdhome'},
-        { label: '我的报销记录', path: '/myRecords' },
-        { label: '我的个人信息', path: '/myInfo' },
-        { label: '退出系统', path: '/login', class: 'right-menu' }
+        { label: '首页', path: '/stdhome', class: 'main-menu', icon:'el-icon-s-home'},
+
+        { label: '退出系统', path: '/login', class: 'right-menu' },
+        { label: '我的个人信息', path: '/myInfo', class: 'right-menu'  },
+        { label: '我的报销记录', path: '/myRecords', class: 'right-menu'  },
+        { label: '录入报销凭证', path: '/uploadVoucher', class: 'right-menu' }
       ]
     }
   },
@@ -41,10 +43,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.main-menu {
+  font-size: 20px
+}
 .right-menu {
   float: right;
 }
 .right-menu + .right-menu {
-  margin-left: 20px;
+  margin-left: 15px;
 }
 </style>
