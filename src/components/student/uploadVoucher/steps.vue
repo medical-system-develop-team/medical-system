@@ -47,7 +47,12 @@
     margin-bottom: 50px
 }
 .stepsbutton {
-    background-color:#F2F6FC
+    background-color:#F2F6FC;
+    position: fixed;
+    bottom: 0;
+    left: 150px;
+    right: 150px;
+    border-radius: 6px 6px 0 0;
 }
 .prev {
     float: left;

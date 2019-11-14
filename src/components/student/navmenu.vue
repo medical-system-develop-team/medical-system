@@ -1,7 +1,7 @@
 <template>
   <div class="nav-menu">
-    <el-menu :default-active="activeIndex" mode="horizontal" @select="onSelectMenu" active-text-color="#409EFF">
-      <el-menu-item v-for="(menu, index) in menus" :class="menu.class || ''" :key="index" :index="index.toString()">
+    <el-menu ref="menu" :default-active.sync="activeIndex" mode="horizontal" active-text-color="#409EFF">
+      <el-menu-item v-for="(menu, index) in menus" :class="menu.class || ''" :key="menu.key" :index="index.toString()" @click="onSelectMenu(index, menu.key)">
         <i :class="menu.icon || ''"></i> {{ menu.label }}
       </el-menu-item>
     </el-menu>
@@ -15,28 +15,42 @@ export default {
   data() {
     return {
       activeIndex: '0',
+      preActiveIndex: '0',
       menus: [
-        { label: '首页', path: '/stdhome', class: 'main-menu', icon:'el-icon-s-home'},
-
-        { label: '退出系统', path: '/login', class: 'right-menu' },
-        { label: '我的个人信息', path: '/myInfo', class: 'right-menu'  },
-        { label: '我的报销记录', path: '/myRecords', class: 'right-menu'  },
-        { label: '录入报销凭证', path: '/uploadVoucher', class: 'right-menu' }
+        { label: '首页', key: 'home', path: '/stdhome', class: 'main-menu', icon: 'el-icon-s-home' },
+        { label: '退出系统', key: 'logout', path: '/login', class: 'right-menu' },
+        { label: '我的个人信息', key: 'personInfo', path: '/myInfo', class: 'right-menu' },
+        { label: '我的报销记录', key: 'records', path: '/myRecords', class: 'right-menu' },
+        { label: '录入报销凭证', key: 'inVoucher', path: '/uploadVoucher', class: 'right-menu' }
       ]
     }
   },
   created() {
-    for (let i = 0; i < this.menus.length; i++ ) {
+    for (let i = 0; i < this.menus.length; i++) {
       if (this.$route.path === this.menus[i].path) {
         this.activeIndex = i.toString()
         break
       }
     }
   },
+  mounted() { this.preActiveIndex = this.$refs['menu'].activeIndex },
   methods: {
-    onSelectMenu(key) {
-      console.log(key)
-      this.$router.push(this.menus[key].path)
+    onSelectMenu(index, key) {
+      if (key === 'logout') {
+        this.$confirm('确认退出？').then(() => {
+          this.goto(this.menus[index].path)
+          this.preActiveIndex = this.$refs['menu'].activeIndex
+        }).catch(() => {
+          this.$refs['menu'].activeIndex = this.preActiveIndex
+        })
+      } else {
+        this.goto(this.menus[index].path)
+        this.preActiveIndex = this.$refs['menu'].activeIndex
+      }
+    },
+    goto(path) {
+      if (this.$route.path === path) return // 不能向当前页面路径再次跳转
+      else this.$router.push(path)
     }
   }
 }
@@ -44,7 +58,7 @@ export default {
 
 <style lang="less" scoped>
 .main-menu {
-  font-size: 20px
+  font-size: 20px;
 }
 .right-menu {
   float: right;
