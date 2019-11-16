@@ -15,4 +15,4 @@ export default {
     navmenu
   }
 }
-</script>student/
+</script>

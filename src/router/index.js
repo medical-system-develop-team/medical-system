@@ -6,7 +6,8 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/login',
+    //path: '/login',
+    path: '/',
     name: 'login',
     component: () => import('../views/Login.vue')
   },
@@ -33,7 +34,8 @@ const routes = [
   }
 ]
 
-const notNeedAuthPath = ['/login']
+//const notNeedAuthPath = ['/login']
+const notNeedAuthPath = ['/']
 
 const router = new VueRouter({
   routes

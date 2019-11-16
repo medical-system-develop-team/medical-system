@@ -2,7 +2,6 @@
   <div class="uploadVouvher">
     <navmenu />
     <steps />
-    
   </div>
 </template>
 
@@ -18,3 +17,5 @@ export default {
   }
 }
 </script>
+
+

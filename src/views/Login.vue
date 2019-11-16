@@ -61,7 +61,7 @@ export default {
               sessionStorage.setItem('loginStatus', true)
               this.$router.push('/stdhome')
             }
-          }
+         }
         )
       })
     }
