@@ -1,34 +1,144 @@
 <template>
   <div class="fuwufei">
-    <p class="form-title"><i class="el-icon-notebook-2"></i>医事服务费</p>
 
-    <h1>This is fuwufei table</h1>
+    <div class="each-item" v-for="(record, index) in localValue" :key="index">
+      <h2>{{ record.hosName }}</h2>
+      <div v-for="(item, idx) in record.fuwufeiArr" :key="`${index}-${idx}`" class="fuwufei-item">
+        <el-divider content-position="left"> 第 {{idx + 1}} 条医事服务费（挂号费）记录</el-divider>
+        <el-button type="text" class="delete-button" @click="deleteARecord(index, idx)" v-if="idx != 0">删除</el-button>
+        <el-form :ref="`${index}form`" class="item-form" :model="item" size="small" label-width="90px" label-position="left">
+          <!-- <el-form-item label="① 医院名称">
+          <el-input v-model="item.hosName" placeholder="请填写医院名称" />
+        </el-form-item> -->
+          <el-form-item label="② 科室">
+            <el-input v-model="item.office" placeholder="请填写医院科室" />
+          </el-form-item>
+          <el-form-item label="③ 金额">
+            <el-input v-model="item.pay" placeholder="请填写金额" />
+          </el-form-item>
+          <el-form-item label="④ 日期">
+            <el-date-picker v-model="item.date" type="date" placeholder="选择日期" />
+          </el-form-item>
+          <el-form-item label="⑤ 服务图片">
+            <el-upload class="img-upload" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess(index, idx)" :before-upload="beforeAvatarUpload">
+              <div v-if="item.img" class="img">
+                <el-image :src="item.img" fit="scale-down" />
+              </div>
+              <el-button v-else type="text"><i class="el-icon-plus avatar-uploader-icon" />点击上传图片</el-button>
+            </el-upload>
+          </el-form-item>
+        </el-form>
+      </div>
+      <el-divider content-position="left">
+        <el-button type="text" size="small" @click="newARecord(index)">新增服务费记录</el-button>
+      </el-divider>
+    </div>
+
+    <div class="button-container">
+      <el-button type="primary" size="small" @click="preStep">上一步</el-button>
+      <el-button type="primary" size="small" @click="nextStep">下一步</el-button>
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
 
 export default {
   name: 'fuwufei',
-  components: {
-    
+  props: {
+    preStep: { type: Function, default() { return () => { } } },
+    nextStep: { type: Function, default() { return () => { } } },
+    value: { type: Array, default() { return [] } }
+  },
+  model: { prop: 'value', event: 'change' },
+  data() {
+    return {
+      localValue: this.value
+    }
+  },
+  watch: {
+    value(val) { this.localValue = val }
+  },
+  methods: {
+    newARecord(index) {
+      this.localValue[index].fuwufeiArr.push({
+        office: '',  // 科室
+        yishiPay: '', // 医事服务费（挂号费）
+        yishiDate: '', // 产生医事服务费的日期
+        yishiImg: '', // 医事服务费的单据
+      })
+      this.$emit('change', this.localValue)
+    },
+    deleteARecord(index, idx) {
+      this.localValue[index].fuwufeiArr.splice(index, 1)
+      this.$emit('change', this.localValue)
+    },
+    handleAvatarSuccess(index, idx) {
+      return (res, file) => {
+        this.localValue[index].fuwufeiArr[idx].img = URL.createObjectURL(file.raw);
+      }
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isJPG && isLt2M;
+    },
+    reset() {
+      this.localValue = [{ hsoName: '', date: null, img: '' }]
+      this.$emit('change', this.localValue)
+    }
   }
 }
 </script>
 
 <style lang="less" scoped>
 .fuwufei {
-    .form-title {
-        font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-        font-size: 18px ;
-        margin-top: 0px;
-        text-align: left;
-        color: #F2F6FC;
-        background-color: #7BD5FB;
-        line-height: 2.0;
-        padding-left: 30px;
-        margin-bottom: 40px;
+  .each-item {
+    margin: 20px 0 40px 0;
+    padding: 20px 20px 40px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    .delete-button {
+      position: absolute;
+      right: 20px;
+      top: -8px;
+      background: #ffffff;
+      padding: 0 10px;
     }
+    .fuwufei-item {
+      position: relative;
+      margin: 40px 0;
+    }
+    .img-upload {
+      width: 100%;
+      position: relative;
+      text-align: left;
+      left: -0px;
+      .img {
+        width: 100px;
+        height: 100px;
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: 4px;
+        }
+      }
+    }
+  }
+  .button-container {
+    text-align: left;
+  }
+  .item-form {
+    margin-top: 40px;
+    .el-date-editor {
+      width: 100%;
+    }
+  }
 }
 </style>

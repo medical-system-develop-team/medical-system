@@ -1,47 +1,32 @@
 <template>
   <div class="zhuanzhendan">
-    <p class="form-title"><i class="el-icon-notebook-2"></i>转诊单</p>
 
-    <el-card class="box-card" shadow="hover">
-        <div slot="header" class="clearfix">
-            <span>转诊单</span>
-            <el-button style="float: right; padding: 3px 0" type="text">删除</el-button>
-        </div>
-        <div v-for="o in 4" :key="o" class="text item">
-            {{'列表内容 ' + o }}
-        </div>
-    </el-card>
-
-    <el-form :model="dynamicValidateForm" ref="dynamicValidateForm" label-width="100px" class="demo-dynamic">
-        <el-form-item
-            prop="email"
-            label="邮箱"
-            :rules="[
-            { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-            { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
-            ]"
-        >
-            <el-input v-model="dynamicValidateForm.email"></el-input>
+    <div class="each-item" v-for="(item, index) in localValue" :key="index">
+      <el-divider content-position="left">第 {{index + 1}} 条记录</el-divider>
+      <el-button type="text" class="delete-button" @click="deleteARecord(index)" v-if="index !== 0">删除</el-button>
+      <el-form :ref="`${index}form`" class="item-form" :model="item" szie="small">
+        <el-form-item label="① 医院名称">
+          <el-input v-model="item.hosName" placeholder="请填写医院名称" />
         </el-form-item>
-
-        <el-form-item
-            v-for="(domain, index) in dynamicValidateForm.domains"
-            :label="'域名' + index"
-            :key="domain.key"
-            :prop="'domains.' + index + '.value'"
-            :rules="{
-            required: true, message: '域名不能为空', trigger: 'blur'
-            }"
-        >
-            <el-input v-model="domain.value"></el-input><el-button @click.prevent="removeDomain(domain)">删除</el-button>
+        <el-form-item label="② 转诊日期">
+          <el-date-picker v-model="item.date" type="date" placeholder="选择日期" />
         </el-form-item>
-
-        <el-form-item>
-            <el-button type="primary" @click="submitForm('dynamicValidateForm')">提交</el-button>
-            <el-button @click="addDomain">新增域名</el-button>
-            <el-button @click="resetForm('dynamicValidateForm')">重置</el-button>
+        <el-form-item label="③ 上传转诊单照片">
+          <el-upload class="img-upload" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess(index)" :before-upload="beforeAvatarUpload">
+            <div v-if="item.img" class="img">
+              <el-image :src="item.img" fit="scale-down" />
+            </div>
+            <el-button v-else type="text"><i class="el-icon-plus avatar-uploader-icon" />点击上传图片</el-button>
+          </el-upload>
         </el-form-item>
-    </el-form>
+      </el-form>
+    </div>
+
+    <div class="button-container">
+      <el-button type="primary" size="small" plain @click="newARecord">新增转诊单</el-button>
+      <el-button type="danger" size="small" @click="reset">重置</el-button>
+      <el-button type="primary" size="small" @click="nextStep">下一步</el-button>
+    </div>
   </div>
 </template>
 
@@ -49,82 +34,94 @@
 // @ is an alias to /src
 
 export default {
-    name: 'zhuanzhendan',
-    components: {
-        
+  name: 'zhuanzhendan',
+  components: {},
+  model: { props: 'value', event: 'change' },
+  props: {
+    value: { type: Array, default() { return [{}] } },
+    nextStep: { type: Function, default() { return () => { } } }
+  },
+  data() {
+    return { localValue: this.value }
+  },
+  watch: {
+    value(val) { this.localValue = this.value }
+  },
+  methods: {
+    newARecord() {
+      this.localValue.push({ hosName: '', date: null })
+      this.$emit('change', this.localValue)
     },
-    data() {
-        return {
-        dynamicValidateForm: {
-            domains: [{
-            value: ''
-            }],
-            email: ''
-        }
-        };
+    deleteARecord(index) {
+      this.localValue.splice(index, 1)
+      this.$emit('change', this.localValue)
     },
-    methods: {
-        submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-            if (valid) {
-            alert('submit!');
-            } else {
-            console.log('error submit!!');
-            return false;
-            }
-        });
-        },
-        resetForm(formName) {
-        this.$refs[formName].resetFields();
-        },
-        removeDomain(item) {
-        var index = this.dynamicValidateForm.domains.indexOf(item)
-        if (index !== -1) {
-            this.dynamicValidateForm.domains.splice(index, 1)
-        }
-        },
-        addDomain() {
-        this.dynamicValidateForm.domains.push({
-            value: '',
-            key: Date.now()
-        });
-        }
+    handleAvatarSuccess(index) {
+      return (res, file) => {
+        this.localValue[index].img = URL.createObjectURL(file.raw);
+      }
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isJPG && isLt2M;
+    },
+    reset() {
+      this.localValue = [{ hsoName: '', date: null, img: '' }]
+      this.$emit('change', this.localValue)
     }
+  }
 }
 </script>
 
 <style lang="less" scoped>
 .zhuanzhendan {
-    .box-card {
-        width: 780px;
+  .each-item {
+    padding: 20px 20px 40px 20px;
+    margin: 20px 0 40px 0;
+    border-radius: 5px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    position: relative;
+    text-align: left;
+    .delete-button {
+      position: absolute;
+      right: 20px;
+      top: -8px;
+      background: #ffffff;
+      padding: 0 10px;
     }
-    .form-title {
-        font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-        font-size: 18px ;
-        margin-top: 0px;
-        text-align: left;
-        color: #F2F6FC;
-        background-color: #7BD5FB;
-        line-height: 2.0;
-        padding-left: 30px;
-        margin-bottom: 40px;
+    .img-upload {
+      width: 100%;
+      font-size: 30px;
+      margin-top: 40px;
+      position: relative;
+      text-align: left;
+      left: -0px;
+      .img {
+        width: 100px;
+        height: 100px;
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: 4px;
+        }
+      }
     }
-
+  }
+  .button-container {
+    text-align: left;
+  }
+  .item-form {
+    margin-top: 40px;
+    .el-date-editor {
+      width: 100%;
+    }
+  }
 }
-
-.text {
-    font-size: 14px;
-}
-.item {
-    margin-bottom: 18px;
-}
-.clearfix:before,
-.clearfix:after {
-    display: table;
-content: "";
-}
-.clearfix:after {
-    clear: both
-}
-
 </style>
