@@ -49,7 +49,23 @@ export default {
   },
   methods: {
     newARecord() {
-      this.localValue.push({ hosName: '', date: null })
+      this.localValue.push({
+        hosName: '',
+        zhuanzhenDate: null, // 转诊日期
+        zhuangzhenImg: '', // 转诊照片
+        fuwufeiArr: [{
+          office: '',  // 科室
+          yishiPay: '', // 医事服务费（挂号费）
+          yishiDate: '', // 产生医事服务费的日期
+          yishiImg: '', // 医事服务费的单据
+        }],
+        yaofeiArr: [{
+          yaofeiPay: '', // 药费金额
+          date: '', // 产生费用的日期
+          yaofeiImg: '',
+          chufangImg: ''
+        }]
+      })
       this.$emit('change', this.localValue)
     },
     deleteARecord(index) {
