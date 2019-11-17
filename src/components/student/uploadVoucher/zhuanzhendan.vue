@@ -4,15 +4,15 @@
     <div class="each-item" v-for="(item, index) in localValue" :key="index">
       <el-divider content-position="left">第 {{index + 1}} 条记录</el-divider>
       <el-button type="text" class="delete-button" @click="deleteARecord(index)" v-if="index !== 0">删除</el-button>
-      <el-form :ref="`${index}form`" class="item-form" :model="item" szie="small">
-        <el-form-item label="① 医院名称">
-          <el-input v-model="item.hosName" placeholder="请填写医院名称" />
+      <el-form :ref="`form`" class="item-form" :model="item" szie="small">
+        <el-form-item label="① 医院名称" prop="hosName" :rules="[validateRequiredRule('医院名称为必填')]">
+          <el-input v-model="item.hosName" type="hosName" placeholder="请填写医院名称" />
         </el-form-item>
-        <el-form-item label="② 转诊日期">
+        <el-form-item label="② 转诊日期" prop="date" :rules="[validateRequiredRule('转诊日期为必填')]">
           <el-date-picker v-model="item.date" type="date" placeholder="选择日期" />
         </el-form-item>
-        <el-form-item label="③ 上传转诊单照片">
-          <el-upload class="img-upload" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess(index)" :before-upload="beforeAvatarUpload">
+        <el-form-item label="③ 上传转诊单照片" prop="img" :rules="[validateRequiredRule('转诊照片必填')]">
+          <el-upload class="img-upload" type="img" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess(index)" :before-upload="beforeAvatarUpload">
             <div v-if="item.img" class="img">
               <el-image :src="item.img" fit="scale-down" />
             </div>
@@ -25,7 +25,7 @@
     <div class="button-container">
       <el-button type="primary" size="small" plain @click="newARecord">新增转诊单</el-button>
       <el-button type="danger" size="small" @click="reset">重置</el-button>
-      <el-button type="primary" size="small" @click="nextStep">下一步</el-button>
+      <el-button type="primary" size="small" @click="onNext">下一步</el-button>
     </div>
   </div>
 </template>
@@ -42,7 +42,10 @@ export default {
     nextStep: { type: Function, default() { return () => { } } }
   },
   data() {
-    return { localValue: this.value }
+    return {
+      localValue: this.value,
+      validateHosName: [{ rquired: true, message: '医院名称为必填' }],
+    }
   },
   watch: {
     value(val) { this.localValue = this.value }
@@ -87,6 +90,20 @@ export default {
         this.$message.error('上传头像图片大小不能超过 2MB!');
       }
       return isJPG && isLt2M;
+    },
+    validateRequiredRule(msg) {
+      return { required: true, message: msg, trigger: 'change' }
+    },
+    onNext() {
+      let validation = true
+      const _this = this
+      for (let  i = 0; i < this.localValue.length; i++) {
+          _this.$refs['form'][i].validate((valid) => {
+          if (!valid) validation = false
+        })
+      }
+      if (validation) this.nextStep()
+      else { this.$message.error('填写有误，请检查') }
     },
     reset() {
       this.localValue = [{ hsoName: '', date: null, img: '' }]
