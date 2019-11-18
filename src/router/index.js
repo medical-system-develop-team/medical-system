@@ -31,6 +31,77 @@ const routes = [
     path: '/myInfo',
     name: 'myInfo',
     component: () => import('../views/student/myInfo.vue')
+  },
+  {
+    path: '/Admin',
+    name: 'Admin',
+    component: () => import('../components/Admin.vue')
+  },
+  {
+    path: '/Admin/usermanage',
+    name: 'usermanage',
+    component: () => import('../components/Admin/usermanage.vue'),
+    children:[
+      {
+        path: '/Admin/usermanage/usercheck',
+        name: 'usercheck',
+        component: () => import('../components/Admin/usermanage/usercheck.vue')
+      },
+      {
+        path: '/Admin/usermanage/useradd',
+        name: 'useradd',
+        component: () => import('../components/Admin/usermanage/useradd.vue')
+      },
+      /* {
+        path: '/Admin/usermanage/useredit',
+        name: 'useredit',
+        component: () => import('../components/Admin/usermanage/useredit.vue')
+      }, */
+      /* {
+        path: '/Admin/usermanage/userdelet',
+        name: 'useredit',
+        component: () => import('../components/Admin/usermanage/userdelet.vue')
+      }, */
+      {
+        path: '/Admin/usermanage/userpassword',
+        name: 'userpassword',
+        component: () => import('../components/Admin/usermanage/userpassword.vue')
+      }
+    ]
+  },
+  {
+    path: '/Admin/departmanage',
+    name: 'departmanage',
+    component: () => import('../components/Admin/departmanage.vue'),
+    children:[
+      {
+        path: '/Admin/departmanage/departcheck',
+        name: 'departcheck',
+        component: () => import('../components/Admin/departmanage/departcheck.vue')
+      },
+      {
+        path: '/Admin/departmanage/departadd',
+        name: 'departadd',
+        component: () => import('../components/Admin/departmanage/departadd.vue')
+      }
+    ]
+  },
+  {
+    path: '/Admin/recordmanage',
+    name: 'recordmanage',
+    component: () => import('../components/Admin/recordmanage.vue'),
+    children:[
+      {
+        path: '/Admin/recordmanage/recordcheck',
+        name: 'recordcheck',
+        component: () => import('../components/Admin/recordmanage/recordcheck.vue')
+      },
+      {
+        path: '/Admin/departmanage/recordfiled',
+        name: 'recordfiled',
+        component: () => import('../components/Admin/recordmanage/recordfiled.vue')
+      }
+    ]
   }
 ]
 
