@@ -4,6 +4,7 @@
       <el-step title="转诊单"></el-step>
       <el-step title="医事服务费（挂号费）"></el-step>
       <el-step title="药费单据"></el-step>
+      <el-step title="提交"></el-step>
     </el-steps>
 
     <div class="steps-button">
@@ -15,6 +16,7 @@
       <zhuanzhendan v-model="recordArr" :next-step="next" v-if="active === 1" />
       <fuwufei v-model="recordArr" :next-step="next" :pre-step="prev" v-if="active === 2" />
       <yaofei v-model="recordArr" :next-step="next" :pre-step="prev" v-if="active === 3" />
+      <submit v-model="recordArr" :next-step="next" :pre-step="prev" v-if="active === 4" />
     </div>
 
   </div>
@@ -24,10 +26,11 @@
 import zhuanzhendan from '@/components/student/uploadVoucher/zhuanzhendan.vue'
 import fuwufei from '@/components/student/uploadVoucher/fuwufei.vue'
 import yaofei from '@/components/student/uploadVoucher/yaofei.vue'
+import submit from '@/components/student/uploadVoucher/submit.vue'
 
 export default {
   components: {
-    zhuanzhendan, fuwufei, yaofei
+    zhuanzhendan, fuwufei, yaofei, submit
   },
   data() {
     return {
@@ -47,12 +50,18 @@ export default {
           date: '', // 产生费用的日期
           yaofeiImg: '',
           chufangImg: ''
+        }],
+        submitArr: [{
+          waishangshuoming: '', // 外伤说明
+          gaizhangImg: '', // 盖章说明
+          teshuyongyaoImg: '' //特殊用药说明
         }]
 
       }],
       zhuanzhendanArr: [{ hosName: '', date: null, img: '' }],
       fuwufeiArr: [{ hosName: '', office: '', date: null, pay: '', img: '' }],
-      yaofeiArr: [{ hosName: '', date: '', pay: '', yaofeiImg: '', chufangImg: '' }]
+      yaofeiArr: [{ hosName: '', date: '', pay: '', yaofeiImg: '', chufangImg: '' }],
+      //submitArr: [{ hosName: '', waishangshuoming: '', gaizhangImg: '', teshuyongyaoImg: '' }]
     }
   },
   watch: {
@@ -65,7 +74,7 @@ export default {
       if (this.active-- <= 1) this.active = 1;
     },
     next() {
-      if (this.active++ > 2) this.active = 3;
+      if (this.active++ > 3) this.active = 4;
     },
     syncArr(from, to1, to2, key) {
       from.forEach((item, index) => {
@@ -96,7 +105,7 @@ export default {
   }
   .steps {
     .el-step__line {
-      width: 116%;
+      width: 110%;
     }
     .el-step.is-horizontal.is-flex {
       text-align: right;

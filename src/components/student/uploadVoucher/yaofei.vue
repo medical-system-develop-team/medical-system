@@ -10,13 +10,13 @@
           <!-- <el-form-item label="① 医院名称">
             <el-input v-model="item.hosName" placeholder="请填写医院名称" />
           </el-form-item> -->
-          <el-form-item label="③ 金额">
+          <el-form-item label="② 金额">
             <el-input v-model="item.pay" placeholder="请填写金额" />
           </el-form-item>
-          <el-form-item label="④ 日期">
+          <el-form-item label="③ 日期">
             <el-date-picker v-model="item.date" type="date" placeholder="选择日期" />
           </el-form-item>
-          <el-form-item label="⑤ 药费照片">
+          <el-form-item label="④ 药费照片">
             <el-upload class="img-upload" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess(index, idx, 'yaofeiImg')" :before-upload="beforeAvatarUpload">
               <div v-if="item.img" class="img">
                 <el-image :src="item.yaofeiImg" fit="scale-down" />
@@ -35,12 +35,11 @@
         </el-form>
       </div>
       <el-divider content-position="left">
-        <el-button type="text" size="small" @click="newARecord(index)">新增服务费记录</el-button>
+        <el-button type="text" size="small" @click="newARecord(index)">新增药费单据记录</el-button>
       </el-divider>
     </div>
 
     <div class="button-container">
-      <el-button type="danger" size="small" @click="reset">重置</el-button>
       <el-button type="primary" size="small" @click="preStep">上一步</el-button>
       <el-button type="primary" size="small" @click="nextStep">下一步</el-button>
     </div>
@@ -91,10 +90,6 @@ export default {
         this.$message.error('上传头像图片大小不能超过 2MB!');
       }
       return isJPG && isLt2M;
-    },
-    reset() {
-      this.localValue = [{ hsoName: '', date: null, img: '' }]
-      this.$emit('change', this.localValue)
     }
   }
 }
