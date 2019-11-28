@@ -36,6 +36,7 @@
 // @ is an alias to /src
 import navmenu from '@/components/student/navmenu.vue'
 import { serviceMyInfoSubmit } from '@/api/index.js'
+import { getUserInfo } from '@/api/index.js'
 
 export default {
     name: 'myInfo',
@@ -54,22 +55,32 @@ export default {
         }
       }
     },
+    created(){
+      this.getInfo()
+    },
     methods: {
+      getInfo(){
+        getUserInfo().then(
+            response => {
+              this.myInfoForm.number = response.number
+              this.myInfoForm.name = response.name
+              this.myInfoForm.sex = response.sex
+              this.myInfoForm.nation = response.nation
+              this.myInfoForm.idcard = response.idcard
+              this.myInfoForm.phone = response.phone
+            })
+      },
       onSubmit() {
         this.$refs.form.validate( valid => {
           if (!valid) return
           serviceMyInfoSubmit(this.myInfoForm).then(
             response => {
-              //console.log('Login 接口返回数据为：', response)
-              if (response.msg == "fail") {
-                this.$message.error(response.msg || '修改信息失败')
-                return
-              }
-              if (response.msg === 'success') {
-                this.$message.success('登录成功')
-                sessionStorage.setItem('loginStatus', true)
-                this.$router.push('/stdhome')
-              }
+              this.myInfoForm.number = response.number
+              this.myInfoForm.name = response.name
+              this.myInfoForm.sex = response.sex
+              this.myInfoForm.nation = response.nation
+              this.myInfoForm.idcard = response.idcard
+              this.myInfoForm.phone = response.phone
           }
           )
         })
