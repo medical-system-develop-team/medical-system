@@ -1,6 +1,12 @@
 <template>
   <div class="Admin">
-    <el-menu :default-active="activeIndex" mode="horizontal" @select="onSelectMenu">
+    <el-menu 
+      :default-active="activeIndex" 
+      mode="horizontal"
+      @select="onSelectMenu" 
+      background-color="#DCDCDC" 
+      text-color="#696969" 
+      active-text-color="#CD853F">
       <el-menu-item v-for="(menu, index) in menus" :class="menu.class || ''" :key="index" :index="index.toString()">
         {{ menu.label }}
       </el-menu-item>

@@ -35,7 +35,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogEdit.show = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormEdit('formEdit')">确 定</el-button>
+        <el-button type="primary" @click="dialogFormEdit('formEdit')">提交</el-button>
       </div>
     </el-dialog>
   </div>
@@ -69,6 +69,9 @@ export default {
         role:[{required:true,message:"角色不能为空",trigger:"blur"}],
       }
     }
+  },
+  mounted(){ 
+    //this.form = this.form; 
   },
   methods:{
     dialogFormEdit(formEdit) {

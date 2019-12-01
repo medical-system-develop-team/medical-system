@@ -61,3 +61,10 @@
     }
   }
 </script>
+
+<style lang="less" scoped>
+.usermanage{
+
+  width: 100%;
+}
+</style>

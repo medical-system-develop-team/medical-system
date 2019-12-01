@@ -97,90 +97,9 @@ const routes = [
         component: () => import('../components/Admin/recordmanage/recordcheck.vue')
       },
       {
-        path: '/Admin/recordmanage/recdetail',
-        name: 'recdetail',
-        component: () => import('../components/Admin/recordmanage/recdetail.vue')
-      },
-      {
         path: '/Admin/departmanage/recordfiled',
         name: 'recordfiled',
         component: () => import('../components/Admin/recordmanage/recordfiled.vue')
-      }
-    ]
-  },
-  {
-    path: '/checker',
-    name: 'checker',
-    component: () => import('../components/checker.vue'),
-    children:[
-      {
-        path: '/checker/recording',
-        name: 'recording',
-        component: () => import('../components/checker/recording.vue')
-      },
-      {
-        path: '/checker/recdetail',
-        name: 'recdetail',
-        component: () => import('../components/checker/recdetail.vue')
-      },
-      {
-        path: '/checker/checkerpassword',
-        name: 'checkerpassword',
-        component: () => import('../components/checker/checkerpassword.vue')
-      },
-      {
-        path: '/checker/completecheck',
-        name: 'completecheck',
-        component: () => import('../components/checker/completecheck.vue')
-      }
-    ]
-  },
-  {
-    path: '/checkerAdmin',
-    name: 'checkerAdmin',
-    component: () => import('../components/checkerAdmin.vue'),
-    children:[
-      {
-        path: '/checkerAdmin/recording',
-        name: 'recording',
-        component: () => import('../components/checkerAdmin/recording.vue')
-      },
-      {
-        path: '/checkerAdmin/recdetail',
-        name: 'recdetail',
-        component: () => import('../components/checkerAdmin/recdetail.vue')
-      },
-      {
-        path: '/checkerAdmin/checkerAdminpassword',
-        name: 'checkerAdminpassword',
-        component: () => import('../components/checkerAdmin/checkerAdminpassword.vue')
-      },
-      {
-        path: '/checkerAdmin/completecheck',
-        name: 'completecheck',
-        component: () => import('../components/checkerAdmin/completecheck.vue')
-      }
-    ]
-  },
-  {
-    path: '/shoudanyuan',
-    name: 'shoudanyuan',
-    component: () => import('../components/shoudanyuan.vue'),
-    children:[
-      {
-        path: '/shoudanyuan/recording',
-        name: 'recording',
-        component: () => import('../components/shoudanyuan/recording.vue')
-      },
-      {
-        path: '/shoudanyuan/recdetail',
-        name: 'recdetail',
-        component: () => import('../components/shoudanyuan/recdetail.vue')
-      },
-      {
-        path: '/shoudanyuan/shoudanyuanpassword',
-        name: 'shoudanyuanpassword',
-        component: () => import('../components/shoudanyuan/shoudanyuanpassword.vue')
       }
     ]
   }
