@@ -2,10 +2,10 @@
   <div class="fuwufei">
 
     <div class="each-item" v-for="(record, index) in localValue" :key="index">
-      <h2>{{ record.hosName }}</h2>
+      <h2>医院：{{ record.hosName }}</h2>
       <div v-for="(item, idx) in record.fuwufeiArr" :key="`${index}-${idx}`" class="fuwufei-item">
         <el-divider content-position="left"> 第 {{idx + 1}} 条医事服务费（挂号费）记录</el-divider>
-        <el-button type="text" class="delete-button" @click="deleteARecord(index, idx)" v-if="idx != 0">删除</el-button>
+        <el-button type="text" class="delete-button" @click="deleteARecord(index, idx)">删除</el-button>
         <el-form :ref="`${index}form`" class="item-form" :model="item" size="small" label-width="90px" label-position="left">
           <!-- <el-form-item label="① 医院名称">
           <el-input v-model="item.hosName" placeholder="请填写医院名称" />

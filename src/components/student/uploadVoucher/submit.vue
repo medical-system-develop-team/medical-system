@@ -26,7 +26,7 @@
 </template>
 
 <script>
-// @ is an alias to /src
+import { commonApi } from '../../../api'
 
 export default {
   name: 'submit',
@@ -76,10 +76,13 @@ export default {
       this.$emit('change', this.localValue)
     },
     save() {
-      
     },
     submit() {
-      
+      const url = 'https://www.fastmock.site/mock/12e9010cbb8f72411985efd3130dbd1b/mediacl/login'
+      commonApi(url, this.value).then(res => {
+        if (res) this.$message.success(res.msg || '提交成功')
+      })
+      console.log('%c Groot Log', 'color:red;font-weight:bold', ': submit -> this.value', this.value)
     },
   }
 }

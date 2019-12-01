@@ -10,6 +10,13 @@ export function serviceLogin(param) {
     }
   )
 }
+
+export function commonApi(url, param) {
+  return axios.post(url, param).then(res => {
+    return Promise.resolve(res.data)
+  })
+}
+
 export function checkuser(param) {
   return axios.post('https://www.fastmock.site/mock/12e9010cbb8f72411985efd3130dbd1b/mediacl/login', param).then(
     response => {

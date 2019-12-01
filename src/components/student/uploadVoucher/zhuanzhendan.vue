@@ -3,7 +3,7 @@
 
     <div class="each-item" v-for="(item, index) in localValue" :key="index">
       <el-divider content-position="left">第 {{index + 1}} 条记录</el-divider>
-      <el-button type="text" class="delete-button" @click="deleteARecord(index)" v-if="index !== 0">删除</el-button>
+      <el-button type="text" class="delete-button" @click="deleteARecord(index)">删除</el-button>
       <el-form :ref="`form`" class="item-form" :model="item" szie="small">
         <el-form-item label="① 医院名称" prop="hosName" :rules="[validateRequiredRule('医院名称为必填')]">
           <el-input v-model="item.hosName" type="hosName" placeholder="请填写医院名称" />
@@ -11,7 +11,8 @@
         <el-form-item label="② 转诊日期" prop="date" :rules="[validateRequiredRule('转诊日期为必填')]">
           <el-date-picker v-model="item.date" type="date" placeholder="选择日期" />
         </el-form-item>
-        <el-form-item label="③ 上传转诊单照片" prop="img" :rules="[validateRequiredRule('转诊照片必填')]">
+        <el-form-item label="③ 上传转诊单照片" prop="img">
+        <!-- <el-form-item label="③ 上传转诊单照片" prop="img" :rules="[validateRequiredRule('转诊照片必填')]"> -->
           <el-upload class="img-upload" type="img" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess(index)" :before-upload="beforeAvatarUpload">
             <div v-if="item.img" class="img">
               <el-image :src="item.img" fit="scale-down" />

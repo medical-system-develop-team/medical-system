@@ -2,7 +2,7 @@
   <div class="yaofei">
 
     <div class="each-item" v-for="(record, index) in localValue" :key="index">
-      <h2>{{ record.hosName }}</h2>
+      <h2>医院：{{ record.hosName }}</h2>
       <div v-for="(item, idx) in record.yaofeiArr" :key="idx" class="yaofei-item">
         <el-divider content-position="left">第 {{idx + 1}} 条药费单据记录</el-divider>
         <el-button type="text" class="delete-button" @click="deleteARecord(index, idx)" v-if="idx !== 0">删除</el-button>

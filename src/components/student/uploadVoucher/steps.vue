@@ -35,29 +35,30 @@ export default {
   data() {
     return {
       active: 1,
-      recordArr: [{
-        hosName: '',
-        zhuanzhenDate: null, // 转诊日期
-        zhuangzhenImg: '', // 转诊照片
-        fuwufeiArr: [{
-          office: '',  // 科室
-          yishiPay: '', // 医事服务费（挂号费）
-          yishiDate: '', // 产生医事服务费的日期
-          yishiImg: '', // 医事服务费的单据
-        }],
-        yaofeiArr: [{
-          yaofeiPay: '', // 药费金额
-          date: '', // 产生费用的日期
-          yaofeiImg: '',
-          chufangImg: ''
-        }],
-        submitArr: [{
-          waishangshuoming: '', // 外伤说明
-          gaizhangImg: '', // 盖章说明
-          teshuyongyaoImg: '' //特殊用药说明
-        }]
-
-      }],
+      recordArr: [
+        {
+          hosName: '',
+          zhuanzhenDate: null, // 转诊日期
+          zhuangzhenImg: '', // 转诊照片
+          fuwufeiArr: [{
+            office: '',  // 科室
+            yishiPay: '', // 医事服务费（挂号费）
+            yishiDate: '', // 产生医事服务费的日期
+            yishiImg: '', // 医事服务费的单据
+          }],
+          yaofeiArr: [{
+            yaofeiPay: '', // 药费金额
+            date: '', // 产生费用的日期
+            yaofeiImg: '',
+            chufangImg: ''
+          }],
+          submitArr: [{
+            waishangshuoming: '', // 外伤说明
+            gaizhangImg: '', // 盖章说明
+            teshuyongyaoImg: '' //特殊用药说明
+          }]
+        }
+      ],
       zhuanzhendanArr: [{ hosName: '', date: null, img: '' }],
       fuwufeiArr: [{ hosName: '', office: '', date: null, pay: '', img: '' }],
       yaofeiArr: [{ hosName: '', date: '', pay: '', yaofeiImg: '', chufangImg: '' }],

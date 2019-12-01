@@ -4,7 +4,7 @@
     <h1>修改个人信息</h1>
     <el-form class = "infoForm" ref="form" :model="myInfoForm" label-width="80px">
       <el-form-item label="工资号">
-        <el-input v-model="myInfoForm.number"></el-input>
+        <el-input v-model="myInfoForm.number" disabled></el-input>
       </el-form-item>
       <el-form-item label="姓    名">
          <el-input v-model="myInfoForm.name"></el-input>
@@ -75,12 +75,9 @@ export default {
           if (!valid) return
           serviceMyInfoSubmit(this.myInfoForm).then(
             response => {
-              this.myInfoForm.number = response.number
-              this.myInfoForm.name = response.name
-              this.myInfoForm.sex = response.sex
-              this.myInfoForm.nation = response.nation
-              this.myInfoForm.idcard = response.idcard
-              this.myInfoForm.phone = response.phone
+              if (response.msg === 'success') {
+              this.$message.success('修改成功')
+              }
           }
           )
         })
