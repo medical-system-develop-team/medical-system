@@ -18,7 +18,7 @@ export default {
       preActiveIndex: '0',
       menus: [
         { label: '首页', key: 'home', path: '/stdhome', class: 'main-menu', icon: 'el-icon-s-home' },
-        { label: '退出系统', key: 'logout', path: '/login', class: 'right-menu' },
+        { label: '退出系统', key: 'logout', path: '/', class: 'right-menu' },
         { label: '我的个人信息', key: 'personInfo', path: '/myInfo', class: 'right-menu' },
         { label: '我的报销记录', key: 'records', path: '/myRecords', class: 'right-menu' },
         { label: '录入报销凭证', key: 'inVoucher', path: '/uploadVoucher', class: 'right-menu' }

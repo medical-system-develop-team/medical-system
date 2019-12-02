@@ -1,8 +1,10 @@
 <template>
- <div class="stdhome">
+  <div class="stdhome">
     <navmenu />
-    <h1>欢迎进入公费医疗自助报销系统</h1>
-    <el-button type="primary" round @click="next">开始录入报销凭证</el-button>
+    <div class="welcome-info">
+      <h1>欢迎进入公费医疗自助报销系统</h1>
+      <el-button type="primary" round @click="next">开始录入报销凭证</el-button>
+    </div>
   </div>
 </template>
 
@@ -16,7 +18,7 @@ export default {
   components: {
     navmenu
   },
-  methods:{
+  methods: {
     next() {
       this.$router.push('/uploadVoucher')
     },
@@ -24,6 +26,8 @@ export default {
 }
 </script>
 
-<style>
-  
+<style lang="less">
+.welcome-info {
+  margin-top: 30vh;
+}
 </style>
