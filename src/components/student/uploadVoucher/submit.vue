@@ -1,28 +1,22 @@
 <template>
-<div class="submit">
-  <transition name="fade">
-    <div class="each-item"  v-if="show">
-      <div class="submit-item">
-        <el-divider content-position="left">外伤说明</el-divider>
-        <el-button type="text" class="delete-button" @click="deleteARecord">删除</el-button>
-        
-        <!-- <el-form class="item-form" :model="item" size="small" label-width="90px" label-position="left">
-          <el-form-item label="① 医院名称">
-            <el-input v-model="item.hosName" placeholder="请填写医院名称" />
-          </el-form-item>
-        </el-form>  -->
+  <div class="submit">
+    <transition name="fade">
+      <div class="each-item" v-if="hasAddWaishangshuoming">
+        <div class="submit-item">
+          <el-divider content-position="left">外伤说明</el-divider>
+          <el-button type="text" class="delete-button" @click="deleteWaishangshuoming">删除</el-button>
+          <el-input type="textarea" v-model="waishangshuoming" placeholder="请输入外伤说明" />
+        </div>
       </div>
+    </transition>
+    <div class="button-container">
+      <el-button v-if="!hasAddWaishangshuoming" type="primary" size="small" plain @click="addWaishangshuoming">添加外伤说明</el-button>
+      <el-button type="primary" size="small" @click="save">暂存</el-button>
+      <el-button type="primary" size="small" @click="submit">提交</el-button>
+      <el-button type="danger" size="small" v-if="hasAddWaishangshuoming" @click="reset">重置</el-button>
+           <el-button type="primary" size="small" @click="preStep">上一步</el-button>
     </div>
-  </transition>
-  <div class="button-container">
-     <el-button type="primary" size="small" plain @click="newARecord" :disabled="show">添加外伤说明</el-button>
-     <el-button type="primary" size="small" @click="save">暂存</el-button>
-     <el-button type="primary" size="small" @click="submit">提交</el-button>
-     <el-button type="danger" size="small" @click="reset">重置</el-button>
-     <el-button type="primary" size="small" @click="preStep">上一步</el-button>
-
   </div>
-</div>
 </template>
 
 <script>
@@ -37,53 +31,48 @@ export default {
   model: { prop: 'value', event: 'change' },
   data() {
     return {
-      localValue: this.value,
-      show:false
+      hasAddWaishangshuoming: false,
+      waishangshuoming: null,
+      localValue: this.value
     }
   },
   watch: {
     value(val) { this.localValue = val }
   },
   methods: {
-    newARecord(index) {
-      this.show = true,
-      this.localValue[index].yaofeiArr.push({ hosName: '', date: null })
-      this.$emit('change', this.localValue)
+    addWaishangshuoming() {
+      this.hasAddWaishangshuoming = true
     },
-    deleteARecord(index, idx) {
-      this.show = false,
-      this.localValue[index].yaofeiArr.splice(index, 1)
-      this.$emit('change', this.localValue)
-    },
-    handleAvatarSuccess(index, idx, key) {
-      return (res, file) => {
-        this.localValue[index].yaofeiArr[idx][key] = URL.createObjectURL(file.raw);
-      }
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!');
-      }
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
-      }
-      return isJPG && isLt2M;
+    deleteWaishangshuoming() {
+      this.hasAddWaishangshuoming = false
+      this.waishangshuoming = null
     },
     reset() {
-      this.localValue = [{ hsoName: '', date: null, img: '' }]
-      this.$emit('change', this.localValue)
+      this.waishangshuoming = null
     },
     save() {
+      console.log('最终记录为: \n', this.getParam())
     },
     submit() {
+      console.log('最终记录为: \n', this.getParam())
       const url = 'https://www.fastmock.site/mock/12e9010cbb8f72411985efd3130dbd1b/mediacl/login'
       commonApi(url, this.value).then(res => {
-        if (res) this.$message.success(res.msg || '提交成功')
+        if (res) { 
+          this.$message.success(res.msg || '提交成功')
+          this.$router.push('/stdhome')
+        }
       })
-      console.log('%c Groot Log', 'color:red;font-weight:bold', ': submit -> this.value', this.value)
     },
+    /**
+     * @desc 获取最终要提交给后台的参数
+     */
+    getParam() {
+      const param = {
+        records: [...this.value],
+        waishangshuoming: this.waishangshuoming
+      }
+      return param
+    }
   }
 }
 </script>

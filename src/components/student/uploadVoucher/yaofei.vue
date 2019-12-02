@@ -3,53 +3,60 @@
 
     <div class="each-item" v-for="(record, index) in localValue" :key="index">
       <h2>医院：{{ record.hosName }}</h2>
-      <div v-for="(item, idx) in record.yaofeiArr" :key="idx" class="yaofei-item">
-        <el-divider content-position="left">第 {{idx + 1}} 条药费单据记录</el-divider>
-        <el-button type="text" class="delete-button" @click="deleteARecord(index, idx)" v-if="idx !== 0">删除</el-button>
-        <el-form :ref="`${index}form`" class="item-form" :model="item" size="small" label-width="90px" label-position="left">
-          <!-- <el-form-item label="① 医院名称">
-            <el-input v-model="item.hosName" placeholder="请填写医院名称" />
-          </el-form-item> -->
-          <el-form-item label="② 金额">
-            <el-input v-model="item.pay" placeholder="请填写金额" />
-          </el-form-item>
-          <el-form-item label="③ 日期">
-            <el-date-picker v-model="item.date" type="date" placeholder="选择日期" />
-          </el-form-item>
-          <el-form-item label="④ 药费照片">
-            <el-upload class="img-upload" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess(index, idx, 'yaofeiImg')" :before-upload="beforeAvatarUpload">
-              <div v-if="item.img" class="img">
-                <el-image :src="item.yaofeiImg" fit="scale-down" />
-              </div>
-              <el-button v-else type="text"><i class="el-icon-plus avatar-uploader-icon" />点击上传图片</el-button>
-            </el-upload>
-          </el-form-item>
-          <el-form-item label="⑤ 处方照片">
-            <el-upload class="img-upload" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess(index, idx, 'chufangImg')" :before-upload="beforeAvatarUpload">
-              <div v-if="item.img" class="img">
-                <el-image :src="item.chufangImg" fit="scale-down" />
-              </div>
-              <el-button v-else type="text"><i class="el-icon-plus avatar-uploader-icon" />点击上传图片</el-button>
-            </el-upload>
-          </el-form-item>
-        </el-form>
+
+      <div v-for="(item, idx) in record.fuwufeiArr" :key="idx">
+        <el-divider class="office-yaofei-title" content-position="left">“{{ item.office }}” 科室的药费</el-divider>
+        <div v-for="(yiyao, i) in item.yaofeiArr" :key="index + idx + i" class="yaofei-item">
+
+          <el-divider content-position="left">
+            <span class="yaofei-divider">第 {{i + 1}} 条药费单据记录</span>
+          </el-divider>
+          <el-button type="text" class="delete-button" @click="deleteARecord(index, idx, i)">删除</el-button>
+
+          <el-form ref="form" class="item-form" :model="yiyao" size="small" label-width="90px" label-position="left">
+            <el-form-item label="② 金额" prop="yaofeiPay" :rules="[validateRequiredRule('金额为必填')]">
+              <el-input v-model="yiyao.yaofeiPay" type="number" placeholder="请填写金额" />
+            </el-form-item>
+            <el-form-item label="③ 日期" prop="yaofeiDate" :rules="[validateRequiredRule('日期为必填')]">
+              <el-date-picker v-model="yiyao.yaofeiDate" type="date" placeholder="选择日期" />
+            </el-form-item>
+            <el-form-item label="④ 药费照片" prop="yaofeiImg">
+              <el-upload class="img-upload" action="" :show-file-list="false" :on-success="handleAvatarSuccess(index, idx, 'yaofeiImg')" :before-upload="beforeAvatarUpload">
+                <div v-if="yiyao.yaofeiImg" class="img">
+                  <el-image :src="yiyao.yaofeiImg" fit="scale-down" />
+                </div>
+                <el-button v-else type="text"><i class="el-icon-plus avatar-uploader-icon" />点击上传图片</el-button>
+              </el-upload>
+            </el-form-item>
+            <el-form-item label="⑤ 处方照片" prop="chufangImg">
+              <el-upload class="img-upload" action="" :show-file-list="false" :on-success="handleAvatarSuccess(index, idx, 'chufangImg')" :before-upload="beforeAvatarUpload">
+                <div v-if="yiyao.chufangImg" class="img">
+                  <el-image :src="yiyao.chufangImg" fit="scale-down" />
+                </div>
+                <el-button v-else type="text"><i class="el-icon-plus avatar-uploader-icon" />点击上传图片</el-button>
+              </el-upload>
+            </el-form-item>
+          </el-form>
+
+        </div>
+
+        <el-divider class="add-yaofei" content-position="left">
+          <el-button type="text" size="small" @click="newARecord(index, idx)">新增药费单据记录</el-button>
+        </el-divider>
+
       </div>
-      <el-divider content-position="left">
-        <el-button type="text" size="small" @click="newARecord(index)">新增药费单据记录</el-button>
-      </el-divider>
+
     </div>
 
     <div class="button-container">
       <el-button type="primary" size="small" @click="preStep">上一步</el-button>
-      <el-button type="primary" size="small" @click="nextStep">下一步</el-button>
+      <el-button type="primary" size="small" @click="next">下一步</el-button>
     </div>
 
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-
 export default {
   name: 'yaofei',
   props: {
@@ -67,12 +74,22 @@ export default {
     value(val) { this.localValue = val }
   },
   methods: {
-    newARecord(index) {
-      this.localValue[index].yaofeiArr.push({ hosName: '', date: null })
+    newARecord(index, idx) {
+      if (!this.checkForm()) return
+      this.localValue[index].fuwufeiArr[idx].yaofeiArr.push({
+        yaofeiPay: '', // 药费金额
+        date: '', // 产生费用的日期
+        yaofeiImg: '',
+        chufangImg: ''
+      })
       this.$emit('change', this.localValue)
     },
-    deleteARecord(index, idx) {
-      this.localValue[index].yaofeiArr.splice(index, 1)
+    next() {
+      if (!this.checkForm()) return
+      this.nextStep()
+    },
+    deleteARecord(index, idx, i) {
+      this.localValue[index].fuwufeiArr[idx].yaofeiArr.splice(i, 1)
       this.$emit('change', this.localValue)
     },
     handleAvatarSuccess(index, idx, key) {
@@ -90,6 +107,25 @@ export default {
         this.$message.error('上传头像图片大小不能超过 2MB!');
       }
       return isJPG && isLt2M;
+    },
+    /**
+     * 校验当前项的必填
+     */
+    validateRequiredRule(msg) {
+      return { required: true, message: msg, trigger: 'change' }
+    },
+    /**
+     * @desc 返回菜单是否通过校验条件
+     */
+    checkForm(formValue) {
+      let validation = true
+      const forms = this.$refs.form
+      for (let i = 0; i < forms.length; i++) {
+        forms[i].validate((valid) => {
+          if (!valid) validation = false
+        })
+      }
+      return validation
     }
   }
 }
@@ -112,6 +148,9 @@ export default {
     .yaofei-item {
       position: relative;
       margin: 40px 0;
+      .yaofei-divider {
+        font-size: 12px;
+      }
     }
     .img-upload {
       width: 100%;

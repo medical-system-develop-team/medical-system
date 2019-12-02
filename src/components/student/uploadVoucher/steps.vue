@@ -7,10 +7,10 @@
       <el-step title="提交"></el-step>
     </el-steps>
 
-    <div class="steps-button">
+    <!-- <div class="steps-button">
       <el-button class="prev" type="text" icon="el-icon-arrow-left" @click="prev">上一步</el-button>
       <el-button class="next" type="text" @click="next">下一步<i class="el-icon-arrow-right el-icon--right"></i></el-button>
-    </div>
+    </div> -->
 
     <div class="step-component">
       <zhuanzhendan v-model="recordArr" :next-step="next" v-if="active === 1" />
@@ -45,17 +45,12 @@ export default {
             yishiPay: '', // 医事服务费（挂号费）
             yishiDate: '', // 产生医事服务费的日期
             yishiImg: '', // 医事服务费的单据
-          }],
-          yaofeiArr: [{
-            yaofeiPay: '', // 药费金额
-            date: '', // 产生费用的日期
-            yaofeiImg: '',
-            chufangImg: ''
-          }],
-          submitArr: [{
-            waishangshuoming: '', // 外伤说明
-            gaizhangImg: '', // 盖章说明
-            teshuyongyaoImg: '' //特殊用药说明
+            yaofeiArr: [{
+              yaofeiPay: '', // 药费金额
+              yaofeiDate: '', // 产生费用的日期
+              yaofeiImg: '',
+              chufangImg: ''
+            }]
           }]
         }
       ],
