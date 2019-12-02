@@ -1,5 +1,5 @@
 <template>
-  <div id="usercheck">
+  <div class="usercheck">
     <el-form ref="form" :inline="true" :model="user" class="demo-form-inline">
       <el-form-item label="用户号">
         <el-input v-model="user.id" placeholder="请输入用户号"></el-input>
@@ -11,11 +11,12 @@
         <el-button type="primary" @click="onSubmit">查询</el-button>
       </el-form-item>
     </el-form>
-    <template>
+    <div class="table_container">
       <el-table
         :data="userData"
         stripe
         style="width: 100%">
+        
         <el-table-column
           label="编号"
           align="center"
@@ -110,7 +111,7 @@
         </el-table-column>
       </el-table>
       <UserEdit :dialogEdit="dialogEdit" :form="form" @updateEdit="getUserInfo"></UserEdit>
-    </template>
+    </div>
   </div>
 
 </template>
@@ -210,11 +211,35 @@
                 message:"删除信息成功"
             })
         })
+      },
+      selectTable(val, row){
+          this.setSearchBtn(val);
+      },
+      // 用户全选checkbox时触发该事件
+      selectAll(val){
+            val.forEach((item) => {
+                this.rowIds.push(item.id);
+          });
+          this.setSearchBtn(val);
+      },
+      setSearchBtn(val){
+          let isFlag = true;
+          if(val.length > 0){
+              isFlag = false;
+          }else{
+              isFlag = true;
+          }
+          this.$store.commit('SET_SEARCHBTN_DISABLED',isFlag);
       }
     }
   }
 </script>
 
-<style lang = "less" scoped>
-
+<style lang="less" scoped>
+  .table_container{
+      padding: 10px;
+      background: #fff;
+      border-radius: 2px;
+  }
+     
 </style>

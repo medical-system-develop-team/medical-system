@@ -1,38 +1,44 @@
 <template>
   <div id="recordcheck">
-    <el-form :inline="true" :model="record" class="demo-form-inline">
+    <el-form :inline="true" :model="record"  size="mini" label-width="70px" class="form" >
+      <el-row>
       <el-form-item label="用户名">
-        <el-input v-model="record.username" placeholder="用户名"></el-input>
+        <el-col :span="6">
+          <el-input v-model="record.username" placeholder="用户名"></el-input>
+        </el-col>
       </el-form-item>
+      
+      
       <el-form-item label="报销类型">
-        <el-select v-model="record.type" placeholder="报销类型">
+        <el-col>
+        <el-select v-model="record.type" placeholder="报销类型" style="width:50%">
           <el-option label="学生报销类型" value="student"></el-option>
           <el-option label="在职职工报销类型" value="worker"></el-option>
           <el-option label="退休人员报销类型" value="retired"></el-option>
           <el-option label="离休人员报销类型" value="lixiu"></el-option>
           <el-option label="特殊群体报销类型" value="teshu"></el-option>
         </el-select>
+        </el-col>
       </el-form-item>
+      
       <el-form-item label="用户工资号">
         <el-input v-model="record.salaryid" placeholder="用户工资号"></el-input>
       </el-form-item>
       <el-form-item label="性别">
-        <el-select v-model="record.sex" placeholder="性别">
+        <el-select v-model="record.sex" placeholder="性别" style="width:92%">
             <el-option label="男" value="boy"></el-option>
            <el-option label="女" value="girle"></el-option>
         </el-select>
       </el-form-item>
-    </el-form>
-    <el-form :inline="true" :model="record" class="demo-form-inline">
       <el-form-item label="年龄" >
-        <el-col :span="10">
+        <el-col>
           <el-input v-model="record.age" placeholder="年龄" style="width: 100%;"></el-input>
         </el-col>
       </el-form-item>
       <el-form-item label="报销时间">
           <el-col>
             <el-form-item prop="date">
-              <el-date-picker type="date" placeholder="选择日期" v-model="record.date" style="width: 100%;"></el-date-picker>
+              <el-date-picker type="date" placeholder="选择日期" v-model="record.date" style="width: 80%;"></el-date-picker>
             </el-form-item>
           </el-col>
       </el-form-item>
@@ -40,16 +46,14 @@
         <el-input v-model="record.depart" placeholder="部门"></el-input>
       </el-form-item>
       <el-form-item label="医事服务费">
-          <el-col :span="5">
+          <el-col :span="4">
             <el-input  placeholder="最小费用" v-model="record.servercost1" style="width: 100%;"></el-input>
           </el-col>
           <el-col class="line" :span="2">-</el-col>
-          <el-col :span="5">
+          <el-col :span="4">
             <el-input  placeholder="最大费用" v-model="record.servercost2" style="width: 100%;"></el-input>
           </el-col>
       </el-form-item>
-    </el-form>
-    <el-form :inline="true" :model="record" class="demo-form-inline">
       <el-form-item label="就医医院">
           <el-autocomplete
             class="inline-input"
@@ -77,25 +81,24 @@
             <el-time-picker type="number" placeholder="最大费用" v-model="record.cost2" style="width: 100%;"></el-time-picker>
           </el-col>
       </el-form-item>
-    </el-form>
-    <el-form :inline="true" :model="record" class="demo-form-inline">
       <el-form-item label="审核人">
-          <el-col :span="11">
-            <el-input placeholder="审核人" v-model="record.checker" style="width: 100%;"></el-input>
+          <el-col :span="6">
+            <el-input placeholder="审核人" v-model="record.checker"></el-input>
           </el-col>
           <el-col class="line" :span="2">-</el-col>
-          <el-col :span="11">
-            <el-input placeholder="审核人编号" v-model="record.checkerid" style="width: 100%;"></el-input>
+          <el-col :span="6">
+            <el-input placeholder="审核人编号" v-model="record.checkerid"></el-input>
           </el-col>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">查询</el-button>
       </el-form-item>
+    </el-row>
     </el-form>
 
      <template>
       <el-table
-        :data="userData"
+        :data="recordData"
         stripe
         style="width: 100%">
         <el-table-column
@@ -111,7 +114,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="姓名"
+          label="用户"
           align="center"
           width="80">
           <template slot-scope="scope">
@@ -126,72 +129,45 @@
             <span>{{ scope.row.depart}}</span>
           </template>
         </el-table-column>
-                <el-table-column
-          label="年龄"
-          width="80">
-          <template slot-scope="scope">
-            <span style="margin-left: 0px">{{ scope.row.age}}</span>
-          </template>
-        </el-table-column>
         <el-table-column
-          label="性别"
+          label="医院"
           align="center"
           width="80">
           <template slot-scope="scope">
-            <span>{{ scope.row.sex}}</span>
+            <span>{{ scope.row.hospital}}</span>
           </template>
         </el-table-column>
         <el-table-column
-          label="民族"
+          label="科室"
           align="center"
           width="80">
           <template slot-scope="scope">
-            <span>{{ scope.row.nation}}</span>
+            <span>{{ scope.row.keshi}}</span>
           </template>
         </el-table-column>
         <el-table-column
-          label="电话"
-          width="120">
+          label="报销金额"
+          width="80">
           <template slot-scope="scope">
-            <span style="margin-left: 0px">{{ scope.row.phone}}</span>
+            <span style="margin-left: 0px">{{ scope.row.cost}}</span>
           </template>
         </el-table-column>
         <el-table-column
-          label="工资号"
+          label="审核人"
           align="center"
           width="80">
           <template slot-scope="scope">
-            <span>{{ scope.row.salaryid}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="地址"
-          align="center"
-          width="280">
-          <template slot-scope="scope">
-            <span>{{ scope.row.address}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="角色"
-          align="center"
-          width="80">
-          <template slot-scope="scope">
-            <span>{{ scope.row.role}}</span>
+            <span>{{ scope.row.checker}}</span>
           </template>
         </el-table-column>
         <el-table-column 
-          label="操作" 
+          label="详情"
           align="center"
           width="180">
           <template slot-scope="scope">
             <el-button
             size="mini"
-            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button
-            size="mini"
-            type="danger"
-            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            @click="handleEdit(scope.$index, scope.row)">详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -223,17 +199,14 @@
           checker:'',
           checkerid:''
         },
-        userData:[{
+        recordData:[{
           id:'131231231',
           username:'1231313',
           depart:'13123123',
-          age:'',
-          sex:'',
-          nation:'',
-          phone:'',
-          salaryid:'',
-          address:'',
-          role:'12313123'
+          hospital:'123',
+          keshi:'123',
+          cost:'123',
+          checker:'12',
         }],
         pageInfo: { //分页
           pageTotal: 1
@@ -246,6 +219,9 @@
         var results = queryString ? HostSearch.filter(this.createHost(queryString)) : HostSearch;
         // 调用 callback 返回建议列表的数据
         cb(results);
+      },
+      handleEdit(index,row){
+          this.$router.push({path: '/Admin/recordmanage/recdetail',query:{id:row.id}})
       },
       createHost(queryString) {  
         return (HostSearch) => {
@@ -305,3 +281,10 @@
     }
   }
 </script>
+
+<style>
+.form .el-form-item__label{
+  font-size: 11px;
+  
+}
+</style>
