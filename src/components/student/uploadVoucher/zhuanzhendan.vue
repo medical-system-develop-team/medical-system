@@ -11,11 +11,11 @@
         <el-form-item label="② 转诊日期" prop="zhuanzhenDate" :rules="[validateRequiredRule('转诊日期为必填')]">
           <el-date-picker v-model="item.zhuanzhenDate" type="date" placeholder="选择日期" />
         </el-form-item>
-        <el-form-item label="③ 上传转诊单照片" prop="img">
-          <!-- <el-form-item label="③ 上传转诊单照片" prop="zhuanzhenImg" :rules="[validateRequiredRule('转诊照片必填')]"> -->
-          <el-upload class="img-upload" type="img" action="" :show-file-list="false" :on-success="handleAvatarSuccess(index)" :before-upload="beforeAvatarUpload">
-            <div v-if="item.img" class="img">
-              <el-image :src="item.zhuanzhenImg" fit="scale-down" />
+        <el-form-item label="③ 上传转诊单照片" prop="zhuangzhenImg">
+        <!-- <el-form-item label="③ 上传转诊单照片" prop="img" :rules="[validateRequiredRule('转诊照片必填')]"> -->
+          <el-upload class="img-upload" type="img" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess(index)" :before-upload="beforeAvatarUpload">
+            <div v-if="item.zhuangzhenImg" class="img">
+              <el-image :src="item.zhuangzhenImg" fit="scale-down" />
             </div>
             <el-button v-else type="text"><i class="el-icon-plus avatar-uploader-icon" />点击上传图片</el-button>
           </el-upload>
@@ -25,7 +25,7 @@
 
     <div class="button-container">
       <el-button type="primary" size="small" plain @click="newARecord">新增转诊单</el-button>
-      <el-button type="danger" size="small" @click="reset">重置</el-button>
+      <!-- <el-button type="danger" size="small" @click="reset">重置</el-button> -->
       <el-button type="primary" size="small" @click="onNext">下一步</el-button>
     </div>
   </div>
@@ -80,7 +80,7 @@ export default {
     },
     handleAvatarSuccess(index) {
       return (res, file) => {
-        this.localValue[index].img = URL.createObjectURL(file.raw);
+        this.localValue[index].zhuangzhenImg = URL.createObjectURL(file.raw);
       }
     },
     beforeAvatarUpload(file) {

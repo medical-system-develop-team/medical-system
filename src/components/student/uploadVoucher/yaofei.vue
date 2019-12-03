@@ -21,7 +21,7 @@
               <el-date-picker v-model="yiyao.yaofeiDate" type="date" placeholder="选择日期" />
             </el-form-item>
             <el-form-item label="④ 药费照片" prop="yaofeiImg">
-              <el-upload class="img-upload" action="" :show-file-list="false" :on-success="handleAvatarSuccess(index, idx, 'yaofeiImg')" :before-upload="beforeAvatarUpload">
+              <el-upload class="img-upload" action="" :show-file-list="false" :on-success="handleAvatarSuccess(index, idx, i, 'yaofeiImg')" :before-upload="beforeAvatarUpload">
                 <div v-if="yiyao.yaofeiImg" class="img">
                   <el-image :src="yiyao.yaofeiImg" fit="scale-down" />
                 </div>
@@ -29,7 +29,7 @@
               </el-upload>
             </el-form-item>
             <el-form-item label="⑤ 处方照片" prop="chufangImg">
-              <el-upload class="img-upload" action="" :show-file-list="false" :on-success="handleAvatarSuccess(index, idx, 'chufangImg')" :before-upload="beforeAvatarUpload">
+              <el-upload class="img-upload" action="" :show-file-list="false" :on-success="handleAvatarSuccess(index, idx, i,  'chufangImg')" :before-upload="beforeAvatarUpload">
                 <div v-if="yiyao.chufangImg" class="img">
                   <el-image :src="yiyao.chufangImg" fit="scale-down" />
                 </div>
@@ -78,7 +78,7 @@ export default {
       if (!this.checkForm()) return
       this.localValue[index].fuwufeiArr[idx].yaofeiArr.push({
         yaofeiPay: '', // 药费金额
-        date: '', // 产生费用的日期
+        yaofeiDate: '', // 产生费用的日期
         yaofeiImg: '',
         chufangImg: ''
       })
@@ -92,9 +92,9 @@ export default {
       this.localValue[index].fuwufeiArr[idx].yaofeiArr.splice(i, 1)
       this.$emit('change', this.localValue)
     },
-    handleAvatarSuccess(index, idx, key) {
+    handleAvatarSuccess(index, idx, i, key) {
       return (res, file) => {
-        this.localValue[index].yaofeiArr[idx][key] = URL.createObjectURL(file.raw);
+        this.localValue[index].fuwufeiArr[idx].yaofeiArr[i][key] = URL.createObjectURL(file.raw);
       }
     },
     beforeAvatarUpload(file) {

@@ -21,7 +21,7 @@
           </el-form-item>
           <el-form-item label="⑤ 服务图片" prop="yishiImg">
             <el-upload class="img-upload" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess(index, idx)" :before-upload="beforeAvatarUpload">
-              <div v-if="item.img" class="img">
+              <div v-if="item.yishiImg" class="img">
                 <el-image :src="item.yishiImg" fit="scale-down" />
               </div>
               <el-button v-else type="text"><i class="el-icon-plus avatar-uploader-icon" />点击上传图片</el-button>
@@ -95,7 +95,7 @@ export default {
     },
     handleAvatarSuccess(index, idx) {
       return (res, file) => {
-        this.localValue[index].fuwufeiArr[idx].img = URL.createObjectURL(file.raw);
+        this.localValue[index].fuwufeiArr[idx].yishiImg = URL.createObjectURL(file.raw);
       }
     },
     beforeAvatarUpload(file) {
