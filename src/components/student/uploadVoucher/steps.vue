@@ -54,9 +54,9 @@ export default {
           }]
         }
       ],
-      zhuanzhendanArr: [{ hosName: '', date: null, img: '' }],
-      fuwufeiArr: [{ hosName: '', office: '', date: null, pay: '', img: '' }],
-      yaofeiArr: [{ hosName: '', date: '', pay: '', yaofeiImg: '', chufangImg: '' }],
+      zhuanzhendanArr: [{ hosName: '', zhuanzhenDate: null, zhuangzhenImg: '' }],
+      fuwufeiArr: [{ hosName: '', office: '', yishiDate: null, yishiPay: '', yishiImg: '' }],
+      yaofeiArr: [{ hosName: '', yaofeiDate: '', yaofeiPay: '', yaofeiImg: '', chufangImg: '' }],
       //submitArr: [{ hosName: '', waishangshuoming: '', gaizhangImg: '', teshuyongyaoImg: '' }]
     }
   },

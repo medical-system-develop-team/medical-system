@@ -52,15 +52,20 @@ export default {
         serviceLogin(this.loginForm).then(
           response => {
             console.log('Login 接口返回数据为：', response)
-            if (!response.ret) {
-              this.$message.error(response.msg || '接口出错')
+            if (response.code === 400) {
+              this.$message.error(response.code || '用户不存在')
               return
             }
-            if (response.msg === 'success') {
+            if (response.code === 300) {
+              this.$message.error(response.code || '用户名或密码错误')
+              return
+            }
+            if (response.code === 200) {
               this.$message.success('登录成功')
-              sessionStorage.setItem('loginStatus', true)
+              //sessionStorage.setItem('loginStatus', true)
               this.$router.push('/stdhome')
             }
+        
          }
         )
       })

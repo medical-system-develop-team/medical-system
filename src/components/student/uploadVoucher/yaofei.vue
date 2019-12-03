@@ -21,7 +21,7 @@
               <el-date-picker v-model="yiyao.yaofeiDate" type="date" placeholder="选择日期" />
             </el-form-item>
             <el-form-item label="④ 药费照片" prop="yaofeiImg">
-              <el-upload class="img-upload" action="" :show-file-list="false" :on-success="handleAvatarSuccess(index, idx, i, 'yaofeiImg')" :before-upload="beforeAvatarUpload">
+              <el-upload class="img-upload" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess(index, idx, i, 'yaofeiImg')" :before-upload="beforeAvatarUpload">
                 <div v-if="yiyao.yaofeiImg" class="img">
                   <el-image :src="yiyao.yaofeiImg" fit="scale-down" />
                 </div>
@@ -29,7 +29,7 @@
               </el-upload>
             </el-form-item>
             <el-form-item label="⑤ 处方照片" prop="chufangImg">
-              <el-upload class="img-upload" action="" :show-file-list="false" :on-success="handleAvatarSuccess(index, idx, i,  'chufangImg')" :before-upload="beforeAvatarUpload">
+              <el-upload class="img-upload" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess(index, idx, i,  'chufangImg')" :before-upload="beforeAvatarUpload">
                 <div v-if="yiyao.chufangImg" class="img">
                   <el-image :src="yiyao.chufangImg" fit="scale-down" />
                 </div>

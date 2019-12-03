@@ -5,7 +5,13 @@
         <div class="submit-item">
           <el-divider content-position="left">外伤说明</el-divider>
           <el-button type="text" class="delete-button" @click="deleteWaishangshuoming">删除</el-button>
-          <el-input type="textarea" v-model="waishangshuoming" placeholder="请输入外伤说明" />
+          <el-input type="textarea" v-model="waishangshuoming" placeholder="请输入受伤经过、时间、原因、地点" />
+          
+          <!-- <el-upload class="img-upload" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess('gaizhangImg')" :before-upload="beforeAvatarUpload">
+            <el-image :src="item.submitArr[0].gaizhangImg" fit="scale-down" />
+            <el-button v-else type="text"><i class="el-icon-plus avatar-uploader-icon" />点击上传图片</el-button>
+          </el-upload> -->
+        
         </div>
       </div>
     </transition>
