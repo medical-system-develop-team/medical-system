@@ -50,7 +50,7 @@ export function serviceMyInfoSubmit(param) {
 }
 
 export function getUserInfo() {
-  return axios.post('https://www.fastmock.site/mock/12e9010cbb8f72411985efd3130dbd1b/mediacl/login').then(
+  return axios.post('/UserMyInfo').then(
     response => {
       return Promise.resolve(response.data)
     }

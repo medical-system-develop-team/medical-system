@@ -3,37 +3,44 @@
     <navmenu />
     <h1>我的报销列表</h1>
     
-    <el-table :data="tableData" style="width: 100%">
-    <el-table-column
-      label="日期"
-      width="180">
+    <el-table class="recordTable" :data="recordData">
+    <el-table-column label="序号">
       <template slot-scope="scope">
-        <i class="el-icon-time"></i>
-        <span style="margin-left: 10px">{{ scope.row.date }}</span>
+        <span>{{ scope.row.number }}</span>
       </template>
     </el-table-column>
-    <el-table-column
-      label="姓名"
-      width="180">
+    <el-table-column label="报销记录ID">
       <template slot-scope="scope">
-        <el-popover trigger="hover" placement="top">
-          <p>姓名: {{ scope.row.name }}</p>
-          <p>住址: {{ scope.row.address }}</p>
-          <div slot="reference" class="name-wrapper">
-            <el-tag size="medium">{{ scope.row.name }}</el-tag>
-          </div>
-        </el-popover>
+        <span>{{ scope.row.recordID }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column label="创建时间">
+      <template slot-scope="scope">
+        <span>{{ scope.row.createTime }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column label="报销状态">
+      <template slot-scope="scope">
+        <span>{{ scope.row.recordStatus }}</span>
       </template>
     </el-table-column>
     <el-table-column label="操作">
       <template slot-scope="scope">
-        <el-button
-          size="mini"
-          @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-        <el-button
-          size="mini"
-          type="danger"
-          @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+        <div  v-if="scope.row.recordStatus !== '已确认'">
+          <el-button
+            size="mini"
+            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+          <el-button
+            size="mini"
+            type="danger"
+            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+        </div>
+
+        <div  v-if="scope.row.recordStatus == '已确认'">
+          <el-button
+            size="mini"
+            @click="handleEdit(scope.$index, scope.row)">生成报销单</el-button>
+        </div>
       </template>
     </el-table-column>
   </el-table>
@@ -52,24 +59,43 @@ export default {
   },
   data() {
       return {
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
+        recordData: [{
+          number:'1',
+          recordID: 'a',
+          createTime: '2019-11-16 16:33:36.0',
+          recordStatus: '暂存',
         }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
+          number:'2',
+          recordID: 'b',
+          createTime: '2019-11-17 16:33:36.0',
+          recordStatus: '已提交未审核',
         }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
+          number:'3',
+          recordID: 'c',
+          createTime: '2019-11-18 16:33:36.0',
+          recordStatus: '审核未通过',
         }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
+          number:'4',
+          recordID: 'd',
+          createTime: '2019-11-19 16:33:36.0',
+          recordStatus: '审核通过未确认',
+        }, {
+          number:'5',
+          recordID: 'e',
+          createTime: '2019-11-20 16:33:36.0',
+          recordStatus: '已确认',
         }]
       }
     },
 }
 </script>
+
+<style lang="less">
+.myRecords {
+  .recordTable {
+    width: 100%; 
+    text-align :center
+  }
+}
+
+</style>
