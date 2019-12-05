@@ -1,5 +1,12 @@
 <template>
   <div id="useradd">
+    <div>
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item></el-breadcrumb-item>
+        <el-breadcrumb-item>用户管理</el-breadcrumb-item>
+        <el-breadcrumb-item>添加用户</el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
     <addItem :batchdelable="batchdelable" @adduser="hanldeAdd" @BatchIn="BatchIn" @BatchDel="BatchDel"></addItem>
     <!-- <el-row >
       <el-button type="primary" size="small" icon="el-icon-edit-outline" @click="hanldeAdd()">添加用户</el-button>

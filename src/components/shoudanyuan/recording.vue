@@ -1,5 +1,11 @@
 <template>
   <div id = "sturecording"> 
+    <div>
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item></el-breadcrumb-item>
+        <el-breadcrumb-item>报销列表</el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
     <el-form ref="form" :inline="true" class="demo-form-inline">
       <el-form-item label="报销编号">
         <el-input v-model="id" size="mini" placeholder="请输入报销记录号"></el-input>
@@ -16,12 +22,13 @@
         <el-table-column
           label="序号"
           type="index"
-          width="40">
+          align="center"
+          width="60">
         </el-table-column>
          <el-table-column
           label="编号"
           align="center"
-          width="80">
+          width="120">
           <template slot-scope="scope">
             <span>{{ scope.row.id}}</span>
           </template>
@@ -29,7 +36,7 @@
         <el-table-column
           label="姓名"
           align="center"
-          width="80">
+          width="120">
           <template slot-scope="scope">
             <span>{{ scope.row.username}}</span>
           </template>
@@ -37,14 +44,14 @@
         <el-table-column
           label="学号"
           align="center"
-          width="80">
+          width="150">
           <template slot-scope="scope">
             <span>{{ scope.row.userid}}</span>
           </template>
         </el-table-column>
                 <el-table-column
           label="申请时间"
-          width="80">
+          width="150">
           <template slot-scope="scope">
             <span>{{ scope.row.date}}</span>
           </template>

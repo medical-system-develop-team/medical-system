@@ -15,9 +15,15 @@
       </span>
     </div>  
       
-    <el-container style="height: 100vh; border: 1px solid #eee" >
+    <el-container style="height: 100vh; solid #eee" >
       <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-        <el-menu @select="handleSelect">
+        <el-menu
+          default-active="1"
+          class="el-menu-vertical-demo" 
+          @select="handleSelect"
+          background-color="#545c64"
+          text-color="#fff"
+          active-text-color="#ffd04b">
           <el-menu-item index="1"><i class="el-icon-s-grid"></i>待审核列表</el-menu-item>
           <el-menu-item index="2"><i class="el-icon-s-grid"></i>已审核列表</el-menu-item>
           <el-submenu index="3">
@@ -62,4 +68,15 @@
   }
 </script>
 <style>
+  .bg-purple-dark {
+    background: #07c4a8;
+  }
+  .grid-content {
+    min-height: 54px;
+    line-height:54px; 
+    font-family:"楷体";
+    text-align:center;
+    font-size: 33px;
+    
+  }
 </style>

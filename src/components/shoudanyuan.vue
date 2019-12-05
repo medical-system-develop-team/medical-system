@@ -15,9 +15,15 @@
       </span>
     </div>  
       
-    <el-container style="height: 100vh; border: 1px solid #eee" >
+    <el-container style="height: 100vh; solid #eee" >
       <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-        <el-menu @select="handleSelect">
+        <el-menu 
+          default-active="1"
+          class="el-menu-vertical-demo" 
+          @select="handleSelect"
+          background-color="#545c64"
+          text-color="#fff"
+          active-text-color="#ffd04b">
           <el-menu-item index="1"><i class="el-icon-s-grid"></i>报销列表</el-menu-item>
           <el-submenu index="3">
             <template slot="title"><i class="el-icon-user-solid"></i>修改个人信息</template>

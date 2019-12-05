@@ -1,4 +1,12 @@
 <template>
+<div>
+  <div>
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item></el-breadcrumb-item>
+      <el-breadcrumb-item>修改个人信息</el-breadcrumb-item>
+      <el-breadcrumb-item>密码修改</el-breadcrumb-item>
+    </el-breadcrumb>
+  </div>
   <div id="userpassword">
     <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
       <el-form-item label="旧密码:" prop="oldPass">
@@ -16,6 +24,7 @@
       </el-form-item>
     </el-form>
   </div>
+</div>
 </template>
 
 <script>

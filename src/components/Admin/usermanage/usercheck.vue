@@ -1,14 +1,21 @@
 <template>
   <div class="usercheck">
+    <div>
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item></el-breadcrumb-item>
+        <el-breadcrumb-item>用户管理</el-breadcrumb-item>
+        <el-breadcrumb-item>用户查询</el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
     <el-form ref="form" :inline="true" :model="user" class="demo-form-inline">
       <el-form-item label="用户号">
-        <el-input v-model="user.id" placeholder="请输入用户号"></el-input>
+        <el-input v-model="user.id" size="mini" placeholder="请输入用户号"></el-input>
       </el-form-item>
       <el-form-item label="用户名">
-        <el-input v-model="user.name" placeholder="请输入用户名"></el-input>
+        <el-input v-model="user.name" size="mini" placeholder="请输入用户名"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">查询</el-button>
+        <el-button type="primary" size="mini" @click="onSubmit">查询</el-button>
       </el-form-item>
     </el-form>
     <div class="table_container">
@@ -162,6 +169,7 @@
     created(){
             //this.onSubmit();
         },
+    computed:{},
     methods: {
       onSubmit(){
         //this.$refs.form.validate( valid => {

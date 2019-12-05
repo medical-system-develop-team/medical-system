@@ -1,6 +1,13 @@
 <template>
   <div id = "user" style="height:100%">   
     <el-scrollbar style="height:100%">
+      <div>
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item></el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: this.lasturl }">{{recordtype}}审核列表</el-breadcrumb-item>
+          <el-breadcrumb-item>报销详情</el-breadcrumb-item>
+        </el-breadcrumb>
+      </div>
       <div style="text-align: center;">
         <h2>审核报销凭证</h2>
         <small>类型:{{message}}</small>
@@ -110,7 +117,7 @@
               </div>
             </div>
             <div style="margin-top: 10px;">
-              <el-form>
+              <el-form class="demo-form-inline" label-width="180px">
                 <el-form-item label="备注：">
                   <el-col :span="12">
                     <el-input size="small" type="textarea" v-model="beizhu"></el-input>
@@ -150,6 +157,8 @@ import axios from 'axios'
       return {
           id:'',
           usertype:'',
+          recordtype:'',
+          lasturl:'',
           message:'',
           registerPercentage:'',
           medicalPercentage:'0.2',
@@ -179,6 +188,8 @@ import axios from 'axios'
     methods: {
         deatils(){
           this.id =this.$route.query.id//报销记录编号
+          this.recordtype=this.$route.query.recordtype
+          this.lasturl=this.$route.query.lasturl
           this.showcheck = this.$route.query.showcheck
           this.showcheckcomplete = this.$route.query.showcheckcomplete
           var _this = this

@@ -1,14 +1,21 @@
 <template>
   <div id="departcheck">
+    <div>
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item></el-breadcrumb-item>
+        <el-breadcrumb-item>部门管理</el-breadcrumb-item>
+        <el-breadcrumb-item>部门操作</el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
     <el-form ref="form" :inline="true" :model="depart" class="demo-form-inline">
       <el-form-item label="部门编号">
-        <el-input v-model="depart.id" placeholder="请输入部门编号"></el-input>
+        <el-input v-model="depart.id" size='mini' placeholder="请输入部门编号"></el-input>
       </el-form-item>
       <el-form-item label="部门名称">
-        <el-input v-model="depart.name" placeholder="请输入部门名称"></el-input>
+        <el-input v-model="depart.name" size='mini' placeholder="请输入部门名称"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">查询</el-button>
+        <el-button type="primary" size='mini' @click="onSubmit">查询</el-button>
       </el-form-item>
     </el-form>
     <template>

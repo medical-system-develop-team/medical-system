@@ -1,5 +1,12 @@
 <template>
   <div id="departadd">
+    <div>
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item></el-breadcrumb-item>
+        <el-breadcrumb-item>部门管理</el-breadcrumb-item>
+        <el-breadcrumb-item>添加部门</el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
     <el-row >
       <el-button type="primary" size="small" icon="el-icon-edit-outline" @click="hanldeAdd()">添加部门</el-button>
     </el-row>

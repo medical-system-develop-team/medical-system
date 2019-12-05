@@ -1,6 +1,13 @@
 <template>
   <div id = "user" style="height:100%">   
     <el-scrollbar style="height:100%">
+      <div>
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item></el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: '/shoudanyuan/recording'}">报销列表</el-breadcrumb-item>
+          <el-breadcrumb-item>报销详情</el-breadcrumb-item>
+        </el-breadcrumb>
+      </div>
       <div style="text-align: center;">
         <h2>报销凭证</h2>
         <el-form ref="form" :inline="true" style="margin-top: 5px;"> 
@@ -109,7 +116,7 @@
               </div>
             </div>
             <div style="margin-top: 10px;">
-              <el-form>
+              <el-form class="demo-form-inline" label-width="180px">
                 <el-form-item label="备注：">
                   <el-col :span="12">
                     <el-input size="small" type="textarea" v-model="beizhu"></el-input>

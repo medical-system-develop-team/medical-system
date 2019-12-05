@@ -1,6 +1,12 @@
 <template>
   <div id = "sturecording"> 
-    <div class="grid-content bg-purple-dark">
+    <div>
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item></el-breadcrumb-item>
+        <el-breadcrumb-item>已审核列表</el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
+    <div class="completecheck">
       <p>已审核列表</p>
     </div> 
     <template>
@@ -11,12 +17,13 @@
         <el-table-column
           label="序号"
           type="index"
-          width="40">
+          align="center"
+          width="60">
         </el-table-column>
          <el-table-column
           label="编号"
           align="center"
-          width="80">
+          width="120">
           <template slot-scope="scope">
             <span>{{ scope.row.id}}</span>
           </template>
@@ -24,7 +31,7 @@
         <el-table-column
           label="姓名"
           align="center"
-          width="80">
+          width="120">
           <template slot-scope="scope">
             <span>{{ scope.row.username}}</span>
           </template>
@@ -32,14 +39,14 @@
         <el-table-column
           label="学号"
           align="center"
-          width="80">
+          width="150">
           <template slot-scope="scope">
             <span>{{ scope.row.userid}}</span>
           </template>
         </el-table-column>
                 <el-table-column
           label="申请时间"
-          width="80">
+          width="150">
           <template slot-scope="scope">
             <span>{{ scope.row.date}}</span>
           </template>
@@ -96,7 +103,7 @@ import axios from 'axios'
 
         },
       recorddetail(index,row){
-          this.$router.push({path: '/checkerAdmin/recdetail', query:{id:row.id,showcheck:false,showcheckcomplete:true}})
+          this.$router.push({path: '/checkerAdmin/recdetail', query:{id:row.id,showcheck:false,showcheckcomplete:true,lasturl:'/checkerAdmin/completecheck',recordtype:'已'}})
       }
     },
     mounted: function () {},
@@ -104,3 +111,11 @@ import axios from 'axios'
   }
   
 </script>
+
+<style>
+  .completecheck {
+    font-family:"楷体";
+    text-align:center;
+    font-size: 25px; 
+  }
+</style>

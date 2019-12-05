@@ -56,3 +56,11 @@ export function getUserInfo() {
     }
   )
 }
+
+export function axiospost(url,param) {
+  return axios.post(url,param).then(
+    response => {
+      return Promise.resolve(response.data)
+    }
+  )
+}

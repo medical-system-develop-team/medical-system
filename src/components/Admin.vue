@@ -25,7 +25,7 @@ export default {
         { label: '用户管理', path: '/Admin/usermanage' },
         { label: '部门管理', path: '/Admin/departmanage' },
         { label: '报销记录管理', path: '/Admin/recordmanage' },
-        { label: '退出系统', path: '/login', class: 'right-menu' }
+        { label: '退出系统', path: '/', class: 'right-menu' }
       ]
     }
   },

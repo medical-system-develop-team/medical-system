@@ -1,9 +1,17 @@
 <template>
+<div>
+  <div>
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item></el-breadcrumb-item>
+      <el-breadcrumb-item>用户管理</el-breadcrumb-item>
+      <el-breadcrumb-item>重置用户密码</el-breadcrumb-item>
+    </el-breadcrumb>
+  </div>
   <div id="userpassword">
     <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-<!--       <el-form-item label="旧密码:" prop="oldPass">
-        <el-input  v-model="ruleForm.oldPass" autocomplete="off" show-password></el-input>
-      </el-form-item> -->
+      <el-form-item label="用户号:" prop="userid">
+        <el-input  v-model="ruleForm.userid" autocomplete="off"></el-input>
+      </el-form-item>
       <el-form-item label="新密码:" prop="pass">
         <el-input type="password" v-model="ruleForm.pass" autocomplete="off" show-password></el-input>
       </el-form-item>
@@ -16,15 +24,17 @@
       </el-form-item>
     </el-form>
   </div>
+</div>
+  
 </template>
 
 <script>
   export default {
       name:'userpassword',
     data() {
-      var checkOldPass = (rule, value, callback) => {
+      var checkuserid = (rule, value, callback) => {
         if (!value) {
-          return callback(new Error('旧密码不能为空'));
+          return callback(new Error('用户号不能为空'));
         }
         else {
           callback();
@@ -56,9 +66,9 @@
          // oldPass: ''
         },
         rules: {
-          /* oldPass: [
-            { validator: checkOldPass, trigger: 'blur' }
-          ], */
+          userid: [
+            { validator: checkuserid, trigger: 'blur' }
+          ], 
           pass: [
             { validator: validatePass, trigger: 'blur' }
           ],

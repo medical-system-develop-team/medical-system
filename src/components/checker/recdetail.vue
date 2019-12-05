@@ -1,6 +1,14 @@
 <template>
   <div id = "user" style="height:100%">   
     <el-scrollbar style="height:100%">
+      <div>
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item></el-breadcrumb-item>
+          <el-breadcrumb-item v-if="showcheck">待审核列表</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: lasturl, query:{id:usertype}}">{{message}}列表</el-breadcrumb-item>
+          <el-breadcrumb-item>报销详情</el-breadcrumb-item>
+        </el-breadcrumb>
+      </div>
       <div style="text-align: center;">
         <h2>审核报销凭证</h2>
         <small>类型:{{message}}</small>
@@ -110,10 +118,15 @@
               </div>
             </div>
             <div style="margin-top: 10px;">
-              <el-form>
-                <el-form-item label="备注：">
-                  <el-col :span="12">
-                    <el-input size="small" type="textarea" v-model="beizhu"></el-input>
+              <el-form class="demo-form-inline" label-width="180px">
+                <el-form-item  label="备注：" >
+                  <el-col :span="18">
+                    <el-input 
+                      type="textarea"
+                      :rows="2"
+                      placeholder="请输入内容" 
+                      v-model="beizhu">
+                    </el-input>
                   </el-col>
                 </el-form-item>
               </el-form>
@@ -150,6 +163,7 @@ import axios from 'axios'
           id:'',
           usertype:'',
           message:'',
+          lasturl:'',
           registerPercentage:'',
           medicalPercentage:'0.2',
           beizhu:'',
@@ -180,6 +194,7 @@ import axios from 'axios'
           this.id =this.$route.query.id//报销记录编号
           this.usertype = this.$route.query.usertype
           this.message = this.$route.query.message
+          this.lasturl = this.$route.query.lasturl
           this.showcheck = this.$route.query.showcheck
           this.showcheckcomplete = this.$route.query.showcheckcomplete
           var _this = this
