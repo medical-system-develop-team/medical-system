@@ -79,6 +79,7 @@ export default {
                 console.log(this.myInfoForm)
                 this.$message.success('修改成功')
                 this.$router.push('/stdhome')
+                this.getInfo()
               }
           }
           )
