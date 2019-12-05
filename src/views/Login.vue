@@ -60,10 +60,34 @@ export default {
               this.$message.error(response.code || '用户名或密码错误')
               return
             }
-            if (response.code === 200) {
+            if (response.code === 600) {
+              this.$message.error(response.code || '系统错误')
+              return
+            }
+            if (response.code === 200) { //学生用户
               this.$message.success('登录成功')
               //sessionStorage.setItem('loginStatus', true)
               this.$router.push('/stdhome')
+            }
+            else if (response.code === 201) {  //管理员
+              this.$message.success('登录成功')
+              //sessionStorage.setItem('loginStatus', true)
+              this.$router.push('/Admin')
+            }
+            else if (response.code === 202) {   //审核负责人
+              this.$message.success('登录成功')
+              //sessionStorage.setItem('loginStatus', true)
+              this.$router.push('/checker')
+            }
+            else if (response.code === 203) {   //审核负责人
+              this.$message.success('登录成功')
+              //sessionStorage.setItem('loginStatus', true)
+              this.$router.push('/checkerAdmin')
+            }
+            else if (response.code === 204) {   //审核负责人
+              this.$message.success('登录成功')
+              //sessionStorage.setItem('loginStatus', true)
+              this.$router.push('/shoudanyuan')
             }
         
          }
