@@ -75,7 +75,7 @@ export default {
           if (!valid) return
           serviceMyInfoSubmit(this.myInfoForm).then(
             response => {
-              if (response.msg === 'success') {
+              if (response.code === 1) {
               this.$message.success('修改成功')
               }
           }

@@ -42,7 +42,7 @@ export function checkdepart(param) {
 }
 
 export function serviceMyInfoSubmit(param) {
-  return axios.post('https://www.fastmock.site/mock/12e9010cbb8f72411985efd3130dbd1b/mediacl/login', param).then(
+  return axios.post('/ChangeUserMyInfo', param).then(
     response => {
       return Promise.resolve(response.data)
     }
