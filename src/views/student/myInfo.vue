@@ -76,7 +76,10 @@ export default {
           serviceMyInfoSubmit(this.myInfoForm).then(
             response => {
               if (response.code === 1) {
-              this.$message.success('修改成功')
+                console.log(this.myInfoForm)
+                this.$message.success('修改成功')
+                this.$router.push('/stdhome')
+                this.getInfo()
               }
           }
           )

@@ -6,8 +6,10 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 axios.defaults.withCredentials = true
+import {setCookie,getCookie,delCookie} from '@/assets/cookie.js'
 
 Vue.config.productionTip = false
+Vue.prototype.$cookieStore={setCookie,getCookie,delCookie}
 
 Vue.use(ElementUI)
 

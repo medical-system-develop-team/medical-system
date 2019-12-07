@@ -48,6 +48,10 @@ export default {
   methods: {
     onLogin() {
       this.$refs.form.validate( valid => {
+        this.$cookieStore.setCookie( 'username' ,this.loginForm.username,1)
+        this.$cookieStore.setCookie( 'password' ,this.loginForm.password,1)
+        console.log("userid:",this.$cookieStore.getCookie( 'username'))
+        console.log("password:",this.$cookieStore.getCookie( 'password'))
         if (!valid) return
         serviceLogin(this.loginForm).then(
           response => {
@@ -65,26 +69,46 @@ export default {
               return
             }
             if (response.code === 200) { //学生用户
+              this.$cookieStore.setCookie( 'username' ,this.loginForm.username,1)
+              this.$cookieStore.setCookie( 'password' ,this.loginForm.password,1)
+              console.log("userid:",this.$cookieStore.getCookie( 'username'))
+              console.log("password:",this.$cookieStore.getCookie( 'password'))
               this.$message.success('登录成功')
               //sessionStorage.setItem('loginStatus', true)
               this.$router.push('/stdhome')
             }
             else if (response.code === 201) {  //管理员
+              this.$cookieStore.setCookie( 'username' ,this.loginForm.username,1)
+              this.$cookieStore.setCookie( 'password' ,this.loginForm.password,1)
+              console.log("userid:",this.$cookieStore.getCookie( 'username'))
+              console.log("password:",this.$cookieStore.getCookie( 'password'))
               this.$message.success('登录成功')
               //sessionStorage.setItem('loginStatus', true)
               this.$router.push('/Admin')
             }
             else if (response.code === 202) {   //审核负责人
+              this.$cookieStore.setCookie( 'username' ,this.loginForm.username,1)
+              this.$cookieStore.setCookie( 'password' ,this.loginForm.password,1)
+              console.log("userid:",this.$cookieStore.getCookie( 'username'))
+              console.log("password:",this.$cookieStore.getCookie( 'password'))
               this.$message.success('登录成功')
               //sessionStorage.setItem('loginStatus', true)
               this.$router.push('/checker')
             }
             else if (response.code === 203) {   //审核负责人
+              this.$cookieStore.setCookie( 'username' ,this.loginForm.username,1)
+              this.$cookieStore.setCookie( 'password' ,this.loginForm.password,1)
+              console.log("userid:",this.$cookieStore.getCookie( 'username'))
+              console.log("password:",this.$cookieStore.getCookie( 'password'))
               this.$message.success('登录成功')
               //sessionStorage.setItem('loginStatus', true)
               this.$router.push('/checkerAdmin')
             }
             else if (response.code === 204) {   //审核负责人
+              this.$cookieStore.setCookie( 'username' ,this.loginForm.username,1)
+              this.$cookieStore.setCookie( 'password' ,this.loginForm.password,1)
+              console.log("userid:",this.$cookieStore.getCookie( 'username'))
+              console.log("password:",this.$cookieStore.getCookie( 'password'))
               this.$message.success('登录成功')
               //sessionStorage.setItem('loginStatus', true)
               this.$router.push('/shoudanyuan')

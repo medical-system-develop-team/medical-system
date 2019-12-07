@@ -102,7 +102,7 @@ import axios from 'axios'
     methods: {
         deatils(){
           this.id =this.$route.query.id
-          console.log("asdasd",this.id)
+          //console.log("asdasd",this.id)
           switch(this.id){
             case '1' :
               this.message = "学生" ;
@@ -126,8 +126,13 @@ import axios from 'axios'
           axiospost('/findrecording',_this.id)//用户类型学生、职工。。。。
             .then(function (res) {
               console.log(res);
-              _this.recording = res.data
-              _this.pageTotal = res.count
+              if(res.date === 400){
+                this.$message.error(res.msg || '查询失败')
+                return
+              }else{
+                _this.recording.push(res.data)
+                _this.pageTotal = res.count
+              }
             })
             .catch(function (error) {
               console.log(error);

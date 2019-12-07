@@ -29,6 +29,8 @@
 </template>
 
 <script>
+  import { axiospost } from '@/api/index.js'
+  import axios from 'axios'
   export default {
       name:'userpassword',
     data() {
@@ -82,8 +84,18 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
-          } else {
+            axiospost('/findrecording')
+            .then(function (res) { 
+              console.log('Login 接口返回数据为：', res)
+              if (res.code === 400) {
+              this.$message.error(res.msg || '密码修改失败')
+              return
+              }
+              if (res.code === 200) {
+                this.$message.success('密码修改成功')
+              }
+            })
+          }else {
             console.log('error submit!!');
             return false;
           }

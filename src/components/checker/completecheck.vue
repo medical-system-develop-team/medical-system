@@ -69,6 +69,7 @@
 </template>
 
 <script>
+import { axiospost } from '@/api/index.js'
 import axios from 'axios'
   export default {
     data() {
@@ -91,11 +92,16 @@ import axios from 'axios'
     methods: {
         request(){
           var _this = this
-          axios.post('/findrecording')
+          axiospost('/findrecording')
             .then(function (res) {
               console.log(res);
-              _this.recording = res.data
-              _this.pageTotal = res.count
+              if(res.date === 400){
+                this.$message.error(res.msg || '查询失败')
+                return
+              }else{
+                _this.recording.puse(res.data)
+                _this.pageTotal = res.count
+              }
             })
             .catch(function (error) {
               console.log(error);

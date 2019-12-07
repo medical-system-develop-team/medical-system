@@ -5,7 +5,7 @@
       <span style="float:right;padding-top:10px;margin-right:1%">
         <el-dropdown trigger="click">
           <span class="el-dropdown-link" style="color:black">
-            admin<i class="el-icon-caret-bottom el-icon--right"></i>
+            欢迎{{admin}}<i class="el-icon-caret-bottom el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>个人信息</el-dropdown-item>
@@ -14,7 +14,7 @@
         </el-dropdown>
       </span>
     </div>  
-      
+
     <el-container style="height: 100vh;  solid #eee" >
       <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
         <el-menu 
@@ -52,8 +52,15 @@
 <script>
   export default {
     data() {
-      return {}
+      return {
+        admin:''
+      }
     },
+    components:{},
+    created(){
+        this.admin=this.$cookieStore.getCookie( 'username')
+        this.$router.push({path: '/checker/recording', query:{id:'1'}})
+      },
     methods: {
       handleSelect(key){
         switch(key){
@@ -75,13 +82,28 @@
           case '2':
             this.$router.push({path: '/checker/completecheck'}) 
             break;
+          case '3-1':
+            this.$router.push({path: '/checker/myInfo'}) 
+            break; 
           case '3-2':
             this.$router.push({path: '/checker/checkerpassword'}) 
             break;  
           case '4':
-            this.$router.push({path: '/'}) 
+            this.quit()
+            // this.$router.push({path: '/'}) 
             break; 
         }
+      },
+      quit(){
+        this.$confirm('确认退出?', '提示', {
+            type: 'warning'
+        })
+        .then(() => {
+          this.$cookieStore.delCookie('username')
+          this.$cookieStore.delCookie('password')
+          this.$router.push({path: '/'}) 
+        })
+        .catch(() => {})
       },
     }
   }

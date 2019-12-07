@@ -4,7 +4,7 @@
       :default-active="activeIndex" 
       mode="horizontal"
       @select="onSelectMenu" 
-      background-color="#DCDCDC" 
+      background-color="#07c4a8" 
       text-color="#696969" 
       active-text-color="#CD853F">
       <el-menu-item v-for="(menu, index) in menus" :class="menu.class || ''" :key="index" :index="index.toString()">
@@ -40,8 +40,24 @@ export default {
   methods: {
     onSelectMenu(key) {
       console.log(key)
-      this.$router.push(this.menus[key].path)
-    }
+      if(this.menus[key].label == '退出系统'){
+        this.quit()
+      }else{
+        this.$router.push(this.menus[key].path)
+      }
+      
+    },
+    quit(){
+        this.$confirm('确认退出?', '提示', {
+            type: 'warning'
+        })
+        .then(() => {
+          this.$cookieStore.delCookie('username')
+          this.$cookieStore.delCookie('password')
+          this.$router.push({path: '/'}) 
+        })
+        .catch(() => {})
+      },
   }
 }
 </script>

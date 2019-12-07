@@ -155,6 +155,7 @@
 </template>
 
 <script>
+import { axiospost } from '@/api/index.js'
 import axios from 'axios'
   export default {
     data() {
@@ -198,12 +199,17 @@ import axios from 'axios'
           this.showcheck = this.$route.query.showcheck
           this.showcheckcomplete = this.$route.query.showcheckcomplete
           var _this = this
-          axios.post('/recdetail',_this.id)
+          axiospost('/recdetail',_this.id)
             .then(function (res) {
               console.log(res);
-              _this.zhuanzhendan = res.zhuanzhendan
-              _this.yishifuwufei = res.yishifuwufei
-              _this.yaofeidanju = res.yaofeidanju
+              if(res.zhuanzhendan === 400){
+                this.$message.error(res.msg || '查询失败')
+                return
+              }else{
+                _this.zhuanzhendan.puse(res.zhuanzhendan)
+                _this.yishifuwufei.puse(res.yishifuwufei)
+                _this.yaofeidanju.puse(res.yaofeidanju)
+              }
             })
             .catch(function (error) {
               console.log(error);

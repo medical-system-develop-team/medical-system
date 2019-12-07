@@ -132,6 +132,11 @@ const routes = [
         path: '/checker/completecheck',
         name: 'completecheck',
         component: () => import('../components/checker/completecheck.vue')
+      },
+      {
+        path: '/checker/myInfo',
+        name: 'recdetail',
+        component: () => import('../components/checker/myInfo.vue')
       }
     ]
   },
@@ -159,6 +164,11 @@ const routes = [
         path: '/checkerAdmin/completecheck',
         name: 'completecheck',
         component: () => import('../components/checkerAdmin/completecheck.vue')
+      },
+      {
+        path: '/checkerAdmin/myInfo',
+        name: 'recdetail',
+        component: () => import('../components/checkerAdmin/myInfo.vue')
       }
     ]
   },
@@ -181,6 +191,11 @@ const routes = [
         path: '/shoudanyuan/shoudanyuanpassword',
         name: 'shoudanyuanpassword',
         component: () => import('../components/shoudanyuan/shoudanyuanpassword.vue')
+      },
+      {
+        path: '/shoudanyuan/myInfo',
+        name: 'recdetail',
+        component: () => import('../components/shoudanyuan/myInfo.vue')
       }
     ]
   },

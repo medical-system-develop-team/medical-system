@@ -29,6 +29,7 @@
 </template>
 
 <script>
+  import { axiospost } from '@/api/index.js'
   export default {
       name:'userpassword',
     data() {
@@ -61,6 +62,7 @@
       };
       return {
         ruleForm: {
+          userid:'',
           pass: '',
           checkPass: '',
          // oldPass: ''
@@ -79,16 +81,33 @@
       };
     },
     methods: {
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!');
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
+      submitForm(formName){
+          this.$confirm('确认修改密码?', '提示', {
+            type: 'warning'
+          })
+          .then(() => {
+            this.$refs[formName].validate((valid) => {
+              if (valid) {
+                axiospost('/changepassword',formName).then(
+                response => {
+                    console.log('Login 接口返回数据为：', response)
+                    if (response.code === 400) {
+                      this.$message.error(response.msg || '提交失败')
+                      return
+                    }
+                    if (response.code === 200) {
+                      this.$message.success('修改成功')
+                    } 
+                })
+              } else {
+                console.log('error submit!!');
+                return false;
+              }
+            }); 
+          })
+          .catch(() => {})
       },
+      
       resetForm(formName) {
         this.$refs[formName].resetFields();
       }

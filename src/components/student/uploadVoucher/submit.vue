@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { commonApi } from '../../../api'
+import { commonApi } from '@/api/index.js'
 
 export default {
   name: 'submit',
@@ -61,11 +61,14 @@ export default {
     },
     submit() {
       console.log('最终记录为: \n', this.getParam())
-      const url = 'https://www.fastmock.site/mock/12e9010cbb8f72411985efd3130dbd1b/mediacl/login'
-      commonApi(url, this.value).then(res => {
-        if (res) { 
-          this.$message.success(res.msg || '提交成功')
+      const url = '/Upload'
+      commonApi(url, this.getParam()).then(res => {
+        if (res === 200) { 
+          this.$message.success('提交成功')
           this.$router.push('/stdhome')
+        }
+        else if (res  === 400) { 
+          this.$message.error(res.code || '提交成功')
         }
       })
     },

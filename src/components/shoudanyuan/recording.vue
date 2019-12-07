@@ -87,9 +87,7 @@ import axios from 'axios'
       }
     },
     watch: {},
-    created(){
-        this.deatils()
-      },
+    created(){},
     methods: {
         onSubmit(){
           var _this = this
