@@ -1,7 +1,7 @@
 <template>
   <div class="uploadVouvher">
     <navmenu />
-    <steps />
+    <steps :record-id="recordID" />
   </div>
 </template>
 
@@ -14,6 +14,9 @@ export default {
   name: 'uploadVouvher',
   components: {
     navmenu,steps
+  },
+  data() {
+    return { recordID: this.$route.params.recordID || null }
   }
 }
 </script>

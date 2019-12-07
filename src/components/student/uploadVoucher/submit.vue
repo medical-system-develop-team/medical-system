@@ -5,14 +5,29 @@
         <div class="submit-item">
           <el-divider content-position="left">外伤说明</el-divider>
           <el-button type="text" class="delete-button" @click="deleteWaishangshuoming">删除</el-button>
-          <el-input type="textarea" v-model="waishangshuoming" placeholder="请输入受伤经过、时间、原因、地点" />
-          
-          <!-- <el-upload class="img-upload" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess('gaizhangImg')" :before-upload="beforeAvatarUpload">
-            <el-image :src="item.submitArr[0].gaizhangImg" fit="scale-down" />
-            <el-button v-else type="text"><i class="el-icon-plus avatar-uploader-icon" />点击上传图片</el-button>
-          </el-upload> -->
-        
+          <el-form class="item-form" size="small">
+            <el-form-item label="① 描述">
+              <el-input type="textarea" v-model="waishangArr.waishangshuoming" placeholder="请输入受伤经过、时间、原因、地点" />
+            </el-form-item>
+            <el-form-item label="② 辅导员签字、学院盖章证明">
+              <el-upload class="img-upload" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess('gaizhangImg')" :before-upload="beforeAvatarUpload">
+                <div v-if="waishangArr.gaizhangImg" class="img">
+                  <el-image :src="waishangArr.gaizhangImg" fit="scale-down" />
+                </div>
+                <el-button v-else type="text"><i class="el-icon-plus avatar-uploader-icon" />点击上传图片</el-button>
+              </el-upload>
+            </el-form-item>
+            <el-form-item label="③ 特殊用药说明">
+              <el-upload class="img-upload" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess('teshuImg')" :before-upload="beforeAvatarUpload">
+                <div v-if="waishangArr.teshuImg" class="img">
+                  <el-image :src="waishangArr.teshuImg" fit="scale-down" />
+                </div>
+                <el-button v-else type="text"><i class="el-icon-plus avatar-uploader-icon" />点击上传图片</el-button>
+              </el-upload>
+            </el-form-item>
+          </el-form>     
         </div>
+        <p style="color: red">注：外伤说明提交一次即可！</p>  
       </div>
     </transition>
     <div class="button-container">
@@ -20,7 +35,7 @@
       <el-button type="primary" size="small" @click="save">暂存</el-button>
       <el-button type="primary" size="small" @click="submit">提交</el-button>
       <el-button type="danger" size="small" v-if="hasAddWaishangshuoming" @click="reset">重置</el-button>
-           <el-button type="primary" size="small" @click="preStep">上一步</el-button>
+      <el-button type="primary" size="small" @click="preStep">上一步</el-button>
     </div>
   </div>
 </template>
@@ -32,43 +47,76 @@ export default {
   name: 'submit',
   props: {
     preStep: { type: Function, default() { return () => { } } },
-    value: { type: Array, default() { return [] } }
+    value: { type: Array, default() { return [] } },
+    wssm: { type: Array, default() { return [] } }
   },
   model: { prop: 'value', event: 'change' },
   data() {
     return {
-      hasAddWaishangshuoming: false,
-      waishangshuoming: null,
+      hasAddWaishangshuoming: this.wssm.waishangshuoming ? true : false,
+      //hasAddWaishangshuoming: false,
+      waishangArr: {
+          waishangshuoming: this.wssm.waishangshuoming || null,
+          gaizhangImg: this.wssm.gaizhangImg || null,
+          teshuImg: this.wssm.teshuImg || null,
+      },
       localValue: this.value
     }
   },
-  watch: {
+  watch: { // 监听
     value(val) { this.localValue = val }
   },
   methods: {
+    handleAvatarSuccess(key) {
+      return (res, file) => {
+        this.waishangArr.key = URL.createObjectURL(file.raw);
+      }
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isJPG && isLt2M;
+    },
     addWaishangshuoming() {
       this.hasAddWaishangshuoming = true
+      this.waishangArr = { waishangshuoming: '', gaizhangImg: '', teshuImg: ''}
     },
     deleteWaishangshuoming() {
       this.hasAddWaishangshuoming = false
-      this.waishangshuoming = null
+      this.waishangArr = null
     },
     reset() {
-      this.waishangshuoming = null
+      this.waishangArr = null
     },
     save() {
       console.log('最终记录为: \n', this.getParam())
+      const url = '' // 此处为暂存的路径
+      commonApi(url, this.getParam()).then(res => {
+        if (res.code === 200) { 
+          this.$message.success('提交成功')
+          this.$router.push('/stdhome')
+        }
+        else if (res.code  === 400) { 
+          this.$message.error(res.code || '提交失败')
+        }
+      })
     },
     submit() {
       console.log('最终记录为: \n', this.getParam())
       const url = '/Upload'
       commonApi(url, this.getParam()).then(res => {
-        if (res === 200) { 
+        if (res.code === 200) { 
           this.$message.success('提交成功')
           this.$router.push('/stdhome')
         }
-        else if (res  === 400) { 
-          this.$message.error(res.code || '提交成功')
+        else if (res.code  === 400) { 
+          this.$message.error(res.code || '提交失败')
         }
       })
     },
@@ -78,7 +126,7 @@ export default {
     getParam() {
       const param = {
         records: [...this.value],
-        waishangshuoming: this.waishangshuoming
+        waishangArr: this.waishangArr
       }
       return param
     }

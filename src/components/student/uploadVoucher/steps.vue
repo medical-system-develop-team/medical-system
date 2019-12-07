@@ -16,13 +16,15 @@
       <zhuanzhendan v-model="recordArr" :next-step="next" v-if="active === 1" />
       <fuwufei v-model="recordArr" :next-step="next" :pre-step="prev" v-if="active === 2" />
       <yaofei v-model="recordArr" :next-step="next" :pre-step="prev" v-if="active === 3" />
-      <submit v-model="recordArr" :next-step="next" :pre-step="prev" v-if="active === 4" />
+      <submit v-model="recordArr" :wssm="waishangArr" :next-step="next" :pre-step="prev" v-if="active === 4" />
     </div>
 
   </div>
 </template>
 
 <script>
+import { commonApi } from '@/api/index.js'
+
 import zhuanzhendan from '@/components/student/uploadVoucher/zhuanzhendan.vue'
 import fuwufei from '@/components/student/uploadVoucher/fuwufei.vue'
 import yaofei from '@/components/student/uploadVoucher/yaofei.vue'
@@ -31,6 +33,9 @@ import submit from '@/components/student/uploadVoucher/submit.vue'
 export default {
   components: {
     zhuanzhendan, fuwufei, yaofei, submit
+  },
+  props: {
+    recordId: { type: String, default: null }
   },
   data() {
     return {
@@ -54,11 +59,29 @@ export default {
           }]
         }
       ],
+      waishangArr: {
+          waishangshuoming: '',
+          gaizhangImg: '',
+          teshuImg: '',
+      },
       zhuanzhendanArr: [{ hosName: '', zhuanzhenDate: null, zhuangzhenImg: '' }],
       fuwufeiArr: [{ hosName: '', office: '', yishiDate: null, yishiPay: '', yishiImg: '' }],
       yaofeiArr: [{ hosName: '', yaofeiDate: '', yaofeiPay: '', yaofeiImg: '', chufangImg: '' }],
       //submitArr: [{ hosName: '', waishangshuoming: '', gaizhangImg: '', teshuyongyaoImg: '' }]
     }
+  },
+  created() {
+    //非报销记录列表页面编辑跳转，页面不用渲染
+    if (!this.recordId) return  
+    //报销记录列表页面编辑跳转，给报销记录赋值
+    const url = '' // getRecordByID
+    commonApi(url, { recordID: this.recordId }).then(res => {  // 根据recordID请求数据
+      if (res.code === 200) {  // 请求成功
+        this.recordArr = res.recordArr
+        this.waishangArr = res.waishangArr
+      }
+      
+    })
   },
   watch: {
     zhuanzhendanArr(val) {

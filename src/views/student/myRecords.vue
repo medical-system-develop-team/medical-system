@@ -4,7 +4,7 @@
     <h1>我的报销列表</h1>
     
     <el-table class="recordTable" :data="recordData" style="width: 100%">
-      <el-table-column prop="number" label="序号" align="center">
+      <el-table-column prop="number" label="序号" align="center" width="50">
         <template slot-scope="scope">
           <span>{{ scope.row.number }}</span>
         </template>
@@ -26,7 +26,7 @@
       </el-table-column>
       <el-table-column prop="operation" label="操作" align="center">
         <template slot-scope="scope">
-          <div  v-if="scope.row.recordStatus !== '已确认' && ''">
+          <div  v-if="scope.row.recordStatus !== '已确认' && scope.row.recordStatus !== ''">
             <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </div>
@@ -44,6 +44,7 @@
 // @ is an alias to /src
 import navmenu from '@/components/student/navmenu.vue'
 import { getRecords } from '@/api/index.js'
+import { commonApi } from '@/api/index.js'
 
 export default {
   name: 'myRecords',
@@ -52,15 +53,7 @@ export default {
   },
   data() {
     return {
-      recordData: [
-        // {
-        // number:'',
-        // recordID: '',
-        // createTime: '',
-        // recordStatus: '',
-        // opration:''
-        // }
-      ], 
+      recordData: [], 
 
       // recordData: [{
       //   number:'1',
@@ -89,6 +82,7 @@ export default {
       //   createTime: '2019-11-20 16:33:36.0',
       //   recordStatus: '已确认',
       // }]
+
     }
   },
   created(){
@@ -98,14 +92,23 @@ export default {
     getRecordsList(){
       getRecords().then(
         response => {
-          this.recordData.push(response)
+          this.recordData = response //response 是返回的列表数组
         })
     },
     handleEdit(index, row){
-
+      this.$router.push('/uploadVoucher/' + row.recordID)
     },
     handleDelete(index, row){
-
+      const url = '' // 此处为删除的路径
+      commonApi(url, row.recordID).then(res => {
+        if (res.code === 200) {  // 后台删除成功
+          this.$message.success('删除成功')
+          this.getRecordsList();
+        }
+        else if (res.code  === 400) { 
+          this.$message.error('删除失败')
+        }
+      })
     },
     handleCreate(index, row){
 

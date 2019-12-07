@@ -21,7 +21,11 @@ const routes = [
     name: 'uploadVoucher',
     component: () => import('../views/student/uploadVoucher.vue')
   },
-  
+  {
+    path: '/uploadVoucher/:recordID',
+    name: 'uploadVoucher',
+    component: () => import('../views/student/uploadVoucher.vue')
+  },
   {
     path: '/myRecords',
     name: 'myRecords',
