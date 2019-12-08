@@ -7,10 +7,10 @@
       <el-step title="提交"></el-step>
     </el-steps>
 
-    <div class="steps-button">
+    <!-- <div class="steps-button">
       <el-button class="prev" type="text" icon="el-icon-arrow-left" @click="prev">上一步</el-button>
       <el-button class="next" type="text" @click="next">下一步<i class="el-icon-arrow-right el-icon--right"></i></el-button>
-    </div>
+    </div> -->
 
     <div class="step-component">
       <zhuanzhendan v-model="recordArr" :next-step="next" v-if="active === 1" />
@@ -110,7 +110,7 @@ export default {
   margin: 60px auto 60px auto;
   max-width: 800px;
   min-width: 500px;
-  overflow: scroll;
+  // overflow: scroll;
   text-align: left;
   .step-component {
     margin: 40px 20px;

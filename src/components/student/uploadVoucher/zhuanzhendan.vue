@@ -99,8 +99,9 @@ export default {
       return { required: true, message: msg, trigger: 'change' }
     },
     onNext() {
-      if (this.checkForm(this.localValue)) this.nextStep()
-      else { this.$message.error('填写有误，请检查') }
+      this.nextStep()
+      // if (this.checkForm(this.localValue)) this.nextStep()
+      // else { this.$message.error('填写有误，请检查') }
     },
     reset() {
       this.localValue = [{ hsoName: '', date: null, img: '' }]

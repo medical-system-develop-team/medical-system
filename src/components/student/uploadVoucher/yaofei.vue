@@ -75,7 +75,11 @@ export default {
   },
   methods: {
     newARecord(index, idx) {
-      if (!this.checkForm()) return
+      if (!this.checkForm()) {
+        this.$message.error('请填写完整已经添加记录')
+        return
+      }
+      
       this.localValue[index].fuwufeiArr[idx].yaofeiArr.push({
         yaofeiPay: '', // 药费金额
         yaofeiDate: '', // 产生费用的日期
@@ -85,8 +89,9 @@ export default {
       this.$emit('change', this.localValue)
     },
     next() {
-      if (!this.checkForm()) return
       this.nextStep()
+      // if (!this.checkForm()) return
+      // this.nextStep()
     },
     deleteARecord(index, idx, i) {
       this.localValue[index].fuwufeiArr[idx].yaofeiArr.splice(i, 1)

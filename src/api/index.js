@@ -67,7 +67,7 @@ export function axiospost(url,param) {
 
 // 请求报销记录信息列表
 export function getRecords() {
-  return axios.post('https://www.fastmock.site/mock/12e9010cbb8f72411985efd3130dbd1b/mediacl/login').then(
+  return axios.post('/UserLookRecord').then(
     response => {
       return Promise.resolve(response.data)
     }

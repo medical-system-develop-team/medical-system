@@ -24,7 +24,7 @@
           <span>{{ scope.row.recordStatus }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="operation" label="操作" align="center">
+      <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <div  v-if="scope.row.recordStatus !== '已确认' && scope.row.recordStatus !== ''">
             <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>

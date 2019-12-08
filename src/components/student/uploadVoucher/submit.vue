@@ -69,7 +69,7 @@ export default {
   methods: {
     handleAvatarSuccess(key) {
       return (res, file) => {
-        this.waishangArr.key = URL.createObjectURL(file.raw);
+        this.waishangArr[key] = URL.createObjectURL(file.raw);
       }
     },
     beforeAvatarUpload(file) {
@@ -96,7 +96,7 @@ export default {
     },
     save() {
       console.log('最终记录为: \n', this.getParam())
-      const url = '' // 此处为暂存的路径
+      const url = '/TemporaryUpload' // 此处为暂存的路径
       commonApi(url, this.getParam()).then(res => {
         if (res.code === 200) { 
           this.$message.success('提交成功')

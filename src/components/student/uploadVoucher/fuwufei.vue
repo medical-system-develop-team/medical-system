@@ -86,8 +86,9 @@ export default {
       this.$emit('change', this.localValue)
     },
     next() {
-      if (!this.checkForm()) return
       this.nextStep()
+      // if (!this.checkForm()) return
+      // this.nextStep()
     },
     deleteARecord(index, idx) {
       this.localValue[index].fuwufeiArr.splice(idx, 1)

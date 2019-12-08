@@ -92,6 +92,11 @@ export default {
 <style>
 .infoForm {
   width: 600px;
-  margin:auto;
+  padding: 20px 20px 40px 20px;
+  margin: 20px 0 40px 0;
+  border-radius: 5px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  position: relative;
+  text-align: left;
 }
 </style>
