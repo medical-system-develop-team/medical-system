@@ -109,9 +109,9 @@
               </div>
             </div>
             <div style="margin-top: 10px;">
-              <el-form>
+              <el-form label-width="100px" style="margin-left: 10%;">
                 <el-form-item label="备注：">
-                  <el-col :span="12">
+                  <el-col :span="18">
                     <el-input size="small" type="textarea" v-model="beizhu"></el-input>
                   </el-col>
                 </el-form-item>

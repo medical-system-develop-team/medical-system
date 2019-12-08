@@ -124,6 +124,7 @@
 </template>
 <script>
   import { checkuser } from '@/api/index.js'
+  import { axiospost } from '@/api/index.js'
   import UserEdit from './UserEdit.vue'
 
   export default {
@@ -185,7 +186,7 @@
       },
 
       getUserInfo() {
-        this.$axios.get('http://localhost:3000/data').then(res => {
+        axiospost('/data').then(res => {
           this.userData = res.data  
           //this.userData.push(formDate);
         })

@@ -40,6 +40,9 @@
     components: {
       Admin
   },
+  created(){
+      this.$router.push({path: '/Admin/departmanage/departcheck'})
+    },
   methods: {
       handleSelect(key){
         switch(key){

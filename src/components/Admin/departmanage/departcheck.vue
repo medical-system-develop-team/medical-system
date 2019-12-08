@@ -219,10 +219,13 @@
               console.log('部门信息',res);
               this.departData = res.departdata;
               this.userData = res.usertdata;
-          }
+          },
           )
        // })
       //console.log('submit!');
+      },
+      indexMethod(index) {
+        return index;
       },
 
       getDepartInfo() {
