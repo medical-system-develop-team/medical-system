@@ -10,7 +10,7 @@
               <el-input type="textarea" v-model="waishangArr.waishangshuoming" placeholder="请输入受伤经过、时间、原因、地点" />
             </el-form-item>
             <el-form-item label="② 辅导员签字、学院盖章证明">
-              <el-upload class="img-upload" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess('gaizhangImg')" :before-upload="beforeAvatarUpload">
+              <el-upload class="img-upload" action="http://localhost:8888/api/UploadImgG" :show-file-list="false" :on-success="handleAvatarSuccess('gaizhangImg')" :before-upload="beforeAvatarUpload">
                 <div v-if="waishangArr.gaizhangImg" class="img">
                   <el-image :src="waishangArr.gaizhangImg" fit="scale-down" />
                 </div>
@@ -18,7 +18,7 @@
               </el-upload>
             </el-form-item>
             <el-form-item label="③ 特殊用药说明">
-              <el-upload class="img-upload" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess('teshuImg')" :before-upload="beforeAvatarUpload">
+              <el-upload class="img-upload" action="http://localhost:8888/api/UploadImgT" :show-file-list="false" :on-success="handleAvatarSuccess('teshuImg')" :before-upload="beforeAvatarUpload">
                 <div v-if="waishangArr.teshuImg" class="img">
                   <el-image :src="waishangArr.teshuImg" fit="scale-down" />
                 </div>

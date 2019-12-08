@@ -20,7 +20,7 @@
             <el-date-picker v-model="item.yishiDate" type="date" placeholder="选择日期" />
           </el-form-item>
           <el-form-item label="⑤ 服务图片" prop="yishiImg">
-            <el-upload class="img-upload" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess(index, idx)" :before-upload="beforeAvatarUpload">
+            <el-upload class="img-upload" action="http://localhost:8888/api/UploadImgF" :show-file-list="false" :on-success="handleAvatarSuccess(index, idx)" :before-upload="beforeAvatarUpload">
               <div v-if="item.yishiImg" class="img">
                 <el-image :src="item.yishiImg" fit="scale-down" />
               </div>

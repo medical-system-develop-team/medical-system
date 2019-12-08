@@ -14,7 +14,7 @@
         <el-form-item label="③ 上传转诊单照片" prop="zhuangzhenImg">
         <!-- <el-form-item label="③ 上传转诊单照片" prop="img" :rules="[validateRequiredRule('转诊照片必填')]"> -->
           <!-- action是上传到后台的地址-->
-          <el-upload class="img-upload" type="img" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false" :on-success="handleAvatarSuccess(index)" :before-upload="beforeAvatarUpload">
+          <el-upload class="img-upload" type="img" action="http://localhost:8888/api/UploadImgZ" :show-file-list="false" :on-success="handleAvatarSuccess(index)" :before-upload="beforeAvatarUpload">
             <div v-if="item.zhuangzhenImg" class="img">
               <el-image :src="item.zhuangzhenImg" fit="scale-down" />
             </div>
