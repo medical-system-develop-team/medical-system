@@ -26,7 +26,7 @@
           align="center"
           width="120">
           <template slot-scope="scope">
-            <span>{{ scope.row.id}}</span>
+            <span>{{ scope.row.recordId}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -34,11 +34,11 @@
           align="center"
           width="120">
           <template slot-scope="scope">
-            <span>{{ scope.row.username}}</span>
+            <span>{{ scope.row.userName}}</span>
           </template>
         </el-table-column>
         <el-table-column
-          label="学号"
+          label="用户号"
           align="center"
           width="150">
           <template slot-scope="scope">
@@ -76,13 +76,13 @@ import axios from 'axios'
     data() {
         //sturec:[]
       return {
-          id:'',
-          message:'',
-          lasturl:'',
+          id:'',//用户种类
+          message:'',//汉字用户种类
+          lasturl:'',//跳转前路径
           recording:[{
-            id:'111',
-            username:'dadad',
-            useridid:'12321123',
+            recordId:'111',
+            userName:'dadad',
+            userid:'12321123',
             date:'19910228',
           }],
           pageTotal: 0
@@ -123,7 +123,7 @@ import axios from 'axios'
               break;
           }
           var _this = this
-          axiospost('/findrecording',_this.id)//用户类型学生、职工。。。。
+          axiospost('/checker/recording',_this.id)//用户类型学生、职工。。。。
             .then(function (res) {
               console.log(res);
               if(res.date === 400){

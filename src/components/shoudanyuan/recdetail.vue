@@ -10,7 +10,7 @@
       </div>
       <div style="text-align: center;">
         <h2>报销凭证</h2>
-        <el-form ref="form" :inline="true" style="margin-top: 5px;"> 
+        <el-form ref="form" :inline="true" style="margin-top: 5px;">'
           <el-form-item  label="医事服务费自负比例：">
             <el-input size="mini" v-model="registerPercentage"></el-input>
           </el-form-item>
@@ -49,7 +49,7 @@
                 <span style="font-size:15px;">医事服务费（挂号费）{{index+1}}</span>
               </div>
               <div class="content" style="margin-top:10px;">
-                <el-form ref="form" :inline="true"  class="demo-form-inline">
+                <el-form ref="form" :inline="true"  class="demo-form-inline" style='text-align:left;margin-left: 10%;'>
                   <el-form-item label="医院：">
                     <el-input size="small" v-model="item.hospital"></el-input>
                   </el-form-item>
@@ -82,7 +82,7 @@
                 <span style="font-size:15px;">药费单据{{index+1}}</span>
               </div>
               <div class="content" style="margin-top:10px;">
-                <el-form ref="form" :inline="true" class="demo-form-inline">
+                <el-form ref="form" :inline="true" class="demo-form-inline" style='text-align:left;margin-left: 10%;'>
                   <el-form-item label="医院：">
                     <el-input size="small" v-model="item.hospital"></el-input>
                   </el-form-item>
@@ -116,9 +116,9 @@
               </div>
             </div>
             <div style="margin-top: 10px;">
-              <el-form class="demo-form-inline" label-width="180px">
+              <el-form label-width="100px" style="margin-left: 5%;">
                 <el-form-item label="备注：">
-                  <el-col :span="12">
+                  <el-col :span="18">
                     <el-input size="small" type="textarea" v-model="beizhu"></el-input>
                   </el-col>
                 </el-form-item>

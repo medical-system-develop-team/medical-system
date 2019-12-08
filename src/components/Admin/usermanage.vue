@@ -43,6 +43,9 @@
     components: {
       Admin
     },
+    created(){
+      this.$router.push({path: '/Admin/usermanage/usercheck'})
+    },
     methods: {
       handleSelect(key){
         switch(key){

@@ -8,30 +8,39 @@
       </el-breadcrumb>
     </div>
     <div style='margin-top: 20px;'>
-      <el-form :inline="true" :model="record"  size="mini" label-width="90px" class="demo-ruleForm" >
+      <el-form :inline="true" :model="record"  size="mini" label-width="100px" label="right" >
         <el-row>
-          <el-form-item label="用户名">
-            <!-- <el-col :span="6"> -->
-              <el-input v-model="record.username" placeholder="用户名"></el-input>
-            <!-- </el-col> -->
+          <el-col :span="8">
+          <el-form-item label="用户名" >            
+              <el-input v-model="record.username" placeholder="用户名"></el-input>         
           </el-form-item>
+          </el-col>
+          <el-col :span="8">
           <el-form-item label="部门">
             <el-input v-model="record.depart" placeholder="部门"></el-input>
-          </el-form-item>                 
+          </el-form-item>
+          </el-col>
+          <el-col :span="8">                 
           <el-form-item label="工资号">
             <el-input v-model="record.salaryid" placeholder="用户工资号"></el-input>
           </el-form-item>
-          <el-form-item label="报销类型">
-            <!-- <el-col :span="11"> -->
-            <el-select v-model="record.type" placeholder="报销类型" >
-              <el-option label="学生报销类型" value="student"></el-option>
-              <el-option label="在职职工报销类型" value="worker"></el-option>
-              <el-option label="退休人员报销类型" value="retired"></el-option>
-              <el-option label="离休人员报销类型" value="lixiu"></el-option>
-              <el-option label="特殊群体报销类型" value="teshu"></el-option>
-            </el-select>
-            <!-- </el-col> -->
-          </el-form-item>
+          </el-col>
+          </el-row>
+          <el-row>
+          <el-col :span="8"> 
+            <el-form-item label="报销类型" >
+              <!-- <el-col :span="11"> -->
+              <el-select v-model="record.type" placeholder="报销类型" >
+                <el-option label="学生报销类型" value="student"></el-option>
+                <el-option label="在职职工报销类型" value="worker"></el-option>
+                <el-option label="退休人员报销类型" value="retired"></el-option>
+                <el-option label="离休人员报销类型" value="lixiu"></el-option>
+                <el-option label="特殊群体报销类型" value="teshu"></el-option>
+              </el-select>
+              <!-- </el-col> -->
+            </el-form-item>
+          </el-col>
+          <el-col :span="16"> 
           <el-form-item label="报销时间">
               <el-col :span="10">
                 <el-date-picker type="date" placeholder="选择日期" v-model="record.date1" style="width: 100%;"></el-date-picker>
@@ -41,12 +50,17 @@
                 <el-date-picker type="date" placeholder="选择日期" v-model="record.date2" style="width: 100%;"></el-date-picker>
               </el-col>
           </el-form-item>
+          </el-col>
+          </el-row>
+          <el-row>
+          <el-col :span="8"> 
           <el-form-item label="性别">
             <el-select v-model="record.sex" placeholder="性别" style="width:90%">
               <el-option label="男" value="boy"></el-option>
               <el-option label="女" value="girle"></el-option>
             </el-select>
           </el-form-item>
+          </el-col>
           <el-form-item label="报销金额">
               <el-col :span="11">
                 <el-input  placeholder="最小费用" v-model="record.cost1" ></el-input>
@@ -255,6 +269,9 @@
           { "value": "三街坊社区医院"},
           { "value": "永定路街道医院"},
         ];
+      },
+      indexMethod(index) {
+        return index;
       },
       handleSelect(item) {
         console.log(item);

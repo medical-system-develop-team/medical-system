@@ -40,6 +40,9 @@
     components: {
       Admin
     },
+    created(){
+      this.$router.push({path: '/Admin/recordmanage/recordcheck'})
+    },
     methods: {
       handleSelect(key){
         switch(key){
