@@ -9,7 +9,7 @@
       <el-form-item label="姓    名">
          <el-input v-model="myInfoForm.name"></el-input>
       </el-form-item>  
-      <el-form-item label="性    别">
+      <el-form-item label="性    别" style="text-align: left;">
         <el-select v-model="myInfoForm.sex" placeholder="请选择性别">
           <el-option label="男" value="man"></el-option>
           <el-option label="女" value="woman"></el-option>
@@ -24,7 +24,7 @@
       <el-form-item label="联系电话">
          <el-input v-model="myInfoForm.phone"></el-input>
       </el-form-item>  
-      <el-form-item>
+      <el-form-item style="text-align: center;">
         <el-button type="primary" @click="onSubmit">提交</el-button>
       </el-form-item>
   </el-form>
@@ -93,12 +93,12 @@ export default {
 .myInfo{
   .infoForm {
   width: 600px;
-  padding: 40px 40px 40px 20px;
+  padding: 50px 60px 20px 10px;
   margin: auto;
   border-radius: 5px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   position: relative;
-  text-align: left;
+  // text-align: left;
   float: center;
   }
 }

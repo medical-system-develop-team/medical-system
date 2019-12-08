@@ -103,7 +103,7 @@ export default {
       this.$router.push('/uploadVoucher/' + row.recordID)
     },
     handleDelete(index, row){
-      const url = '' // 此处为删除的路径
+      const url = '/UserDeleteRecord' // 此处为删除的路径
       commonApi(url, row.recordID).then(res => {
         if (res.code === 200) {  // 后台删除成功
           this.$message.success('删除成功')
