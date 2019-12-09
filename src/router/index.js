@@ -11,6 +11,7 @@ const routes = [
     name: 'login',
     component: () => import('../views/Login.vue')
   },
+  // 学生报销类型----------------------------------------
   {
     path: '/stdhome',
     name: 'stdhome',
@@ -36,6 +37,33 @@ const routes = [
     name: 'myInfo',
     component: () => import('../views/student/myInfo.vue')
   },
+  // 在职职工报销类型----------------------------------------
+  {
+    path: '/staffhome',
+    name: 'staffhome',
+    component: () => import('../views/staff/staffHome.vue')
+  },
+  {
+    path: '/staffuploadVoucher',
+    name: 'staffuploadVoucher',
+    component: () => import('../views/staff/uploadVoucher.vue')
+  },
+  {
+    path: '/staffuploadVoucher/:recordID',
+    name: 'staffuploadVoucher',
+    component: () => import('../views/staff/uploadVoucher.vue')
+  },
+  {
+    path: '/staffmyRecords',
+    name: 'staffmyRecords',
+    component: () => import('../views/staff/myRecords.vue')
+  },
+  {
+    path: '/staffmyInfo',
+    name: 'staffmyInfo',
+    component: () => import('../views/staff/myInfo.vue')
+  },
+  // 后台
   {
     path: '/Admin',
     name: 'Admin',
