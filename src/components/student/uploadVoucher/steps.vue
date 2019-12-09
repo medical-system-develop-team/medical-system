@@ -35,7 +35,7 @@ export default {
     zhuanzhendan, fuwufei, yaofei, submit
   },
   props: {
-    recordId: { type: String, default: null }
+    recordId: { type: Number, default: null }
   },
   data() {
     return {
