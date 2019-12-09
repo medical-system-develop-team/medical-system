@@ -5,7 +5,10 @@
       <el-button type="text" class="delete-button" @click="deleteARecord(index)">删除</el-button>
       <el-form ref="form" class="item-form" :model="item" size="small">
         <el-form-item label="① 医院" prop="hosName" :rules="[validateRequiredRule('医院名称为必填')]">
-          <el-input v-model="item.hosName" type="hosName" placeholder="请填写医院名称" />
+          <el-select v-model="item.hosName" clearable filterable placeholder="请选择就诊医院">
+            <el-option v-for="i in options" :key="i.hname" :value="i.hname"></el-option>
+          </el-select>
+          <!-- <el-input v-model="item.hosName" type="hosName" placeholder="请填写医院名称" /> -->
         </el-form-item>
         <el-form-item label="② 科室" prop="office" :rules="[validateRequiredRule('科室名称为必填')]">
             <el-input v-model="item.office" placeholder="请填写医院科室" />
@@ -47,12 +50,35 @@ export default {
   data() {
     return {
       localValue: this.value,
-      validateHosName: [{ rquired: true, message: '医院名称为必填' }],
+      options: [
+        {
+          hname: '301'
+        }, {
+          hname: '302'
+        }, {
+          hname: '303'
+        }, {
+          hname: '304'
+        },{
+          hname: '305'
+        }, {
+          hname: '306'
+        }
+      ],
     }
   },
   watch: {
     value(val) { this.localValue = this.value }
   },
+  // created() {
+  //   const url = '' // gethosName
+  //   getHosName(url).then(res => {  // 根据recordID请求数据
+  //     if (res.code === 200) {  // 请求成功
+  //       this.options = res
+  //     }
+      
+  //   })
+  // },
   methods: {
     /**
      * @desc 增加一条服务费记录

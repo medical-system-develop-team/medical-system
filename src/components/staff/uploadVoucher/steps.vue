@@ -116,7 +116,7 @@ export default {
   }
   .steps {
     .el-step__line {
-      width: 105%;
+      width: 103%;
     }
     .el-step.is-horizontal.is-flex {
       text-align: right;
