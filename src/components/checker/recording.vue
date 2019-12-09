@@ -52,6 +52,14 @@
             <span>{{ scope.row.date}}</span>
           </template>
         </el-table-column>
+        <el-table-column
+          label="用户类型"
+          align="center"
+          width="80">
+          <template slot-scope="scope">
+            <span>{{usermessage[scope.row.userType-1]}}</span>
+          </template>
+        </el-table-column>
         <el-table-column 
           label="操作" 
           align="center"
@@ -78,22 +86,19 @@ import axios from 'axios'
       return {
           id:'',//用户种类
           message:'',//汉字用户种类
+          usermessage:['学生','职工','退休','离休','医照'],
           lasturl:'',//跳转前路径
-          recording:[{
-            recordId:'111',
-            userName:'dadad',
-            userid:'12321123',
-            date:'19910228',
-          }],
+          recording:[],
           pageTotal: 0
       }
     },
     watch: {
       '$route' (to, from) { //监听路由是否变化
-        if(to.query.id != from.query.id){
+        // if(to.query.id != from.query.id){
           this.id = to.query.id;
+          this.message =this.message
           this.deatils();//重新加载数据
-        }
+        // }
       }
     },
     created(){
@@ -123,15 +128,19 @@ import axios from 'axios'
               break;
           }
           var _this = this
-          axiospost('/checker/recording',_this.id)//用户类型学生、职工。。。。
-            .then(function (res) {
-              console.log(res);
+          
+          const param={id:_this.id}
+          console.log("发送数据：",param) 
+          axiospost('/checker/recording',param)//用户类型学生、职工。。。。           
+            .then(function (res) {             
+              //console.log("返回数据：",res);
               if(res.date === 400){
                 this.$message.error(res.msg || '查询失败')
                 return
               }else{
-                _this.recording.push(res.data)
-                _this.pageTotal = res.count
+                _this.recording = res
+                console.log("接收数据：",_this.recording) 
+                _this.pageTotal = _this.recording.length
               }
             })
             .catch(function (error) {

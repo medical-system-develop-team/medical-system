@@ -23,9 +23,9 @@
       </div>  
 
       <div class="referral">
-        <div v-for="(item, index) in zhuanzhendan" :key="index">
+        <div v-for="(item, index) in zhuanzhendan" :key="index+'1'">
           <div class="title1" >
-            <span style="font-size:15px;">转诊单{{index+1}}</span>
+            <b style="font-size:15px;">转诊单{{index+1}}</b>
           </div>
           <div class="content" style="margin-top:10px;">
             <el-form ref="form" :inline="true"  class="demo-form-inline">
@@ -38,15 +38,19 @@
             </el-form>
           </div>
           <div class="imageBox" style="margin-top:10px;">
-            <b>转诊单：</b><br>
-            <img src="item.img" id="previewPresImg" fit="scale-down"  onclick="handleImgSize();" style="width:150px;"><br>
+            <span style="font-size:15px;">转诊单：</span><br>
+            <el-image 
+              style="width: 100px; height: 100px"
+              :src="url" 
+              :preview-src-list="srcList">
+            </el-image><br>
             <el-button type="primary" size="mini" onclick="handleImgDirection();">旋转90°</el-button>
           </div>       
         </div>
           
-        <div v-for="(item, index) in yishifuwufei" :key="index">
+        <div v-for="(item, index) in yishifuwufei" :key="index+'2'">
           <div class="title1" style="margin-top:10px;">
-            <span style="font-size:15px;">医事服务费（挂号费）{{index+1}}</span>
+            <b style="font-size:15px;">医事服务费(挂号费){{index+1}}</b>
           </div>
           <div class="content" style="margin-top:10px;">
             <el-form ref="form" :inline="true"  class="demo-form-inline" style='text-align:left;margin-left: 10%;'>
@@ -71,15 +75,15 @@
             </el-form>
           </div> 
           <div class="imageBox" style="margin-top:10px;">
-            <b>医事服务费（挂号费）：</b><br>
+            <span style="font-size:15px;">医事服务费（挂号费）：</span><br>
             <img src="item.img" id="previewPresImg" name="registerImg" class="previewImg" onclick="handleImgSize();" style="width:150px;"><br>
             <el-button type="primary" size="mini" onclick="handleImgDirection();">旋转90°</el-button>
           </div>
         </div>
         
-        <div v-for="(item, index) in yaofeidanju" :key="index">
+        <div v-for="(item, index) in yaofeidanju" :key="index+'3'">
           <div class="title1" style="margin-top:10px;">
-            <span style="font-size:15px;">药费单据{{index+1}}</span>
+            <b style="font-size:15px;">药费单据{{index+1}}</b>
           </div>
           <div class="content" style="margin-top:10px;">
             <el-form ref="form" :inline="true" class="demo-form-inline" style='text-align:left;margin-left: 10%;'>
@@ -110,7 +114,7 @@
             </el-form>
           </div> 
           <div class="imageBox" style="margin-top:10px;">
-            <b>医事服务费（挂号费）：</b><br>
+            <span style="font-size:15px;">药费单据：</span><br>
             <img src="item.img" id="previewPresImg" name="registerImg" class="previewImg" onclick="handleImgSize();" style="width:150px;"><br>
             <el-button type="primary" size="mini" onclick="handleImgDirection();">旋转90°</el-button>
           </div>
@@ -157,6 +161,7 @@ import axios from 'axios'
           id:'',
           usertype:'',
           message:'',
+          usertypemessage:['学生','职工','退休','离休','医照'],
           lasturl:'',
           registerPercentage:'',
           medicalPercentage:'0.2',
@@ -164,6 +169,9 @@ import axios from 'axios'
           showcheck:true,
           showcheckcomplete:false,
           recording:[],
+            url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+            srcList: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'],
+          
           zhuanzhendan:[
             {
             hospital:'111',
@@ -199,9 +207,13 @@ import axios from 'axios'
                 this.$message.error(res.msg || '查询失败')
                 return
               }else{
+                _this.registerPercentage = res.registerPercentage//医事服务费自负比例
+                _this.medicalPercentage = res.medicalPercentage//医药费自负比例
+                _this.beizhu = res.beizhu
                 _this.zhuanzhendan.puse(res.zhuanzhendan)
                 _this.yishifuwufei.puse(res.yishifuwufei)
                 _this.yaofeidanju.puse(res.yaofeidanju)
+                _this.message = _this.usertypemessage[res.usertype]
               }
             })
             .catch(function (error) {

@@ -102,8 +102,8 @@ import axios from 'axios'
           axios.post('/findrecording')
             .then(function (res) {
               console.log(res);
-              _this.recording = res.data
-              _this.pageTotal = res.count
+              _this.recording = res
+              _this.pageTotal = _this.recording.length
             })
             .catch(function (error) {
               console.log(error);
