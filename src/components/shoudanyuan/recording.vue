@@ -94,7 +94,7 @@ import axios from 'axios'
           axios.post('/findrecording',this.id)
             .then(function (res) {
               console.log(res);
-              _this.recording = res.data
+              _this.recording = res
             })
             .catch(function (error) {
               console.log(error);

@@ -25,7 +25,7 @@
           align="center"
           width="120">
           <template slot-scope="scope">
-            <span>{{ scope.row.id}}</span>
+            <span>{{ scope.row.recordId}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -33,22 +33,30 @@
           align="center"
           width="120">
           <template slot-scope="scope">
-            <span>{{ scope.row.username}}</span>
+            <span>{{ scope.row.userName}}</span>
           </template>
         </el-table-column>
         <el-table-column
-          label="学号"
+          label="用户号"
           align="center"
           width="150">
           <template slot-scope="scope">
-            <span>{{ scope.row.userid}}</span>
+            <span>{{ scope.row.userNumber}}</span>
           </template>
         </el-table-column>
-                <el-table-column
+        <el-table-column
           label="申请时间"
           width="150">
           <template slot-scope="scope">
-            <span>{{ scope.row.date}}</span>
+            <span>{{ scope.row.recordTime}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="用户类型"
+          align="center"
+          width="80">
+          <template slot-scope="scope">
+            <span>{{usermessage[scope.row.userType-1]}}</span>
           </template>
         </el-table-column>
         <el-table-column 
@@ -75,7 +83,8 @@ import axios from 'axios'
     data() {
         //sturec:[]
       return {
-          id:'',
+          id:'6',
+          usermessage:['学生','职工','退休','离休','医照'],
           recording:[{
             id:'111',
             username:'dadad',
@@ -92,15 +101,18 @@ import axios from 'axios'
     methods: {
         request(){
           var _this = this
-          axiospost('/findrecording')
+          const param={id:_this.id}
+          console.log("发送数据：",param) 
+          axiospost('/checker/recording',param)
             .then(function (res) {
-              console.log(res);
+              //console.log(res);
               if(res.date === 400){
                 this.$message.error(res.msg || '查询失败')
                 return
               }else{
-                _this.recording.puse(res.data)
-                _this.pageTotal = res.count
+                _this.recording = res
+                console.log("接收数据：",_this.recording) 
+                _this.pageTotal = _this.recording.length
               }
             })
             .catch(function (error) {
@@ -109,7 +121,7 @@ import axios from 'axios'
 
         },
       recorddetail(index,row){
-          this.$router.push({path: '/checker/recdetail', query:{id:row.id,showcheck:false,showcheckcomplete:true,message:'已审核',lasturl:'/checker/completecheck'}})
+          this.$router.push({path: '/checker/recdetail', query:{id:row.id,showcheck:false,showcheckcomplete:true,lasturl:'/checker/completecheck'}})
       }
     },
     mounted: function () {},

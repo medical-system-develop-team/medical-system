@@ -48,9 +48,9 @@
     },
     components:{},
     created(){
-        this.admin=this.$cookieStore.getCookie( 'username')
-        this.$router.push({path: '/checkerAdmin/recording'})
-      },
+      this.admin=this.$cookieStore.getCookie( 'username')
+      this.$router.push({path: '/checkerAdmin/recording'})
+    },
     methods: {
       handleSelect(key){
         switch(key){

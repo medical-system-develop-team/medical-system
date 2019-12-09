@@ -7,123 +7,104 @@
         <el-breadcrumb-item>报销记录查询</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <div style='margin-top: 20px;'>
-      <el-form :inline="true" :model="record"  size="mini" label-width="100px" label="right" >
-        <el-row>
-          <el-col :span="8">
-          <el-form-item label="用户名" >            
-              <el-input v-model="record.username" placeholder="用户名"></el-input>         
-          </el-form-item>
-          </el-col>
-          <el-col :span="8">
-          <el-form-item label="部门">
-            <el-input v-model="record.depart" placeholder="部门"></el-input>
-          </el-form-item>
-          </el-col>
-          <el-col :span="8">                 
-          <el-form-item label="工资号">
-            <el-input v-model="record.salaryid" placeholder="用户工资号"></el-input>
-          </el-form-item>
-          </el-col>
-          </el-row>
-          <el-row>
-          <el-col :span="8"> 
-            <el-form-item label="报销类型" >
-              <!-- <el-col :span="11"> -->
-              <el-select v-model="record.type" placeholder="报销类型" >
-                <el-option label="学生报销类型" value="student"></el-option>
-                <el-option label="在职职工报销类型" value="worker"></el-option>
-                <el-option label="退休人员报销类型" value="retired"></el-option>
-                <el-option label="离休人员报销类型" value="lixiu"></el-option>
-                <el-option label="特殊群体报销类型" value="teshu"></el-option>
-              </el-select>
-              <!-- </el-col> -->
-            </el-form-item>
-          </el-col>
-          <el-col :span="16"> 
-          <el-form-item label="报销时间">
-              <el-col :span="10">
-                <el-date-picker type="date" placeholder="选择日期" v-model="record.date1" style="width: 100%;"></el-date-picker>
-              </el-col>
-              <el-col class="line" :span="2">-</el-col>
-              <el-col :span="10">
-                <el-date-picker type="date" placeholder="选择日期" v-model="record.date2" style="width: 100%;"></el-date-picker>
-              </el-col>
-          </el-form-item>
-          </el-col>
-          </el-row>
-          <el-row>
-          <el-col :span="8"> 
-          <el-form-item label="性别">
-            <el-select v-model="record.sex" placeholder="性别" style="width:90%">
-              <el-option label="男" value="boy"></el-option>
-              <el-option label="女" value="girle"></el-option>
-            </el-select>
-          </el-form-item>
-          </el-col>
-          <el-form-item label="报销金额">
-              <el-col :span="11">
-                <el-input  placeholder="最小费用" v-model="record.cost1" ></el-input>
-              </el-col>
-              <el-col class="line" :span="2">-</el-col>
-              <el-col :span="11">
-                <el-input  placeholder="最大费用" v-model="record.cost2" ></el-input>
-              </el-col>
-          </el-form-item>
-          <el-form-item label="就医医院">
-            <el-autocomplete
-              class="inline-input"
-              v-model="record.hospital"
-              :fetch-suggestions="hospitalSearch"
-              placeholder="就医医院"
-              @select="handleSelect">
-            </el-autocomplete>
-          </el-form-item>
-          <el-form-item label="医事服务费">
-              <el-col :span="11">
-                <el-input  placeholder="最小费用" v-model="record.servercost1" style="width: 100%;"></el-input>
-              </el-col>
-              <el-col class="line" :span="2">-</el-col>
-              <el-col :span="11">
-                <el-input  placeholder="最大费用" v-model="record.servercost2" style="width: 100%;"></el-input>
-              </el-col>
-          </el-form-item>   
-          <el-form-item label="就医科室">
-            <el-autocomplete
-              class="inline-input"
-              v-model="record.keshi"
-              :fetch-suggestions="keshiSearch"
-              placeholder="就医科室"
-              @select="handleSelect">
-            </el-autocomplete>
-          </el-form-item>
 
-          <el-form-item label="年龄" >
-            <el-col :span="11">
-              <el-input v-model="record.age1" placeholder="年龄" style="width: 100%;"></el-input>
-            </el-col>
-            <el-col class="line" :span="2">-</el-col>
-            <el-col :span="11">
-              <el-input placeholder="年龄" v-model="record.age2" style="width: 100%;"></el-input>
-            </el-col>
-          </el-form-item>          
-                 
-          
-          
-          <el-form-item label="审核人">
-              <el-col :span="11">
-                <el-input placeholder="审核人" v-model="record.checker"></el-input>
-              </el-col>
-              <el-col class="line" :span="2">-</el-col>
-              <el-col :span="11">
-                <el-input placeholder="审核人编号" v-model="record.checkerid"></el-input>
-              </el-col>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="onSubmit">查询</el-button>
-          </el-form-item>
-        </el-row>
+    <div style='margin-top: 20px;'>
+      <el-form :inline="true" :model="record"  size="mini" label-width="100px" label="right" style="text-align:left;">
+        <el-form-item label="用户名" >            
+            <el-input v-model="record.username" placeholder="用户名"></el-input>         
+        </el-form-item>
+        <el-form-item label="工资号" style="margin-left: 1.7%;">
+          <el-input v-model="record.salaryid" placeholder="用户工资号" style="width:92%;"></el-input>
+        </el-form-item>        
       </el-form>
+
+      <el-form :inline="true" :model="record"  size="mini" label-width="100px" label="right" style="text-align:left;">       
+        <el-form-item label="性别">
+          <el-select v-model="record.sex" placeholder="性别" style="width:92%">
+            <el-option label="男" value="boy"></el-option>
+            <el-option label="女" value="girle"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="年龄">
+          <el-col :span="11">
+            <el-input v-model="record.age1" placeholder="最小年龄" style="width: 100%;"></el-input>
+          </el-col>
+          <el-col class="line" :span="2" style="text-align:center;">-</el-col>
+          <el-col :span="11">
+            <el-input placeholder="最大年龄" v-model="record.age2" style="width: 100%;"></el-input>
+          </el-col>
+        </el-form-item>    
+        <el-form-item label="部门">
+          <el-input v-model="record.depart" placeholder="部门"></el-input>
+        </el-form-item>      
+        <el-form-item label="审核人" style="margin-left: 1.7%;" >
+          <el-col :span="11">
+            <el-input placeholder="审核人" v-model="record.checker"></el-input>
+          </el-col>
+          <el-col class="line" :span="2" style="text-align:center;">-</el-col>
+          <el-col :span="11">
+            <el-input placeholder="审核人编号" v-model="record.checkerid"></el-input>
+          </el-col>
+        </el-form-item>          
+        <el-form-item label="报销类型" >
+          <el-select v-model="record.type" placeholder="报销类型" style="width:92%" >
+            <el-option label="学生报销类型" value="student"></el-option>
+            <el-option label="在职职工报销类型" value="worker"></el-option>
+            <el-option label="退休人员报销类型" value="retired"></el-option>
+            <el-option label="离休人员报销类型" value="lixiu"></el-option>
+            <el-option label="特殊群体报销类型" value="teshu"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="报销金额" >
+            <el-col :span="11">
+              <el-input  placeholder="最小费用" v-model="record.cost1" ></el-input>
+            </el-col>
+            <el-col class="line" :span="2" style="text-align:center;">-</el-col>
+            <el-col :span="11">
+              <el-input  placeholder="最大费用" v-model="record.cost2" ></el-input>
+            </el-col>
+        </el-form-item>
+        <el-form-item label="就医医院">
+          <el-autocomplete
+            class="inline-input"
+            v-model="record.hospital"
+            :fetch-suggestions="hospitalSearch"
+            placeholder="就医医院"
+            @select="handleSelect">
+          </el-autocomplete>
+        </el-form-item>
+        <el-form-item label="报销时间" style="margin-left: 1.7%;">
+          <el-col :span="9">
+            <el-date-picker type="date" placeholder="选择起始日期" v-model="record.date1" style="width: 105%;"></el-date-picker>
+          </el-col>
+          <el-col class="line" :span="2" style="text-align:center;">-</el-col>
+          <el-col :span="9">
+            <el-date-picker type="date" placeholder="选择结束日期" v-model="record.date2" style="width: 105%;"></el-date-picker>
+          </el-col>
+        </el-form-item>          
+        <el-form-item label="就医科室">
+          <el-autocomplete
+            class="inline-input"
+            v-model="record.keshi"
+            :fetch-suggestions="keshiSearch"
+            placeholder="就医科室"
+            @select="handleSelect">
+          </el-autocomplete>
+        </el-form-item>
+        <el-form-item label="医事服务费"  style="margin-left: 1.7%;">
+          <el-col :span="11">
+            <el-input  placeholder="最小费用" v-model="record.servercost1" style="width: 100%;"></el-input>
+          </el-col>
+          <el-col class="line" :span="2" style="text-align:center;">-</el-col>
+          <el-col :span="11">
+            <el-input  placeholder="最大费用" v-model="record.servercost2" style="width: 100%;"></el-input>
+          </el-col>
+        </el-form-item>  
+        <el-form-item   style="margin-left: 1.7%;">
+          <el-button type="primary" size="mini" @click="onSubmit">查询</el-button>
+        </el-form-item>                       
+      </el-form>
+      <!-- <el-button type="primary" size="mini" @click="onSubmit" style="margin-left: 65%;">查询</el-button> -->
     </div>
     
 
@@ -155,7 +136,7 @@
         <el-table-column
           label="部门"
           align="center"
-          width="80">
+          width="180">
           <template slot-scope="scope">
             <span>{{ scope.row.depart}}</span>
           </template>
@@ -208,7 +189,8 @@
   </div>
 </template>
 <script>
- export default {
+  import axios from 'axios'
+  export default {
     data() {
       return {
         HostSearch:[],
@@ -308,7 +290,17 @@
         ];
       },
       onSubmit() {
-        console.log('submit!');
+        var _this = this
+        axios.post('/findrecording')
+          .then(function (res) {
+            console.log(res);
+            _this.recording = res
+            _this.pageTotal = _this.recording.length
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+
       }
     },
     mounted() {

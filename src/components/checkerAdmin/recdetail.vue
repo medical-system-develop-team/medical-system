@@ -11,7 +11,7 @@
       <div style="text-align: center;">
         <h2>审核报销凭证</h2>
         <small>类型:{{message}}</small>
-        <el-form ref="form" :inline="true" style="margin-top: 5px;"> 
+        <el-form ref="form" :inline="true" style="margin-top: 5px;text-align:left;margin-left: 11%;"> 
           <el-form-item  label="医事服务费自负比例：">
             <el-input size="mini" v-model="registerPercentage"></el-input>
           </el-form-item>
@@ -24,9 +24,9 @@
       <el-main>
         <el-scrollbar style="height:100%"> -->
           <div class="referral">
-            <div v-for="(item, index) in zhuanzhendan" :key="index">
+            <div v-for="(item, index) in zhuanzhendan" :key="index+'1'">
               <div class="title1" >
-                <span style="font-size:15px;">转诊单{{index+1}}</span>
+                <b style="font-size:15px;">转诊单{{index+1}}</b>
               </div>
               <div class="content" style="margin-top:10px;">
                 <el-form ref="form" :inline="true"  class="demo-form-inline">
@@ -39,15 +39,15 @@
                 </el-form>
               </div>
               <div class="imageBox" style="margin-top:10px;">
-                <b>转诊单：</b><br>
+                <span style="font-size:15px;">转诊单：</span><br>
                 <img src="item.img" id="previewPresImg" fit="scale-down"  onclick="handleImgSize();" style="width:150px;"><br>
                 <el-button type="primary" size="mini" onclick="handleImgDirection();">旋转90°</el-button>
               </div>       
             </div>
               
-            <div v-for="(item, index) in yishifuwufei" :key="index">
+            <div v-for="(item, index) in yishifuwufei" :key="index+'2'">
               <div class="title1" style="margin-top:10px;">
-                <span style="font-size:15px;">医事服务费（挂号费）{{index+1}}</span>
+                <b style="font-size:15px;">医事服务费(挂号费){{index+1}}</b>
               </div>
               <div class="content" style="margin-top:10px;">
                 <el-form ref="form" :inline="true"  class="demo-form-inline" style='text-align:left;margin-left: 10%;'>
@@ -72,15 +72,15 @@
                 </el-form>
               </div> 
               <div class="imageBox" style="margin-top:10px;">
-                <b>医事服务费（挂号费）：</b><br>
+                <span style="font-size:15px;">医事服务费(挂号费)：</span><br>
                 <img src="item.img" id="previewPresImg" name="registerImg" class="previewImg" onclick="handleImgSize();" style="width:150px;"><br>
                 <el-button type="primary" size="mini" onclick="handleImgDirection();">旋转90°</el-button>
               </div>
             </div>
             
-            <div v-for="(item, index) in yaofeidanju" :key="index">
+            <div v-for="(item, index) in yaofeidanju" :key="index+'3'">
               <div class="title1" style="margin-top:10px;">
-                <span style="font-size:15px;">药费单据{{index+1}}</span>
+                <b style="font-size:15px;">药费单据{{index+1}}</b>
               </div>
               <div class="content" style="margin-top:10px;">
                 <el-form ref="form" :inline="true" class="demo-form-inline" style='text-align:left;margin-left: 10%;'>
@@ -111,7 +111,7 @@
                 </el-form>
               </div> 
               <div class="imageBox" style="margin-top:10px;">
-                <b>医事服务费（挂号费）：</b><br>
+                <span style="font-size:15px;">药费单据：</span><br>
                 <img src="item.img" id="previewPresImg" name="registerImg" class="previewImg" onclick="handleImgSize();" style="width:150px;"><br>
                 <el-button type="primary" size="mini" onclick="handleImgDirection();">旋转90°</el-button>
               </div>
@@ -160,6 +160,7 @@ import axios from 'axios'
           recordtype:'',
           lasturl:'',
           message:'',
+          usertypemessage:['学生','职工','退休','离休','医照'],
           registerPercentage:'',
           medicalPercentage:'0.2',
           beizhu:'',
@@ -196,9 +197,13 @@ import axios from 'axios'
           axios.post('/recdetail',_this.id)
             .then(function (res) {
               console.log(res);
+              _this.registerPercentage = res.registerPercentage//医事服务费自负比例
+              _this.medicalPercentage = res.medicalPercentage//医药费自负比例
+              _this.beizhu = res.beizhu
               _this.zhuanzhendan = res.zhuanzhendan
               _this.yishifuwufei = res.yishifuwufei
               _this.yaofeidanju = res.yaofeidanju
+              _this.message = _this.usertypemessage[res.usertype]
             })
             .catch(function (error) {
               console.log(error);
