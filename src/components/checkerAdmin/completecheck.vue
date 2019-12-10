@@ -25,7 +25,7 @@
           align="center"
           width="120">
           <template slot-scope="scope">
-            <span>{{ scope.row.id}}</span>
+            <span>{{ scope.row.recordId}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -33,22 +33,30 @@
           align="center"
           width="120">
           <template slot-scope="scope">
-            <span>{{ scope.row.username}}</span>
+            <span>{{ scope.row.userName}}</span>
           </template>
         </el-table-column>
         <el-table-column
-          label="学号"
+          label="用户号"
           align="center"
           width="150">
           <template slot-scope="scope">
-            <span>{{ scope.row.userid}}</span>
+            <span>{{ scope.row.userNumber}}</span>
           </template>
         </el-table-column>
                 <el-table-column
           label="申请时间"
           width="150">
           <template slot-scope="scope">
-            <span>{{ scope.row.date}}</span>
+            <span>{{ scope.row.recordTime}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="用户类型"
+          align="center"
+          width="80">
+          <template slot-scope="scope">
+            <span>{{usermessage[scope.row.userType-1]}}</span>
           </template>
         </el-table-column>
         <el-table-column 
@@ -58,7 +66,7 @@
           <template slot-scope="scope">
             <el-button
             size="mini"
-            @click="recorddetail(scope.$index, scope.row)">详情</el-button>
+            @click="handleCheck(scope.$index, scope.row)">审核</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -74,12 +82,14 @@ import axios from 'axios'
     data() {
         //sturec:[]
       return {
-          id:'',
+          id:'0',
+          usermessage:['学生','职工','退休','离休','医照'],
           recording:[{
-            id:'111',
-            username:'dadad',
-            useridid:'12321123',
-            date:'19910228',
+            recordId:'111',
+            userName:'dadad',
+            userNumber:'12321123',
+            recordTime:'19910228',
+            userType:'2'
           }],
           pageTotal: 0
       }
@@ -91,7 +101,9 @@ import axios from 'axios'
     methods: {
         request(){
           var _this = this
-          axios.post('/findrecording')
+          const param={id:_this.id}
+          console.log("发送数据：",param) 
+          axios.post('/checkerAdmin/recording',param)
             .then(function (res) {
               console.log(res);
               _this.recording = res
@@ -102,8 +114,8 @@ import axios from 'axios'
             });
 
         },
-      recorddetail(index,row){
-          this.$router.push({path: '/checkerAdmin/recdetail', query:{id:row.id,showcheck:false,showcheckcomplete:true,lasturl:'/checkerAdmin/completecheck',recordtype:'已'}})
+      handleCheck(index,row){
+          this.$router.push({path: '/checkerAdmin/recdetail', query:{id:row.recordId,showcheck:false,showcheckcomplete:true,lasturl:'/checkerAdmin/completecheck',recordtype:'已'}})
       }
     },
     mounted: function () {},

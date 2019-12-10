@@ -12,28 +12,28 @@
       <div style="text-align: center;">
         <h2>审核报销凭证</h2>
         <small>类型:{{message}}</small>
-        <el-form ref="form" :inline="true" style="margin-top: 5px;text-align:left;margin-left: 11%;" > 
+        <el-form :model="Percentage" status-icon :rules="rules" ref="Percentage" :inline="true" style="margin-top: 5px;text-align:left;margin-left: 6.5vw;" > 
           <el-form-item  label="医事服务费自负比例：">
-            <el-input size="mini" v-model="registerPercentage"></el-input>
+            <el-input size="mini" v-model="Percentage.register"  :readonly=showcheckcomplete></el-input>
           </el-form-item>
           <el-form-item label="医药费自负比例：">
-            <el-input size="mini"  v-model="medicalPercentage"></el-input>
+            <el-input size="mini"  v-model="Percentage.medical"  :readonly=showcheckcomplete></el-input>
           </el-form-item>
         </el-form>
       </div>  
 
       <div class="referral">
         <div v-for="(item, index) in zhuanzhendan" :key="index+'1'">
-          <div class="title1" >
+          <div class="title1" style="margin-top:10px;">
             <b style="font-size:15px;">转诊单{{index+1}}</b>
           </div>
           <div class="content" style="margin-top:10px;">
-            <el-form ref="form" :inline="true"  class="demo-form-inline">
+            <el-form ref="form" :inline="true"  label-width="100px" class="demo-form-inline">
               <el-form-item label="医院：">
-                <el-input size="small" v-model="item.hospital" placeholder="请输入就诊医院"></el-input>
+                <el-input size="small" v-model="item.hospital" :readonly="true"></el-input>
               </el-form-item>
               <el-form-item label="日期：">
-                <el-input size="small"  v-model="item.date" placeholder="请输入就诊日期"></el-input>
+                <el-input size="small"  v-model="item.date" :readonly="true"></el-input>
               </el-form-item>
             </el-form>
           </div>
@@ -41,10 +41,10 @@
             <span style="font-size:15px;">转诊单：</span><br>
             <el-image 
               style="width: 100px; height: 100px"
-              :src="url" 
-              :preview-src-list="srcList">
+              :src="imageurl[0]" 
+              :preview-src-list="imageurl[0]">
             </el-image><br>
-            <el-button type="primary" size="mini" onclick="handleImgDirection();">旋转90°</el-button>
+            <el-button type="primary" size="mini" style="margin-top:10px;" onclick="handleImgDirection();">旋转90°</el-button>
           </div>       
         </div>
           
@@ -53,31 +53,38 @@
             <b style="font-size:15px;">医事服务费(挂号费){{index+1}}</b>
           </div>
           <div class="content" style="margin-top:10px;">
-            <el-form ref="form" :inline="true"  class="demo-form-inline" style='text-align:left;margin-left: 10%;'>
-              <el-form-item label="医院：">
-                <el-input size="small" v-model="item.hospital"></el-input>
+            <el-form ref="form" :inline="true"  class="demo-form-inline" label-width="100px" style='text-align:left;'><!-- margin-left: 10%; -->
+              <el-form-item label="医院：" >
+                <el-input size="small" v-model="item.hospital" :readonly="true"></el-input>
               </el-form-item>
               <el-form-item label="科室：">
-                <el-input size="small"  v-model="item.depart"></el-input>
+                <el-input size="small"  v-model="item.depart" :readonly="true"></el-input>
               </el-form-item>
-              <el-form-item label="金额：">
-                <el-input size="small" v-model="item.fee"></el-input>
+              <el-form-item label="金额：" >
+                <el-input size="small" v-model="item.fee" :readonly="true"></el-input>
               </el-form-item>
-              <el-form-item label="自费：">
-                <el-input size="small"  v-model="item.zifei"></el-input>
+              <el-form-item label="自费：" v-if="showcheckcomplete">
+                <el-input size="small"  v-model="item.zifei" :readonly=showcheckcomplete></el-input>
+              </el-form-item>
+              <el-form-item label="自费：" v-if="showcheck">
+                <el-input size="small"  v-model="fuwuzifei" @focus="zifeijisuan1(item)" :readonly=showcheckcomplete></el-input>
               </el-form-item>
               <el-form-item label="日期：">
-                <el-input size="small" v-model="item.date"></el-input>
+                <el-input size="small" v-model="item.date" :readonly="true"></el-input>
               </el-form-item>
               <el-form-item label="说明：">
-                <el-input size="small"  v-model="item.shuoming"></el-input>
+                <el-input size="small"  v-model="item.shuoming" :readonly="true"></el-input>
               </el-form-item>
             </el-form>
           </div> 
           <div class="imageBox" style="margin-top:10px;">
             <span style="font-size:15px;">医事服务费（挂号费）：</span><br>
-            <img src="item.img" id="previewPresImg" name="registerImg" class="previewImg" onclick="handleImgSize();" style="width:150px;"><br>
-            <el-button type="primary" size="mini" onclick="handleImgDirection();">旋转90°</el-button>
+            <el-image 
+              style="width: 100px; height: 100px"
+              :src="imageurl[1]" 
+              :preview-src-list="imageurl[1]">
+            </el-image><br>
+            <el-button type="primary" size="mini" style="margin-top:10px;" onclick="handleImgDirection();">旋转90°</el-button>
           </div>
         </div>
         
@@ -86,53 +93,101 @@
             <b style="font-size:15px;">药费单据{{index+1}}</b>
           </div>
           <div class="content" style="margin-top:10px;">
-            <el-form ref="form" :inline="true" class="demo-form-inline" style='text-align:left;margin-left: 10%;'>
+            <el-form ref="form" :inline="true" class="demo-form-inline" label-width="100px" style='text-align:left;'>
               <el-form-item label="医院：">
-                <el-input size="small" v-model="item.hospital"></el-input>
+                <el-input size="small" v-model="item.hospital" :readonly="true"></el-input>
               </el-form-item>
               <el-form-item label="科室：">
-                <el-input size="small"  v-model="item.depart"></el-input>
+                <el-input size="small"  v-model="item.depart" :readonly="true"></el-input>
               </el-form-item>
               <el-form-item label="金额：">
-                <el-input size="small" v-model="item.fee"></el-input>
+                <el-input size="small" v-model="item.fee" :readonly="true"></el-input>
               </el-form-item>
-              <el-form-item label="自费：">
-                <el-input size="small"  v-model="item.zifei"></el-input>
+              <el-form-item label="自费负担：" v-if="showcheckcomplete">
+                <el-input size="small"  v-model="item.zifei" :readonly=showcheckcomplete></el-input>
               </el-form-item>
-              <el-form-item label="特殊：">
-                <el-input size="small" v-model="item.specialfee"></el-input>
+              <el-form-item label="自费负担：" v-if="showcheck">
+                <el-input size="small"  v-model="yaozifei" @focus="zifeijisuan2(item)" :readonly=showcheckcomplete></el-input>
               </el-form-item>
-              <el-form-item label="部分：">
-                <el-input size="small"  v-model="item.partfee"></el-input>
+              <el-form-item label="特殊负担：">
+                <el-input size="small" v-model="item.specialfee" :readonly=showcheckcomplete></el-input>
+              </el-form-item>
+              <el-form-item label="部分负担：">
+                <el-input size="small"  v-model="item.partfee" :readonly=showcheckcomplete></el-input>
               </el-form-item>
               <el-form-item label="日期：">
-                <el-input size="small" v-model="item.date"></el-input>
+                <el-input size="small" v-model="item.date" :readonly="true"></el-input>
               </el-form-item>
               <el-form-item label="说明：">
-                <el-input size="small"  v-model="item.shuoming"></el-input>
+                <el-input size="small"  v-model="item.shuoming" :readonly="true"></el-input>
               </el-form-item>
             </el-form>
           </div> 
           <div class="imageBox" style="margin-top:10px;">
             <span style="font-size:15px;">药费单据：</span><br>
-            <img src="item.img" id="previewPresImg" name="registerImg" class="previewImg" onclick="handleImgSize();" style="width:150px;"><br>
-            <el-button type="primary" size="mini" onclick="handleImgDirection();">旋转90°</el-button>
+            <el-image 
+              style="width: 100px; height: 100px"
+              :src='imageurl[2]' 
+              :preview-src-list='imageurl[2]'>
+            </el-image><br>
+            <el-button type="primary" size="mini" style="margin-top: 10px;margin-buttom: 10px;" onclick="handleImgDirection();">旋转90°</el-button><br>
+            <span style="font-size:15px;">处方：</span><br>
+            <el-image 
+              style="width: 100px; height: 100px;"
+              :src='imageurl[3]' 
+              :preview-src-list='imageurl[3]'>
+            </el-image><br>
+            <el-button type="primary" size="mini" style="margin-top: 10px;" onclick="handleImgDirection();">旋转90°</el-button>
           </div>
         </div>
+
+        <div style="margin-top: 10px;">
+          <el-form label-width="100px" style='text-align:left;'>              
+            <el-form-item  label="外伤说明："> 
+              <el-col :span="18"> 
+                <el-input 
+                  type="textarea"
+                  :rows="2"
+                  v-model="waishangarr.waishangshuoming" 
+                  :readonly=true>
+                </el-input>
+              </el-col>  
+            </el-form-item>              
+          </el-form>
+          <div class="imageBox" style="margin-top:10px;">
+            <span style="font-size:15px;">签字盖章证明：</span><br>
+            <el-image 
+              style="width: 100px; height: 100px"
+              :src='imageurl[4]' 
+              :preview-src-list='imageurl[4]'>
+            </el-image><br>
+            <el-button type="primary" size="mini" style="margin-top: 10px;margin-buttom: 10px;" onclick="handleImgDirection();">旋转90°</el-button><br>
+            <span style="font-size:15px;">特殊用药说明：</span><br>
+            <el-image 
+              style="width: 100px; height: 100px;"
+              :src='imageurl[5]' 
+              :preview-src-list='imageurl[5]'>
+            </el-image><br>
+            <el-button type="primary" size="mini" style="margin-top: 10px;" onclick="handleImgDirection();">旋转90°</el-button>
+          </div>
+        </div>
+
         <div style="margin-top: 10px;" >
-          <el-form label-width="100px" style='margin-left: 5%;'>              
+          <el-form label-width="100px" style='text-align:left;'>              
             <el-form-item  label="备注："> 
               <el-col :span="18"> 
                 <el-input 
                   type="textarea"
                   :rows="2"
                   placeholder="请输入内容" 
-                  v-model="beizhu" >
+                  v-model="beizhu" 
+                  :readonly=showcheckcomplete>
                 </el-input>
               </el-col>  
             </el-form-item>              
           </el-form>
         </div>
+        
         <el-form :inline="true" class="demo-form-inline add-form" v-if="showcheck">
           <el-form-item class="btnRight">
             <el-button type="success" size ="mini" icon="view" style="margin-right: 20px;" @click='back()'>返回列表</el-button>
@@ -157,36 +212,68 @@ import axios from 'axios'
   export default {
     data() {
         //sturec:[]
-      return {
-          id:'',
-          usertype:'',
-          message:'',
-          usertypemessage:['学生','职工','退休','离休','医照'],
-          lasturl:'',
-          registerPercentage:'',
-          medicalPercentage:'0.2',
-          beizhu:'',
-          showcheck:true,
-          showcheckcomplete:false,
-          recording:[],
-            url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-            srcList: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'],
-          
-          zhuanzhendan:[
-            {
-            hospital:'111',
-            date:'2019.10.21',
-            pic:''
-            },
-            {
-            hospital:'222',
-            date:'2019.10.21',
-            pic:''
+      var validate1 = (rule, value, callback) => {
+        console.log("value");
+        if (!value) {
+          return callback(new Error('年龄不能为空'));
+        }
+        setTimeout(() => {
+          if (!Number.isInteger(value)) {
+            callback(new Error('请输入数字值'));
+          } else {
+            if (value < 18) {
+              callback(new Error('必须年满18岁'));
+            } else {
+              callback();
             }
+          }
+        }, 1000);
+      };
+      var validate2= (rule, value, callback) =>{callback();};
+      return {
+        id:'',
+        usertype:'',
+        message:'',
+        fuwuzifei:'0',
+        yaozifei:'10',
+        usertypemessage:['学生','职工','退休','离休','医照'],
+        lasturl:'',
+          
+        beizhu:'',
+        showcheck:true,
+        showcheckcomplete:false,
+        recording:[],
+        zhuanzhendan:[
+          {
+          hospital:'111',
+          date:'2019.10.21',
+          pic:''
+          },
+          {
+          hospital:'222',
+          date:'2019.10.21',
+          pic:''
+          }
+        ],
+        yishifuwufei:[{
+          fee:'100'
+        }],
+        yaofeidanju:[{fee:'100',zifei:'123'}],
+        waishangarr:[{}],
+        imageurl:[],
+        Percentage:{
+          register:'',
+          medical:'',
+        },
+        rules: {
+          register: [
+            { required: true, message: '请填写用户ID', trigger: 'change' }
           ],
-          yishifuwufei:[{}],
-          yaofeidanju:[{}],
-      }
+          medical: [
+            { validator: validate2, trigger: 'blur' }
+          ]
+        } 
+      };
     },
     created(){
         this.deatils()
@@ -207,13 +294,13 @@ import axios from 'axios'
                 this.$message.error(res.msg || '查询失败')
                 return
               }else{
-                _this.registerPercentage = res.registerPercentage//医事服务费自负比例
-                _this.medicalPercentage = res.medicalPercentage//医药费自负比例
+                _this.Percentage = res.Percentage//医事服务费自负比例医药费自负比例
                 _this.beizhu = res.beizhu
-                _this.zhuanzhendan.puse(res.zhuanzhendan)
-                _this.yishifuwufei.puse(res.yishifuwufei)
-                _this.yaofeidanju.puse(res.yaofeidanju)
-                _this.message = _this.usertypemessage[res.usertype]
+                _this.zhuanzhendan = res.res.zhuanzhendan
+                _this.yishifuwufei = res.res.yishifuwufei
+                _this.yaofeidanju = res.res.yaofeidanju
+                _this.waishangarr = res.waishangarr
+                _this.message = _this.usertypemessage[res.usertype+1]
               }
             })
             .catch(function (error) {
@@ -249,6 +336,21 @@ import axios from 'axios'
         },
         back(){
           this.$router.push({path: '/checker/recording', query:{id:this.usertype}})
+        },
+        zifeijisuan1(item){
+          console.log("fuwuzifei");
+          if(this.showcheck){
+            this.fuwuzifei = item.fee * this.Percentage.register
+          }
+          console.log("fuwuzifei",this.fuwuzifei);
+        },
+        zifeijisuan2(item){
+          console.log("yaofeizifei");
+          if(this.showcheck){
+            this.yaozifei = item.fee * this.Percentage.medical
+          }
+          
+          console.log("yaofeizifei",this.yaozifei);
         },
         backcomplete(){
           this.$router.push({path: '/checker/completecheck'})

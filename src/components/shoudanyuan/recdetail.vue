@@ -10,12 +10,12 @@
       </div>
       <div style="text-align: center;">
         <h2>报销凭证</h2>
-        <el-form ref="form" :inline="true" style="margin-top: 5px;text-align:left;margin-left: 11%;">'
+        <el-form ref="form" :inline="true" style="margin-top: 5px;text-align:left;margin-left: 6.5vw;">'
           <el-form-item  label="医事服务费自负比例：">
-            <el-input size="mini" v-model="registerPercentage"></el-input>
+            <el-input size="mini" v-model="registerPercentage" :readonly="true"></el-input>
           </el-form-item>
           <el-form-item label="医药费自负比例：">
-            <el-input size="mini"  v-model="medicalPercentage"></el-input>
+            <el-input size="mini"  v-model="medicalPercentage" :readonly="true"></el-input>
           </el-form-item>
         </el-form>
       </div>  
@@ -24,23 +24,23 @@
         <el-scrollbar style="height:100%"> -->
           <div class="referral">
             <div v-for="(item, index) in zhuanzhendan" :key="index+'1'">
-              <div class="title1" >
+              <div class="title1" style="margin-top:10px;">
                 <b style="font-size:15px;">转诊单{{index+1}}</b>
               </div>
               <div class="content" style="margin-top:10px;">
-                <el-form ref="form" :inline="true"  class="demo-form-inline">
+                <el-form ref="form" :inline="true"  label-width="100px" class="demo-form-inline">
                   <el-form-item label="医院：">
-                    <el-input size="small" v-model="item.hospital" placeholder="请输入就诊医院"></el-input>
+                    <el-input size="small" v-model="item.hospital" :readonly="true"></el-input>
                   </el-form-item>
                   <el-form-item label="日期：">
-                    <el-input size="small"  v-model="item.date" placeholder="请输入就诊日期"></el-input>
+                    <el-input size="small"  v-model="item.date" :readonly="true"></el-input>
                   </el-form-item>
                 </el-form>
               </div>
               <div class="imageBox" style="margin-top:10px;">
                 <span style="font-size:15px;">转诊单：</span><br>
                 <img src="item.img" id="previewPresImg" fit="scale-down"  onclick="handleImgSize();" style="width:150px;"><br>
-                <el-button type="primary" size="mini" onclick="handleImgDirection();">旋转90°</el-button>
+                <el-button type="primary" size="mini" style="margin-top:10px;" onclick="handleImgDirection();">旋转90°</el-button>
               </div>       
             </div>
               
@@ -49,31 +49,31 @@
                 <b style="font-size:15px;">医事服务费(挂号费){{index+1}}</b>
               </div>
               <div class="content" style="margin-top:10px;">
-                <el-form ref="form" :inline="true"  class="demo-form-inline" style='text-align:left;margin-left: 10%;'>
+                <el-form ref="form" :inline="true"  label-width="100px" class="demo-form-inline" style='text-align:left;'>
                   <el-form-item label="医院：">
-                    <el-input size="small" v-model="item.hospital"></el-input>
+                    <el-input size="small" v-model="item.hospital" :readonly="true"></el-input>
                   </el-form-item>
                   <el-form-item label="科室：">
-                    <el-input size="small"  v-model="item.depart"></el-input>
+                    <el-input size="small"  v-model="item.depart" :readonly="true"></el-input>
                   </el-form-item>
                   <el-form-item label="金额：">
-                    <el-input size="small" v-model="item.fee"></el-input>
+                    <el-input size="small" v-model="item.fee" :readonly="true"></el-input>
                   </el-form-item>
                   <el-form-item label="自费：">
-                    <el-input size="small"  v-model="item.zifei"></el-input>
+                    <el-input size="small"  v-model="item.zifei" :readonly="true"></el-input>
                   </el-form-item>
                   <el-form-item label="日期：">
-                    <el-input size="small" v-model="item.date"></el-input>
+                    <el-input size="small" v-model="item.date" :readonly="true"></el-input>
                   </el-form-item>
                   <el-form-item label="说明：">
-                    <el-input size="small"  v-model="item.shuoming"></el-input>
+                    <el-input size="small"  v-model="item.shuoming" :readonly="true"></el-input>
                   </el-form-item>
                 </el-form>
               </div> 
               <div class="imageBox" style="margin-top:10px;">
                 <span style="font-size:15px;">医事服务费(挂号费)：</span><br>
                 <img src="item.img" id="previewPresImg" name="registerImg" class="previewImg" onclick="handleImgSize();" style="width:150px;"><br>
-                <el-button type="primary" size="mini" onclick="handleImgDirection();">旋转90°</el-button>
+                <el-button type="primary" size="mini" style="margin-top:10px;" onclick="handleImgDirection();">旋转90°</el-button>
               </div>
             </div>
             
@@ -82,44 +82,87 @@
                 <b style="font-size:15px;">药费单据{{index+1}}</b>
               </div>
               <div class="content" style="margin-top:10px;">
-                <el-form ref="form" :inline="true" class="demo-form-inline" style='text-align:left;margin-left: 10%;'>
+                <el-form ref="form" :inline="true" label-width="100px" class="demo-form-inline" style='text-align:left;'>
                   <el-form-item label="医院：">
-                    <el-input size="small" v-model="item.hospital"></el-input>
+                    <el-input size="small" v-model="item.hospital" :readonly="true"></el-input>
                   </el-form-item>
                   <el-form-item label="科室：">
-                    <el-input size="small"  v-model="item.depart"></el-input>
+                    <el-input size="small"  v-model="item.depart" :readonly="true"></el-input>
                   </el-form-item>
                   <el-form-item label="金额：">
-                    <el-input size="small" v-model="item.fee"></el-input>
+                    <el-input size="small" v-model="item.fee" :readonly="true"></el-input>
                   </el-form-item>
-                  <el-form-item label="自费：">
-                    <el-input size="small"  v-model="item.zifei"></el-input>
+                  <el-form-item label="自费负担：">
+                    <el-input size="small"  v-model="item.zifei" :readonly="true"></el-input>
                   </el-form-item>
-                  <el-form-item label="特殊：">
-                    <el-input size="small" v-model="item.specialfee"></el-input>
+                  <el-form-item label="特殊负担：">
+                    <el-input size="small" v-model="item.specialfee" :readonly="true"></el-input>
                   </el-form-item>
-                  <el-form-item label="部分：">
-                    <el-input size="small"  v-model="item.partfee"></el-input>
+                  <el-form-item label="部分负担：">
+                    <el-input size="small"  v-model="item.partfee" :readonly="true"></el-input>
                   </el-form-item>
                   <el-form-item label="日期：">
-                    <el-input size="small" v-model="item.date"></el-input>
+                    <el-input size="small" v-model="item.date" :readonly="true"></el-input>
                   </el-form-item>
                   <el-form-item label="说明：">
-                    <el-input size="small"  v-model="item.shuoming"></el-input>
+                    <el-input size="small"  v-model="item.shuoming" :readonly="true"></el-input>
                   </el-form-item>
                 </el-form>
               </div> 
               <div class="imageBox" style="margin-top:10px;">
-                <span style="font-size:15px;">医事服务费（挂号费）：</span><br>
-                <img src="item.img" id="previewPresImg" name="registerImg" class="previewImg" onclick="handleImgSize();" style="width:150px;"><br>
-                <el-button type="primary" size="mini" onclick="handleImgDirection();">旋转90°</el-button>
+                <span style="font-size:15px;">药费单据：</span><br>
+                <el-image 
+                  style="width: 100px; height: 100px"
+                  :src='url1' 
+                  :preview-src-list='srcList'>
+                </el-image><br>
+                <el-button type="primary" size="mini" style="margin-top: 10px;margin-buttom: 10px;" onclick="handleImgDirection();">旋转90°</el-button><br>
+                <span style="font-size:15px;">处方：</span><br>
+                <el-image 
+                  style="width: 100px; height: 100px;"
+                  :src='url2' 
+                  :preview-src-list='srcList'>
+                </el-image><br>
+                <el-button type="primary" size="mini" style="margin-top: 10px;" onclick="handleImgDirection();">旋转90°</el-button>
               </div>
             </div>
+
             <div style="margin-top: 10px;">
-              <el-form label-width="100px" style="margin-left: 5%;">
+              <el-form label-width="100px" style='text-align:left;'>              
+                <el-form-item  label="外伤说明："> 
+                  <el-col :span="18"> 
+                    <el-input 
+                      type="textarea"
+                      :rows="2"
+                      v-model="waishangarr.waishangshuoming" 
+                      :readonly=true>
+                    </el-input>
+                  </el-col>  
+                </el-form-item>              
+              </el-form>
+              <div class="imageBox" style="margin-top:10px;">
+                <span style="font-size:15px;">签字盖章证明：</span><br>
+                <el-image 
+                  style="width: 100px; height: 100px"
+                  :src='url1' 
+                  :preview-src-list='srcList'>
+                </el-image><br>
+                <el-button type="primary" size="mini" style="margin-top: 10px;margin-buttom: 10px;" onclick="handleImgDirection();">旋转90°</el-button><br>
+                <span style="font-size:15px;">特殊用药说明：</span><br>
+                <el-image 
+                  style="width: 100px; height: 100px;"
+                  :src='url2' 
+                  :preview-src-list='srcList'>
+                </el-image><br>
+                <el-button type="primary" size="mini" style="margin-top: 10px;" onclick="handleImgDirection();">旋转90°</el-button>
+              </div>
+            </div>
+
+            <div style="margin-top: 10px;">
+              <el-form label-width="100px"  style='text-align:left;'>
                 <el-form-item label="备注：">
                   <el-col :span="18">
-                    <el-input size="small" type="textarea" v-model="beizhu"></el-input>
+                    <el-input size="small" type="textarea"  v-model="beizhu" :readonly="true"></el-input>
                   </el-col>
                 </el-form-item>
               </el-form>
@@ -166,6 +209,7 @@ import axios from 'axios'
           ],
           yishifuwufei:[{}],
           yaofeidanju:[{}],
+          waishangarr:[{}]
       }
     },
     created(){
@@ -184,6 +228,7 @@ import axios from 'axios'
               _this.zhuanzhendan = res.zhuanzhendan
               _this.yishifuwufei = res.yishifuwufei
               _this.yaofeidanju = res.yaofeidanju
+              _this.waishangarr = res.waishangarr
             })
             .catch(function (error) {
               console.log(error);

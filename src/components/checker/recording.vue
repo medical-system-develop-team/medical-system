@@ -42,14 +42,14 @@
           align="center"
           width="150">
           <template slot-scope="scope">
-            <span>{{ scope.row.userid}}</span>
+            <span>{{ scope.row.userNumber}}</span>
           </template>
         </el-table-column>
                 <el-table-column
           label="申请时间"
           width="150">
           <template slot-scope="scope">
-            <span>{{ scope.row.date}}</span>
+            <span>{{ scope.row.recordTime}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -88,7 +88,13 @@ import axios from 'axios'
           message:'',//汉字用户种类
           usermessage:['学生','职工','退休','离休','医照'],
           lasturl:'',//跳转前路径
-          recording:[],
+          recording:[{
+            recordId:'111',
+            userName:'dadad',
+            userNumber:'12321123',
+            recordTime:'19910228',
+            userType:''
+          }],
           pageTotal: 0
       }
     },
@@ -149,7 +155,7 @@ import axios from 'axios'
 
         },
       handleCheck(index,row){
-          this.$router.push({path: '/checker/recdetail', query:{id:row.id,usertype:this.id,message:this.message,showcheck:true,showcheckcomplete:false,lasturl:'/checker/recording'}})
+          this.$router.push({path: '/checker/recdetail', query:{id:row.recordId,usertype:this.id,message:this.message,showcheck:true,showcheckcomplete:false,lasturl:'/checker/recording'}})
       }
     },
     mounted: function () {
