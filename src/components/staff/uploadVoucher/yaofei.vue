@@ -1,51 +1,39 @@
 <template>
   <div class="yaofei">
-
     <div class="each-item" v-for="(record, index) in localValue" :key="index">
-      <h2>医院：{{ record.hosName }}</h2>
-      <div v-for="(item, idx) in record.fuwufeiArr" :key="idx">
-        <h4>“{{ item.office }}” 科室的药费</h4>
-        <!-- <el-divider class="office-yaofei-title" content-position="left">“{{ item.office }}” 科室的药费</el-divider> -->
-        <div v-for="(yiyao, i) in item.yaofeiArr" :key="index + idx + i" class="yaofei-item">
-
-          <el-divider content-position="left">
-            <span class="yaofei-divider">第 {{i + 1}} 条药费单据记录</span>
-          </el-divider>
-          <el-button type="text" class="delete-button" @click="deleteARecord(index, idx, i)">删除</el-button>
-
-          <el-form ref="form" class="item-form" :model="yiyao" size="small" label-width="90px" label-position="left">
-            <el-form-item label="② 金额" prop="yaofeiPay" :rules="[validateRequiredRule('金额为必填')]">
-              <el-input v-model="yiyao.yaofeiPay" type="number" placeholder="请填写金额" />
+      <p>医院：{{ record.hosName }} (科室：{{ record.office }})</p>
+      <div v-for="(item, idx) in record.yaofeiArr" :key="`${index}-${idx}`" class="yaofei-item">
+        <el-divider content-position="left"> 第 {{idx + 1}} 条药费单据记录</el-divider>
+        <el-button type="text" class="delete-button" @click="deleteARecord(index, idx)">删除</el-button>
+        <el-form ref="form" class="item-form" :model="item" size="small" label-width="90px" label-position="left">
+          <el-form-item label="② 金额" prop="yaofeiPay" :rules="[validateRequiredRule('金额为必填')]">
+              <el-input v-model="item.yaofeiPay" type="number" placeholder="请填写金额" />
             </el-form-item>
             <el-form-item label="③ 日期" prop="yaofeiDate" :rules="[validateRequiredRule('日期为必填')]">
-              <el-date-picker v-model="yiyao.yaofeiDate" type="date" placeholder="选择日期" />
+              <el-date-picker v-model="item.yaofeiDate" type="date" placeholder="选择日期" />
             </el-form-item>
             <el-form-item label="④ 药费照片" prop="yaofeiImg">
-              <el-upload class="img-upload" action="http://localhost:8888/api/UploadImgY" :show-file-list="false" :on-success="handleAvatarSuccess(index, idx, i, 'yaofeiImg')" :before-upload="beforeAvatarUpload">
-                <div v-if="yiyao.yaofeiImg" class="img">
-                  <el-image :src="yiyao.yaofeiImg" fit="scale-down" />
+              <el-upload class="img-upload" action="http://localhost:8888/api/UploadImgY" :show-file-list="false" :on-success="handleAvatarSuccess(index, idx, 'yaofeiImg')" :before-upload="beforeAvatarUpload">
+                <div v-if="item.yaofeiImg" class="img">
+                  <el-image :src="item.yaofeiImg" fit="scale-down" />
                 </div>
                 <el-button v-else type="text"><i class="el-icon-plus avatar-uploader-icon" />点击上传图片</el-button>
               </el-upload>
             </el-form-item>
             <el-form-item label="⑤ 处方照片" prop="chufangImg">
-              <el-upload class="img-upload" action="http://localhost:8888/api/UploadImgC" :show-file-list="false" :on-success="handleAvatarSuccess(index, idx, i,  'chufangImg')" :before-upload="beforeAvatarUpload">
-                <div v-if="yiyao.chufangImg" class="img">
-                  <el-image :src="yiyao.chufangImg" fit="scale-down" />
+              <el-upload class="img-upload" action="http://localhost:8888/api/UploadImgC" :show-file-list="false" :on-success="handleAvatarSuccess(index, idx, 'chufangImg')" :before-upload="beforeAvatarUpload">
+                <div v-if="item.chufangImg" class="img">
+                  <el-image :src="item.chufangImg" fit="scale-down" />
                 </div>
                 <el-button v-else type="text"><i class="el-icon-plus avatar-uploader-icon" />点击上传图片</el-button>
               </el-upload>
             </el-form-item>
-          </el-form>
-
-        </div>
-
-        <el-divider class="add-yaofei" content-position="left">
-          <el-button type="text" size="small" @click="newARecord(index, idx)">新增药费单据记录</el-button>
-        </el-divider>
+        </el-form>
 
       </div>
-
+      <el-divider content-position="left">
+        <el-button type="text" size="small" @click="newARecord(index)">新增药费单据记录</el-button>
+      </el-divider>
     </div>
 
     <div class="button-container">
@@ -74,18 +62,19 @@ export default {
     value(val) { this.localValue = val }
   },
   methods: {
-    newARecord(index, idx) {
-      if (!this.checkForm()) {
+    newARecord(index) {
+      if (!this.checkForm(this.localValue)) {
         this.$message.error('请填写完整已经添加记录')
         return
       }
-      
-      this.localValue[index].fuwufeiArr[idx].yaofeiArr.push({
-        yaofeiPay: '', // 药费金额
-        yaofeiDate: '', // 产生费用的日期
-        yaofeiImg: '',
-        chufangImg: ''
-      })
+      this.localValue[index].yaofeiArr.push(
+        {
+          yaofeiPay: '', // 药费金额
+          yaofeiDate: '', // 产生费用的日期
+          yaofeiImg: '',
+          chufangImg: ''
+        }
+      )
       this.$emit('change', this.localValue)
     },
     next() {
@@ -93,13 +82,13 @@ export default {
       // if (!this.checkForm()) return
       // this.nextStep()
     },
-    deleteARecord(index, idx, i) {
-      this.localValue[index].fuwufeiArr[idx].yaofeiArr.splice(i, 1)
+    deleteARecord(index, idx) {
+      this.localValue[index].yaofeiArr.splice(idx, 1)
       this.$emit('change', this.localValue)
     },
-    handleAvatarSuccess(index, idx, i, key) {
+    handleAvatarSuccess(index, idx, key) {
       return (res, file) => {
-        this.localValue[index].fuwufeiArr[idx].yaofeiArr[i][key] = URL.createObjectURL(file.raw);
+        this.localValue[index].yaofeiArr[idx][key] = URL.createObjectURL(file.raw);
       }
     },
     beforeAvatarUpload(file) {
@@ -139,8 +128,8 @@ export default {
 <style lang="less" scoped>
 .yaofei {
   .each-item {
-    padding: 20px 20px 40px 20px;
     margin: 20px 0 40px 0;
+    padding: 20px 20px 40px 20px;
     border-radius: 5px;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     .delete-button {
