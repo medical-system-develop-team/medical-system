@@ -20,7 +20,7 @@
           align="center"
           width="200">
           <template slot-scope="scope">
-            <span>{{ scope.row.id }}</span>
+            <span>{{ scope.row.id}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -68,7 +68,8 @@
   </div>
 </template>
 <script>
-
+  import axios from 'axios'
+  import { axiospost } from '@/api/index.js'
   import DepartInfo from './DepartInfo.vue'
   import DepartEdit from './DepartEdit.vue'
 
@@ -82,6 +83,8 @@
 
     data() {
       return {
+        edit:false,
+        indexNum:'',
         dialogAdd : {
           show : false
         },
@@ -102,40 +105,47 @@
         }]
       }
     },
-    created(){
-            this.getDepartInfo();
-        },
+    created(){},
     methods: {
       hanldeAdd(){  
         this.dialogAdd.show = true ;    
       },
-      getDepartInfo() {
-        this.$axios.get('http://localhost:3000/data').then(res => {
-          this.departData = res.data  
-        })
+      getDepartInfo(val) {
+        if(this.edit){
+          this.departData.splice(this.indexNum, 1,val)
+          console.log("indexNum：",this.indexNum)
+          this.edit=false;
+        }else{
+          this.departData.splice(0, 0,val)
+        }
       },
     
       handleDelete(index,row) {
-        // 删除用户信息
-        this.$axios.delete(`http://localhost:3000/data/${row.id}`).then(res =>{
-            this.$message({
-                res,
-                type:"success",
-                message:"删除信息成功"
-            })
-            this.getDepartInfo()    //删除数据，更新视图
+        this.$confirm('确认删除该部门吗?', '提示', {
+            type: 'warning'
+        })
+        .then(() => {
+          //this.departData.splice(index, 1)
+          axiospost(`/deletedepart`,{id:row.id}).then(res =>{
+            if(res.code==200){
+              this.$message.success('删除部门成功')
+              this.departData.splice(index, 1)
+            }else{
+              this.$message.error(res.code || '删除部门失败！')
+            }   
+          })
         })
       },
       handleEdit(index,row){  //编辑
         this.dialogEdit.show = true ;  //显示弹
-        
+        this.edit=true;
+        this.indexNum = index ;
         this.form = {
           id:row.id,
           departname:row.departname,
           number:row.number,
           oldname:row.oldname
         }
-        console.log('adadad')
       },
     }
   }

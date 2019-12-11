@@ -81,8 +81,8 @@
         this.$refs[formEdit].validate((valid) => {
           if (valid) {
             this.$emit('updateEdit',this.form);
-            axiospost(`http://localhost:3000/data/${this.form.id}`,this.form).then(res => {
-              console.log('发送数据：',this.formDate)
+            axiospost(`/useredit`,this.form).then(res => {
+              console.log('发送数据：',this.form)
               console.log('接收数据：',res)
               if(res.code==200){
                 this.$message.success('修改信息成功')

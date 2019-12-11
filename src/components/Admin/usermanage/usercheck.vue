@@ -221,14 +221,13 @@
           role:row.role
         }
       },
-       handleDelete(index,row) {
+      handleDelete(index,row) {
         // 删除用户信息
         this.$confirm('确认删除该用户吗?', '提示', {
             type: 'warning'
         })
         .then(() => {
           this.userData.splice(index, 1)
-          //this.$axios.delete(`http://localhost:3000/data/${row.id}`).then(res =>{
           axiospost(`/deleteuser`,{id:row.id}).then(res =>{
             if(res.code==200){
               this.$message.success('删除用户成功')

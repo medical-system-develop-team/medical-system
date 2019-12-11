@@ -80,11 +80,11 @@
           :index="indexMethod">
         </el-table-column>
         <el-table-column
-          label="编号"
+          label="用户号"
           align="center"
           width="150">
           <template slot-scope="scope">
-            <span>{{ scope.row.id }}</span>
+            <span>{{ scope.row.userid }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -133,14 +133,14 @@
             <span style="margin-left: 0px">{{ scope.row.phone}}</span>
           </template>
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           label="工资号"
           align="center"
           width="80">
           <template slot-scope="scope">
             <span>{{ scope.row.salaryid}}</span>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           label="地址"
           align="center"
@@ -164,6 +164,8 @@
 
 </template>
 <script>
+  import axios from 'axios'
+  import { axiospost } from '@/api/index.js'
   import { checkdepart } from '@/api/index.js'
   import DepartEdit from './DepartEdit.vue'
 
@@ -177,6 +179,8 @@
         dialogEdit : {   //编辑弹出框，默认是false
           show : false
         },
+        edit:false,
+        indexNum:'',
         form:{    //编辑信息
           id:'',
           departname:'',
@@ -201,7 +205,7 @@
           sex:'',
           nation:'',
           phone:'',
-          salaryid:'',
+          userid:'11111',
           address:'',
           role:'12313123'
         }]
@@ -228,16 +232,20 @@
         return index;
       },
 
-      getDepartInfo() {
-        this.$axios.get('http://localhost:3000/data').then(res => {
-          this.departData = res.data  
-          //this.userData.push(formDate);
-        })
+      getDepartInfo(val) {
+       if(this.edit){
+          this.departData.splice(this.indexNum, 1,val)
+          console.log("indexNum：",this.indexNum)
+          this.edit=false;
+        }else{
+          this.departData.splice(0, 0,val)
+        }
       },
 
       handleEdit(index,row){  //编辑
         this.dialogEdit.show = true ;  //显示弹
-        
+        this.edit=true;
+        this.indexNum = index ;
         this.form = {
           id:row.id,
           departname:row.departname,
@@ -246,18 +254,22 @@
         }
         console.log('deartedit')
       },
-      handleDelete(index, row) {
-        console.log(index, row);
-        //this.$router.push('/Admin/usermanage/userdelet')
-         // 删除用户信息
-        this.$axios.delete(`http://localhost:3000/data/${row.id}`).then(res =>{
-            this.$message({
-                res,
-                type:"success",
-                message:"删除信息成功"
-            })
+      handleDelete(index,row) {
+        this.$confirm('确认删除该部门吗?', '提示', {
+            type: 'warning'
         })
-      }
+        .then(() => {
+          //this.departData.splice(index, 1)
+          axiospost(`/deletedepart`,{id:row.id}).then(res =>{
+            if(res.code==200){
+              this.$message.success('删除部门成功')
+              this.departData.splice(index, 1)
+            }else{
+              this.$message.error(res.code || '删除部门失败！')
+            }   
+          })
+        })
+      },
     }
   }
 </script>

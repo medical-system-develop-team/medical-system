@@ -24,6 +24,8 @@
 </template>
 
 <script>
+  import axios from 'axios'
+  import { axiospost } from '@/api/index.js'
 export default {
   name: 'DepartEdit',
   props:{
@@ -40,23 +42,26 @@ export default {
   },
   methods:{
     dialogFormEdit(formEdit) {
-      this.$refs[formEdit].validate((valid) => {
-        if (valid) {
-          this.$axios.put(`http://localhost:3000/data/${this.form.id}`,this.form).then(res => {
-            this.$message({
-              type:"success",
-              message:"编辑信息成功"
+        this.$refs[formEdit].validate((valid) => {
+          if (valid) {
+            //this.$emit('updateEdit',this.form);
+            axiospost(`/departedit`,this.form).then(res => {
+              console.log('发送数据：',this.form)
+              console.log('接收数据：',res)
+              if(res.code==200){
+                this.$message.success('修改信息成功')
+                this.dialogAdd.show = false;
+                this.$emit('updateEdit',this.form);//更新父组件数据视图
+              }else{
+                this.$message.error(res.code || '修改失败！')
+              }  
             })
-            console.log(res)
-              this.dialogEdit.show = false;
-              this.$emit('updateEdit')   //更新父组件数据视图
-          })
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-      })
-    }
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        })
+      }
   }
 }
 </script>
