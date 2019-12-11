@@ -45,7 +45,7 @@
             <span>{{ scope.row.userNumber}}</span>
           </template>
         </el-table-column>
-                <el-table-column
+        <el-table-column
           label="申请时间"
           width="150">
           <template slot-scope="scope">
@@ -113,7 +113,6 @@ import axios from 'axios'
     methods: {
         deatils(){
           this.id =this.$route.query.id
-          //console.log("asdasd",this.id)
           switch(this.id){
             case '1' :
               this.message = "学生" ;

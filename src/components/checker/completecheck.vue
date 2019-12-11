@@ -122,7 +122,7 @@ import axios from 'axios'
 
         },
       recorddetail(index,row){
-          this.$router.push({path: '/checker/recdetail', query:{id:row.recordId,showcheck:false,showcheckcomplete:true,lasturl:'/checker/completecheck'}})
+          this.$router.push({path: '/checker/recdetail', query:{id:row.recordId,showcheck:false,showcheckcomplete:true,message:this.usermessage[row.userType-1],lasturl:'/checker/completecheck'}})
       }
     },
     mounted: function () {},

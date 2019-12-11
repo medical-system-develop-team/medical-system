@@ -12,12 +12,12 @@
       <div style="text-align: center;">
         <h2>审核报销凭证</h2>
         <small>类型:{{message}}</small>
-        <el-form :model="Percentage" status-icon :rules="rules" ref="Percentage" :inline="true" style="margin-top: 5px;text-align:left;margin-left: 6.5vw;" > 
+        <el-form :inline="true" style="margin-top: 5px;text-align:left;margin-left: 6.5vw;" > 
           <el-form-item  label="医事服务费自负比例：">
-            <el-input size="mini" v-model="Percentage.register"   :readonly=showcheckcomplete></el-input>
+            <el-input size="mini" v-model="registerPercentage"   :readonly=showcheckcomplete></el-input>
           </el-form-item>
           <el-form-item label="医药费自负比例：">
-            <el-input size="mini"  v-model="Percentage.medical"  :readonly=showcheckcomplete></el-input>
+            <el-input size="mini"  v-model="medicalPercentage"  :readonly=showcheckcomplete></el-input>
           </el-form-item>
         </el-form>
       </div>  
@@ -123,12 +123,12 @@
               <el-form-item label="自费负担：" v-if="showcheck">
                 <el-input size="small"  v-model="yaozifei" @focus="zifeijisuan2(item)" :readonly=showcheckcomplete></el-input>
               </el-form-item>
-              <el-form-item label="特殊负担：">
+              <!-- <el-form-item label="特殊负担：">
                 <el-input size="small" v-model="item.specialfee" :readonly=showcheckcomplete></el-input>
               </el-form-item>
               <el-form-item label="部分负担：">
                 <el-input size="small"  v-model="item.partfee" :readonly=showcheckcomplete></el-input>
-              </el-form-item>
+              </el-form-item> -->
               <el-form-item label="日期：">
                 <el-input size="small" v-model="item.date" :readonly="true"></el-input>
               </el-form-item>
@@ -183,20 +183,20 @@
                 <el-input    
                   type="textarea"
                   :rows="2"
-                  v-model="Form.formText" 
+                  v-model="item.formText" 
                   :readonly=true>
                 </el-input>
               </el-col>  
             </el-form-item>
           </el-form>
-          <el-form label-width="100px" :model="Form" :inline="true">
+          <el-form label-width="100px" :inline="true">
             <el-form-item >
               <label>签字盖章证明：</label><br>
               <!-- <div class="imageBox" style="margin-top: 10px;"> -->
                 <el-image 
                   style="width: 100px; height: 100px; "
-                  :src="Form.gaizhangImage" 
-                  :preview-src-list="Form.gaizhangImage">
+                  :src="item.gaizhangImage" 
+                  :preview-src-list="item.gaizhangImage">
                 </el-image><br>
                 <el-button type="primary" size="mini" style="margin-top:5px;" onclick="handleImgDirection();">旋转90°</el-button>
                 <!-- </div> -->
@@ -206,8 +206,8 @@
                 <!-- <div class="imageBox" style="margin-top: 10px;"> -->
                   <el-image 
                     style="width: 100px; height: 100px; margin-left: 5vw;"
-                    :src="Form.teshuImage" 
-                    :preview-src-list="Form.teshuImage">
+                    :src="item.teshuImage" 
+                    :preview-src-list="item.teshuImage">
                   </el-image><br>
                   <el-button type="primary" size="mini" style="margin-top:5px;  margin-left: 6vw;" onclick="handleImgDirection();">旋转90°</el-button>
                 <!-- </div> -->
@@ -229,17 +229,17 @@
             </el-image><br>
             <el-button type="primary" size="mini" style="margin-top: 10px;" onclick="handleImgDirection();">旋转90°</el-button>
           </div> -->
-        <!-- </div>
+        </div>
 
-        <div style="margin-top: 10px;" > -->
-          <el-form label-width="100px" :model="Form" style='text-align:left;'>              
+        <div style="margin-top: 10px;" >
+          <el-form label-width="100px"  style='text-align:left;'>              
             <el-form-item  label="备注："> 
               <el-col :span="18"> 
                 <el-input 
                   type="textarea"
                   :rows="2"
                   placeholder="请输入内容" 
-                  v-model="Form.beizhu" 
+                  v-model="beizhu" 
                   :readonly=showcheckcomplete>
                 </el-input>
               </el-col>  
@@ -271,24 +271,6 @@ import axios from 'axios'
   export default {
     data() {
         //sturec:[]
-      var validate1 = (rule, value, callback) => {
-        console.log("value");
-        if (!value) {
-          return callback(new Error('年龄不能为空'));
-        }
-        setTimeout(() => {
-          if (!Number.isInteger(value)) {
-            callback(new Error('请输入数字值'));
-          } else {
-            if (value < 18) {
-              callback(new Error('必须年满18岁'));
-            } else {
-              callback();
-            }
-          }
-        }, 1000);
-      };
-      var validate2= (rule, value, callback) =>{callback();};
       return {
         imageurl:[],
         id:'',
@@ -303,22 +285,13 @@ import axios from 'axios'
         showcheck:true,
         showcheckcomplete:false,
         recording:[],
-        changehospital:[],
-        register:[],
-        bill:[],
-        Form:[],
-        Percentage:{
-          register:'',
-          medical:'',
-        },
-        rules: {
-          register: [
-            { required: true, message: '请填写用户ID', trigger: 'change' }
-          ],
-          medical: [
-            { validator: validate2, trigger: 'blur' }
-          ]
-        } 
+        changehospital:[{}],
+        register:[{}],
+        bill:[{}],
+        Form:[{}],
+        registerPercentage:'0.2',
+        medicalPercentage:'0.2'
+
       };
     },
     created(){
@@ -343,7 +316,7 @@ import axios from 'axios'
                 return
               }else{
                 _this.Percentage = res.Percentage//医事服务费自负比例医药费自负比例
-                //_this.beizhu = res.beizhu
+                _this.beizhu = res.beizhu
                 _this.changehospital = res.changehospital
                 _this.register = res.register
                 _this.bill = res.bill
@@ -388,14 +361,14 @@ import axios from 'axios'
         zifeijisuan1(item){
           console.log("fuwuzifei");
           if(this.showcheck){
-            this.fuwuzifei = item.registerCost * this.Percentage.register
+            this.fuwuzifei = item.registerCost * this.registerPercentage
           }
           console.log("fuwuzifei",this.fuwuzifei);
         },
         zifeijisuan2(item){
           console.log("yaofeizifei");
           if(this.showcheck){
-            this.yaozifei = item.billCost * this.Percentage.medical
+            this.yaozifei = item.billCost * this.medicalPercentage
           }
           
           console.log("yaofeizifei",this.yaozifei);
