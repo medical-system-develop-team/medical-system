@@ -154,6 +154,7 @@ import axios from 'axios'
 
         },
       handleCheck(index,row){
+          console.log("报销记录编号：",row.recordId)
           this.$router.push({path: '/checker/recdetail', query:{id:row.recordId,usertype:this.id,message:this.message,showcheck:true,showcheckcomplete:false,lasturl:'/checker/recording'}})
       }
     },

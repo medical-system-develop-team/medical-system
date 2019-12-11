@@ -190,9 +190,11 @@
 </template>
 <script>
   import axios from 'axios'
+  import { axiospost } from '@/api/index.js'
   export default {
     data() {
       return {
+        usertype:['学生','职工','退休','离休','医照'],
         HostSearch:[],
         keSearch:[],
         record: {
@@ -291,11 +293,11 @@
       },
       onSubmit() {
         var _this = this
-        axios.post('/findrecording')
+        axiospost('/findrecording',_this.record)
           .then(function (res) {
             console.log(res);
-            _this.recording = res
-            _this.pageTotal = _this.recording.length
+            _this.recordData = res
+            _this.pageTotal = _this.recordData.length
           })
           .catch(function (error) {
             console.log(error);

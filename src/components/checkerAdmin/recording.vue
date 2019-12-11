@@ -123,7 +123,7 @@ import axios from 'axios'
 
         },
       handleCheck(index,row){
-          this.$router.push({path: '/checkerAdmin/recdetail', query:{id:row.recordId,showcheck:true,showcheckcomplete:false,lasturl:'/checkerAdmin/recording',recordtype:'待'}})
+          this.$router.push({path: '/checkerAdmin/recdetail', query:{message:this.usermessage[row.userType-1],id:row.recordId,showcheck:true,showcheckcomplete:false,lasturl:'/checkerAdmin/recording',recordtype:'待'}})
       }
     },
     mounted: function () {
