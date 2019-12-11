@@ -31,22 +31,29 @@
         stripe
         style="width: 100%"
         @select="handleSelectionChange"
-        @select-all="selectAll">
+        @select-all="selectAll"
+        :row-class-name="rowClassName">
         <el-table-column
           type="selection"
           align='center'
           width="60">
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           type="index"
           width="20">
+        </el-table-column> -->
+        <el-table-column 
+          prop="id" 
+          label="序号"  
+          align="center" 
+          width="50">
         </el-table-column>
         <el-table-column
-          label="编号"
+          label="用户号"
           align="center"
           width="150">
           <template slot-scope="scope">
-            <span>{{ scope.row.id }}</span>
+            <span>{{ scope.row.userid }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -95,14 +102,14 @@
             <span style="margin-left: 0px">{{ scope.row.phone}}</span>
           </template>
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           label="工资号"
           align="center"
           width="80">
           <template slot-scope="scope">
             <span>{{ scope.row.salaryid}}</span>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           label="地址"
           align="center"
@@ -143,7 +150,8 @@
   </div>
 </template>
 <script>
-
+  import axios from 'axios'
+  import { axiospost } from '@/api/index.js'
   //import { checkuser } from '@/api/index.js'
   import UserInfo from './UserInfo.vue'
   import UserEdit from './UserEdit.vue'
@@ -173,6 +181,9 @@
           show : false
         },
         pageTotal: 0,
+        edit:false,
+        indexNum:'',
+        batchdelindex:[],
         searchBtnDisabled : true ,
         form:{    //编辑信息
           /* id:'',
@@ -187,15 +198,15 @@
           role:'' */
         },
         userData:[{
-          id:'131',
+          id:'',//序号行号
           username:'123',
           depart:'131',
-          age:'',
-          sex:'',
-          nation:'',
-          phone:'',
-          salaryid:'',
-          address:'',
+          age:'qwe',
+          sex:'qe',
+          nation:'qwe',
+          phone:'eqe',
+          userid:'qweqwe',
+          address:'eqwe',
           role:'123'
         }],
         multipleSelection: []
@@ -207,8 +218,8 @@
       }
       },
     created(){
-            this.getUserInfo();
-        },
+      //this.getUserInfo();
+    },
     methods: {
       hanldeAdd(){  
         this.dialogAdd.show = true ;    
@@ -216,13 +227,19 @@
       BatchIn(){
         this.dialogBatchIn.show = true ; 
       },
-      getUserInfo() {
-        this.$axios.get('http://localhost:3000/data').then(res => {
-          this.pageInfo.pageTotal=res.count;
-          this.userData = res.data.userdate;
-          this.total = res.date.total
-          //this.userData.push(formDate);
-        })
+      getUserInfo(val) {
+        if(this.edit){
+          this.userData.splice(this.indexNum, 1,val)
+          console.log("indexNum：",this.indexNum)
+          this.edit=false;
+        }else{
+          this.userData.splice(0, 0,val)
+        }
+        /* axiospost('http://localhost:3000/data').then(res => {         
+          this.userData = res.userdate;
+          this.pageInfo.pageTotal=this.userData.length;
+          //this.total = res.date.total
+        }) */
       },
     
       handleDelete(index,row) {
@@ -231,13 +248,16 @@
             type: 'warning'
         })
         .then(() => {
-          this.$axios.delete(`http://localhost:3000/data/${row.id}`).then(res =>{
-              this.$message({
-                  res,
-                  type:"success",
-                  message:"删除信息成功"
-              })
-              this.getUserInfo()    //删除数据，更新视图
+          this.userData.splice(index, 1)
+          //this.$axios.delete(`http://localhost:3000/data/${row.id}`).then(res =>{
+          axiospost(`/deleteuser`,{id:row.id}).then(res =>{
+            if(res.code==200){
+              this.$message.success('删除用户成功')
+              this.userData.splice(index, 1)
+            }else{
+              this.$message.error(res.code || '删除用户失败！')
+            }   
+          //this.getUserInfo()    //删除数据，更新视图
           })
         })
       },
@@ -246,9 +266,19 @@
             type: 'warning'
         })
         .then(() => {
-            const ids = this.rowIds.map(item => item.id).toString()
+            /*const ids = this.rowIds.map(item => item.id).toString() 
             const para = { ids: ids }
-            Request(para).then(res => {
+            console.log('发送数据：',para) */
+            for(let j = 0; j <this.multipleSelection.length;j++){
+              for(let i = 0; i <this.userData.length;i++){
+                if(this.multipleSelection[j]==this.userData[i].userid){
+                  this.userData.splice(i, 1)
+                }
+                 
+              }
+            }
+            console.log('发送数据：',this.multipleSelection)
+            axiospost('/deleteids',this.multipleSelection).then(res => {
                 this.$message({
                     message: '批量删除成功',
                     type: 'success'
@@ -261,36 +291,46 @@
 
       handleEdit(index,row){  //编辑
         this.dialogEdit.show = true ;  //显示弹
-        this.form = {...row
-          /* id:row.id,
-          username:row.username,
-          depart:row.depart,
-          age:row.age,
-          sex:row.sex,
-          nation:row.nation,
-          phone:row.phone,
-          salaryid:row.salaryid,
-          address:row.address,
-          role:row.role */
-        }
+        this.edit=true;
+        this.indexNum = index ;
+        console.log("行号：",index,this.indexNum)
+        this.form = {...row}
       },
-      handleSelectionChange(val) { 
-        
+      handleSelectionChange(val) {
+        this.multipleSelection=[]
+        this.batchdelindex=[]
+        console.log("handleSelectionChange:  ",this.multipleSelection,this.batchdelindex)
+        val.forEach((item) => {
+          this.multipleSelection.push(item.userid)
+          this.batchdelindex.push(item.id)
+          console.log("handleSelectionChange:  ",this.multipleSelection,this.batchdelindex)  
+          //this.rowIds.push(item.id); 
+        });
         this.setbatchdelable(val);
       },
       selectAll(val){
+        this.multipleSelection=[]
+        this.batchdelindex=[]
+        console.log("selectCancel:  ",this.multipleSelection,this.batchdelindex)
         val.forEach((item) => {
+          this.multipleSelection.push(item.userid)
+          this.batchdelindex.push(item.id)
+          console.log("selectAll:  ",this.multipleSelection,this.batchdelindex)  
           //this.rowIds.push(item.id); 
         });
         this.setbatchdelable(val);
       },
       setbatchdelable(val){
-        this.batchdelableg = true;
+        this.batchdelableg = true;//true不可用，false可用
         if(val.length > 0){
           this.batchdelable = false;
         }else{
           this.batchdelable = true;
         }
+      },
+      rowClassName({row, rowIndex}) {
+    //把每一行的索引放进row.id
+         row.id = rowIndex+1;
       }
     }
   }

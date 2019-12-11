@@ -30,7 +30,7 @@
           align="center"
           width="120">
           <template slot-scope="scope">
-            <span>{{ scope.row.id}}</span>
+            <span>{{ scope.row.recordId}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -38,22 +38,30 @@
           align="center"
           width="120">
           <template slot-scope="scope">
-            <span>{{ scope.row.username}}</span>
+            <span>{{ scope.row.userName}}</span>
           </template>
         </el-table-column>
         <el-table-column
-          label="学号"
+          label="用户号"
           align="center"
           width="150">
           <template slot-scope="scope">
-            <span>{{ scope.row.userid}}</span>
+            <span>{{ scope.row.userNumber}}</span>
           </template>
         </el-table-column>
                 <el-table-column
           label="申请时间"
           width="150">
           <template slot-scope="scope">
-            <span>{{ scope.row.date}}</span>
+            <span>{{ scope.row.recordTime}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="用户类型"
+          align="center"
+          width="80">
+          <template slot-scope="scope">
+            <span>{{usermessage[scope.row.userType-1]}}</span>
           </template>
         </el-table-column>
         <el-table-column 
@@ -63,7 +71,7 @@
           <template slot-scope="scope">
             <el-button
             size="mini"
-            @click="handleCheck(scope.$index, scope.row)">详情</el-button>
+            @click="handleCheck(scope.$index, scope.row)">审核</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -72,17 +80,20 @@
 </template>
 
 <script>
-import axios from 'axios'
+  import axios from 'axios'
+  import { axiospost } from '@/api/index.js'
   export default {
     data() {
         //sturec:[]
       return {
           id:'',
+          usermessage:['学生','职工','退休','离休','医照'],
           recording:[{
-            id:'111',
-            username:'dadad',
-            useridid:'12321123',
-            date:'19910228',
+            recordId:'111',
+            userName:'dadad',
+            userNumber:'12321123',
+            recordTime:'19910228',
+            userType:'2'
           }],
       }
     },
@@ -91,10 +102,18 @@ import axios from 'axios'
     methods: {
         onSubmit(){
           var _this = this
-          axios.post('/findrecording',this.id)
+          const param={id:_this.id}//报销记录编号
+          console.log("发送数据：",param) 
+          axiospost('/shoudanyuan/recording',param)
             .then(function (res) {
-              console.log(res);
-              _this.recording = res
+              if(res.date === 400){
+                this.$message.error(res.msg || '查询失败')
+                return
+              }else{
+                _this.recording = res
+                console.log("接收数据：",_this.recording) 
+                //_this.pageTotal = _this.recording.length
+              }
             })
             .catch(function (error) {
               console.log(error);
@@ -102,7 +121,7 @@ import axios from 'axios'
 
         },
       handleCheck(index,row){
-          this.$router.push({path: '/shoudanyuan/recdetail',query:{id:row.id}})
+          this.$router.push({path: '/shoudanyuan/recdetail',query:{id:row.recordId}})
       }
     },
     mounted: function () {

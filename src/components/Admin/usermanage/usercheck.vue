@@ -9,7 +9,7 @@
     </div>
     <el-form ref="form" :inline="true" :model="user" class="demo-form-inline">
       <el-form-item label="用户号">
-        <el-input v-model="user.id" size="mini" placeholder="请输入用户号"></el-input>
+        <el-input v-model="user.userid" size="mini" placeholder="请输入用户号"></el-input>
       </el-form-item>
       <el-form-item label="用户名">
         <el-input v-model="user.name" size="mini" placeholder="请输入用户名"></el-input>
@@ -25,11 +25,11 @@
         style="width: 100%">
         
         <el-table-column
-          label="编号"
+          label="用户号"
           align="center"
           width="150">
           <template slot-scope="scope">
-            <span>{{ scope.row.id }}</span>
+            <span>{{ scope.row.userid }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -78,14 +78,14 @@
             <span style="margin-left: 0px">{{ scope.row.phone}}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          label="工资号"
+        <!-- <el-table-column
+          label="用户号"
           align="center"
           width="80">
           <template slot-scope="scope">
             <span>{{ scope.row.salaryid}}</span>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           label="地址"
           align="center"
@@ -123,8 +123,9 @@
 
 </template>
 <script>
-  import { checkuser } from '@/api/index.js'
+  import axios from 'axios'
   import { axiospost } from '@/api/index.js'
+  import { checkuser } from '@/api/index.js'
   import UserEdit from './UserEdit.vue'
 
   export default {
@@ -137,31 +138,34 @@
         dialogEdit : {   //编辑弹出框，默认是false
           show : false
         },
+        edit:false,
+        indexNum:'',
         form:{    //编辑信息
-          id:'',
+          //id:'',
           username:'',
           depart:'',
           age:'',
           sex:'',
           nation:'',
           phone:'',
-          salaryid:'',
+          userid:'',
           address:'',
           role:''
         },
         user: {
-          id: '',
+          userid: '',
           name: ''
         },
         userData:[{
           id:'1231231',
+          userid:'12312',
           username:'1312313',
           depart:'13131',
           age:'',
           sex:'',
           nation:'',
           phone:'',
-          salaryid:'',
+          
           address:'',
           role:'131313'
         }]
@@ -175,26 +179,35 @@
       onSubmit(){
         //this.$refs.form.validate( valid => {
          // if (!valid) return
-          console.log("asdad",this.user);
-          checkuser(this.user).then(res=> {
-              console.log('用户信息',res);
-              this.userData = res.data;
+          console.log("发送数据：",this.user);
+          axiospost('/checkeruser',this.user).then(res=> {
+            console.log('用户信息',res);
+            this.userData = res;
           }
           )
        // })
       //console.log('submit!');
       },
 
-      getUserInfo() {
-        axiospost('/data').then(res => {
-          this.userData = res.data  
-          //this.userData.push(formDate);
-        })
+      getUserInfo(val) {
+        if(this.edit){
+          this.userData.splice(this.indexNum, 1,val)
+          console.log("indexNum：",this.indexNum)
+          this.edit=false;
+        }else{
+          this.userData.push(val)
+        }
+        
+        /* axiospost('/data',this.user).then(res => {
+          this.userData = res 
+          //this.userData.push(res);
+        }) */
       },
 
       handleEdit(index,row){  //编辑
-        this.dialogEdit.show = true ;  //显示弹
-        
+        this.dialogEdit.show = true ; //显示弹
+        this.indexNum=index 
+        this.edit=true   
         this.form = {
           id:row.id,
           username:row.username,
@@ -203,32 +216,38 @@
           sex:row.sex,
           nation:row.nation,
           phone:row.phone,
-          salaryid:row.salaryid,
+          userid:row.userid,
           address:row.address,
           role:row.role
         }
-        console.log('adadad')
       },
-      handleDelete(index, row) {
-        console.log(index, row);
-        //this.$router.push('/Admin/usermanage/userdelet')
-         // 删除用户信息
-        this.$axios.delete(`http://localhost:3000/data/${row.id}`).then(res =>{
-            this.$message({
-                res,
-                type:"success",
-                message:"删除信息成功"
-            })
+       handleDelete(index,row) {
+        // 删除用户信息
+        this.$confirm('确认删除该用户吗?', '提示', {
+            type: 'warning'
+        })
+        .then(() => {
+          this.userData.splice(index, 1)
+          //this.$axios.delete(`http://localhost:3000/data/${row.id}`).then(res =>{
+          axiospost(`/deleteuser`,{id:row.id}).then(res =>{
+            if(res.code==200){
+              this.$message.success('删除用户成功')
+              this.userData.splice(index, 1)
+            }else{
+              this.$message.error(res.code || '删除用户失败！')
+            }   
+          //this.getUserInfo()    //删除数据，更新视图
+          })
         })
       },
-      selectTable(val, row){
+      /* selectTable(val, row){
           this.setSearchBtn(val);
       },
       // 用户全选checkbox时触发该事件
       selectAll(val){
             val.forEach((item) => {
                 this.rowIds.push(item.id);
-          });
+          });delete
           this.setSearchBtn(val);
       },
       setSearchBtn(val){
@@ -239,7 +258,7 @@
               isFlag = true;
           }
           this.$store.commit('SET_SEARCHBTN_DISABLED',isFlag);
-      }
+      } */
     }
   }
 </script>

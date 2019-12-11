@@ -86,10 +86,11 @@ import axios from 'axios'
           id:'6',
           usermessage:['学生','职工','退休','离休','医照'],
           recording:[{
-            id:'111',
-            username:'dadad',
-            useridid:'12321123',
-            date:'19910228',
+            recordId:'111',
+            userName:'dadad',
+            userNumber:'12321123',
+            recordTime:'19910228',
+            userType:'2'
           }],
           pageTotal: 0
       }
@@ -121,7 +122,7 @@ import axios from 'axios'
 
         },
       recorddetail(index,row){
-          this.$router.push({path: '/checker/recdetail', query:{id:row.id,showcheck:false,showcheckcomplete:true,lasturl:'/checker/completecheck'}})
+          this.$router.push({path: '/checker/recdetail', query:{id:row.recordId,showcheck:false,showcheckcomplete:true,message:this.usermessage[row.userType-1],lasturl:'/checker/completecheck'}})
       }
     },
     mounted: function () {},

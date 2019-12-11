@@ -13,7 +13,7 @@
         <el-form-item label="用户名" >            
             <el-input v-model="record.username" placeholder="用户名"></el-input>         
         </el-form-item>
-        <el-form-item label="工资号" style="margin-left: 1.7%;">
+        <el-form-item label="工资号" style="margin-left: 1vw;">
           <el-input v-model="record.salaryid" placeholder="用户工资号" style="width:92%;"></el-input>
         </el-form-item>        
       </el-form>
@@ -37,7 +37,7 @@
         <el-form-item label="部门">
           <el-input v-model="record.depart" placeholder="部门"></el-input>
         </el-form-item>      
-        <el-form-item label="审核人" style="margin-left: 1.7%;" >
+        <el-form-item label="审核人" style="margin-left: 1vw;" >
           <el-col :span="11">
             <el-input placeholder="审核人" v-model="record.checker"></el-input>
           </el-col>
@@ -73,7 +73,7 @@
             @select="handleSelect">
           </el-autocomplete>
         </el-form-item>
-        <el-form-item label="报销时间" style="margin-left: 1.7%;">
+        <el-form-item label="报销时间" style="margin-left: 1vw;">
           <el-col :span="9">
             <el-date-picker type="date" placeholder="选择起始日期" v-model="record.date1" style="width: 105%;"></el-date-picker>
           </el-col>
@@ -91,7 +91,7 @@
             @select="handleSelect">
           </el-autocomplete>
         </el-form-item>
-        <el-form-item label="医事服务费"  style="margin-left: 1.7%;">
+        <el-form-item label="医事服务费"  style="margin-left: 1vw;">
           <el-col :span="11">
             <el-input  placeholder="最小费用" v-model="record.servercost1" style="width: 100%;"></el-input>
           </el-col>
