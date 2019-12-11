@@ -119,7 +119,7 @@ export default {
       })
     },
     handleCreate(index, row){
-
+      this.$router.push('/reimbursement')
     }
   },
 

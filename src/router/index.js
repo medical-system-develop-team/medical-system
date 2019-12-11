@@ -37,6 +37,16 @@ const routes = [
     name: 'myInfo',
     component: () => import('../views/student/myInfo.vue')
   },
+  {
+    path: '/reimbursement',
+    name: 'reimbursement',
+    component: () => import('../views/student/reimbursement.vue')
+  },
+  {
+    path: '/reimbursement/:recordID',
+    name: 'reimbursement',
+    component: () => import('../views/student/reimbursement.vue')
+  },
   // 在职职工报销类型----------------------------------------
   {
     path: '/staffhome',
