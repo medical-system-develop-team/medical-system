@@ -74,10 +74,10 @@ export default {
     //非报销记录列表页面编辑跳转，页面不用渲染
     if (!this.recordId) return  
     //报销记录列表页面编辑跳转，给报销记录赋值
-    const url = '' // getRecordByID
+    const url = '/CompileRecord' // getRecordByID
     commonApi(url, { recordID: this.recordId }).then(res => {  // 根据recordID请求数据
       if (res.code === 200) {  // 请求成功
-        this.recordArr = res.recordArr
+        this.recordArr = res.records
         this.waishangArr = res.waishangArr
       }
       
