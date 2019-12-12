@@ -83,15 +83,15 @@ export default {
               }
               else if (response.code === 401) {
                 console.log(this.myInfoForm)
-                this.$message.success('修改失败，数据不能为空')
+                this.$message.error('修改失败，数据不能为空')
               }
               else if (response.code === 402) {
                 console.log(this.myInfoForm)
-                this.$message.success('修改失败，身份证信息错误')
+                this.$message.error('修改失败，身份证信息错误')
               }
               else{
                 console.log(this.myInfoForm)
-                this.$message.success('修改失败，电话号码格式错误')
+                this.$message.error('修改失败，电话号码格式错误')
               }
             }
           )

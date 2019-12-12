@@ -81,7 +81,8 @@ export default {
     },
     handleAvatarSuccess(index) {
       return (res, file) => {
-        this.localValue[index].zhuangzhenImg = URL.createObjectURL(file.raw);
+        // this.localValue[index].zhuangzhenImg = URL.createObjectURL(file.raw);
+        this.localValue[index].zhuangzhenImg = res;
       }
     },
     beforeAvatarUpload(file) {
