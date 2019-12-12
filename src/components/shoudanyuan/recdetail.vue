@@ -10,7 +10,7 @@
       </div>
       <div style="text-align: center;">
         <h2>报销凭证</h2>
-        <el-form ref="form" :inline="true" style="margin-top: 5px;text-align:left;margin-left: 6.5vw;">'
+        <el-form ref="form" :inline="true" label-width="200px" style="margin-top: 5px;">'
           <el-form-item  label="医事服务费自负比例：">
             <el-input size="mini" v-model="registerPercentage" :readonly="true"></el-input>
           </el-form-item>
@@ -28,24 +28,23 @@
             <b style="font-size:15px;">转诊单{{index+1}}</b>
           </div>
           <div class="content" style="margin-top:10px;">
-            <el-form ref="form" :inline="true"  label-width="100px" class="demo-form-inline">
+            <el-form ref="form" :inline="true"  label-width="100px" class="demo-form-inline" style='text-align:left;'>
               <el-form-item label="医院：">
                 <el-input size="small" v-model="item.changehospitalIn" :readonly="true"></el-input>
               </el-form-item>
               <el-form-item label="日期：">
                 <el-input size="small"  v-model="item.changehospitalDate" :readonly="true"></el-input>
               </el-form-item><br>
+            </el-form>
+            <el-form label-width="100px" :inline="true">
               <el-form-item >
               <label>转诊单：</label><br>
-              <!-- <div class="imageBox" style="margin-top: 10px;"> -->
                 <el-image 
                   style="width: 100px; height: 100px;"
                   :src="item.changehospitalImage" 
-                  :preview-src-list="item.changehospitalImage">
+                  :preview-src-list="[item.changehospitalImage]">
                 </el-image><br>
-                <el-button type="primary" size="mini" style="margin-top:5px;" onclick="handleImgDirection();">旋转90°</el-button>
-              <!-- </div> -->
-            </el-form-item>
+              </el-form-item>
             </el-form>
           </div>      
         </div>
@@ -66,7 +65,7 @@
                 <el-input size="small" v-model="item.registerCost" :readonly="true"></el-input>
               </el-form-item>
               <el-form-item label="自费：">
-                <el-input size="small"  v-model="item.zifei" :readonly="true"></el-input>
+                <el-input size="small"  v-model="item.registerSelfCost" :readonly="true"></el-input>
               </el-form-item>
               <el-form-item label="日期：">
                 <el-input size="small" v-model="item.registerDate" :readonly="true"></el-input>
@@ -74,16 +73,15 @@
               <el-form-item label="说明：">
                 <el-input size="small"  v-model="item.registerExplaination" :readonly="true"></el-input>
               </el-form-item>
+            </el-form>
+            <el-form label-width="100px" :inline="true">
               <el-form-item >
-                <label style="margin-left: 23vw;">医事服务费（挂号费）：</label>
-                <div class="imageBox" style="margin-top: 10px;">
-                  <el-image 
-                    style="width: 100px; height: 100px; margin-left: 25vw;"
-                    :src="item.registerImage" 
-                    :preview-src-list="item.registerImage">
-                  </el-image><br>
-                  <el-button type="primary" size="mini" style="margin-top:5px;  margin-left: 26vw;" onclick="handleImgDirection();">旋转90°</el-button>
-                </div>
+                <label>医事服务费（挂号费）：</label>
+                <el-image 
+                  style="width: 100px; height: 100px;"
+                  :src="item.registerImage" 
+                  :preview-src-list="[item.registerImage]">
+                </el-image><br>
               </el-form-item>
             </el-form>
           </div> 
@@ -105,7 +103,7 @@
                 <el-input size="small" v-model="item.billCost" :readonly="true"></el-input>
               </el-form-item>
               <el-form-item label="自费负担：">
-                <el-input size="small"  v-model="item.zifei" :readonly="true"></el-input>
+                <el-input size="small"  v-model="item.billSelfCost" :readonly="true"></el-input>
               </el-form-item>
               <!--  <el-form-item label="特殊负担：">
                 <el-input size="small" v-model="item.specialfee" :readonly="true"></el-input>
@@ -119,27 +117,23 @@
               <el-form-item label="说明：">
                 <el-input size="small"  v-model="item.billExplaination" :readonly="true"></el-input>
               </el-form-item><br>
+            </el-form>
+            <el-form label-width="100px" :inline="true">
               <el-form-item >
-              <label style="margin-left: 21vw;">药费单据:</label><br>
-              <!-- <div class="imageBox" style="margin-top: 10px;"> -->
+                <label>药费单据:</label><br>
                 <el-image 
-                  style="width: 100px; height: 100px; margin-left: 20vw;"
+                  style="width: 100px; height: 100px;"
                   :src="item.billImage" 
-                  :preview-src-list="item.billImage">
+                  :preview-src-list="[item.billImage]">
                 </el-image><br>
-                <el-button type="primary" size="mini" style="margin-top:5px;  margin-left: 21vw;" onclick="handleImgDirection();">旋转90°</el-button>
-              <!-- </div> -->
-                </el-form-item>
+              </el-form-item>
               <el-form-item >
-                <label style="margin-left: 7vw;">处方:</label><br>
-              <!-- <div class="imageBox" style="margin-top: 10px;"> -->
+                <label>处方:</label><br>
                 <el-image 
-                  style="width: 100px; height: 100px; margin-left: 5vw;"
+                  style="width: 100px; height: 100px;"
                   :src="item.billPrescriptionImage" 
-                  :preview-src-list="item.billPrescriptionImage">
+                  :preview-src-list="[item.billPrescriptionImage]">
                 </el-image><br>
-                <el-button type="primary" size="mini" style="margin-top:5px;  margin-left: 6vw;" onclick="handleImgDirection();">旋转90°</el-button>
-                <!-- </div> -->
               </el-form-item>
             </el-form>
           </div> 
@@ -161,25 +155,19 @@
           <el-form label-width="100px" :inline="true">
             <el-form-item >
               <label>签字盖章证明：</label><br>
-              <!-- <div class="imageBox" style="margin-top: 10px;"> -->
               <el-image 
                 style="width: 100px; height: 100px; "
                 :src="Form.gaizhangImage" 
-                :preview-src-list="Form.gaizhangImage">
+                :preview-src-list="[Form.gaizhangImage]">
               </el-image><br>
-              <el-button type="primary" size="mini" style="margin-top:5px;" onclick="handleImgDirection();">旋转90°</el-button>
-              <!-- </div> -->
             </el-form-item>
             <el-form-item >
               <label style="margin-left: 5vw;">特殊用药说明：</label><br>
-              <!-- <div class="imageBox" style="margin-top: 10px;"> -->
-                <el-image 
-                  style="width: 100px; height: 100px; margin-left: 5vw;"
-                  :src="Form.teshuImage" 
-                  :preview-src-list="Form.teshuImage">
-                </el-image><br>
-                <el-button type="primary" size="mini" style="margin-top:5px;  margin-left: 6vw;" onclick="handleImgDirection();">旋转90°</el-button>
-              <!-- </div> -->
+              <el-image 
+                style="width: 100px; height: 100px; margin-left: 5vw;"
+                :src="Form.teshuImage" 
+                :preview-src-list="[Form.teshuImage]">
+              </el-image><br>
             </el-form-item>             
           </el-form>
         </div>
@@ -250,7 +238,11 @@
                 _this.changehospital = res.changehospitalList
                 _this.register = res.registerList
                 _this.bill = res.billList
-                _this.Form = res.Form
+                _this.Form.formText=res.form.formText 
+                _this.Form.teshuImg=res.form.teshuImg
+                _this.Form.gaizhangImg=res.form.gaizhangImg
+                _this.Form.formId=res.form.formId
+                _this.Form.formTime=res.form.formTime    
                 _this.recordmoney = res.recordmoney
               }
             })
