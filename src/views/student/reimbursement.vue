@@ -1,5 +1,6 @@
 <template>
   <div class="reimbursement">
+  <div class="body" id="pdfDom">
     <h2 class="title">公费医疗（门诊）报销申请单</h2>
     <table class="myTable">
       <tbody>
@@ -22,7 +23,7 @@
       <tbody>
         <tr>
             <th width="18%">医事服务费实际花销</th><td width="12.5%">{{tableData.realFuwu}}</td>
-            <th width="12.5%">个负比例</th><td width="12.5%">{{tableData.Proportion}}<!--0.0--></td>
+            <th width="12.5%">个负比例</th><td width="12.5%">{{tableData.proportion}}<!--0.0--></td>
             <th width="12.5%">个负金额</th><td width="12.5%">{{tableData.gefuPay}}<!-- 0.00 --></td>
             <th width="12.5%">凭证数</th><td width="12.5%">{{tableData.fuwuPingzheng}}</td>
             <!-- <th width="12.5%"><a href="../showRecord/61ebfbb94a0f4cb49cadb9f1ada950fc">凭证数</a></th><td width="12.5%">1</td> -->
@@ -59,9 +60,10 @@
         </tr>
       </tbody>
     </table>
+    </div>
     <div class="button" style="text-align:center; margin-top:20px">
         <el-button size="mini" @click="back">返回</el-button>
-        <el-button size="mini" @click="getPdf">下载PDF</el-button>                                       
+        <el-button size="mini" v-on:click="getPdf()">下载PDF</el-button>                                       
     </div>
   </div>
 </template>
@@ -86,7 +88,7 @@ export default {
           date: '', //日期
 
           realFuwu: '', //医事服务费实际花销
-          Proportion: '', //个负比例
+          proportion: '', //个负比例
           gefuPay: '',  //个负金额
           fuwuPingzheng: '', //服务费凭证
           fuwuPay: '', //医事服务费
@@ -104,32 +106,21 @@ export default {
           hospital: '', // 就诊医院
           yaofeibaoxiaoPay: '', //报销金额
 
-        }
+        },
+        htmlTitle: '公费医疗（门诊）报销申请单'
       }
   },
   created() {
     if (!this.recordID) return  
-    const url = '' // getreportByID
+    const url = '/CreateTable' // getreportByID
     commonApi(url, { recordID:this.recordID }).then(res => {  // 根据recordID请求数据
-      if (res.code === 200) {  // 请求成功
         this.tableData = res
-      }
     })
   },
   methods: {
     back(){
     this.$router.push('/myRecords')
     },
-    getPdf()
-    {
-        var headstr = "<html><head><title></title></head><body>";
-        var footstr = "</body>";
-        var printData = document.getElementById("container").innerHTML;
-        var oldstr = document.body.innerHTML;
-        document.body.innerHTML = headstr+printData+footstr;
-        window.print(); 
-        document.body.innerHTML = oldstr;
-    }
   }
 }
 </script>

@@ -53,39 +53,39 @@ export default {
   },
   data() {
     return {
-      //recordData: [], 
+      recordData: [], 
 
-      recordData: [{
-        number:'1',
-        recordID: 'a',
-        createTime: '2019-11-16 16:33:36.0',
-        recordStatus: '暂存',
-      }, {
-        number:'2',
-        recordID: 'b',
-        createTime: '2019-11-17 16:33:36.0',
-        recordStatus: '已提交未审核',
-      }, {
-        number:'3',
-        recordID: 'c',
-        createTime: '2019-11-18 16:33:36.0',
-        recordStatus: '审核未通过',
-      }, {
-        number:'4',
-        recordID: 'd',
-        createTime: '2019-11-19 16:33:36.0',
-        recordStatus: '审核通过未确认',
-      }, {
-        number:'5',
-        recordID: 'e',
-        createTime: '2019-11-20 16:33:36.0',
-        recordStatus: '已确认',
-      }, {
-        number:'6',
-        recordID: 'e',
-        createTime: '2019-11-21 16:33:36.0',
-        recordStatus: '收单完成',
-      }]
+      // recordData: [{
+      //   number:'1',
+      //   recordID: 'a',
+      //   createTime: '2019-11-16 16:33:36.0',
+      //   recordStatus: '暂存',
+      // }, {
+      //   number:'2',
+      //   recordID: 'b',
+      //   createTime: '2019-11-17 16:33:36.0',
+      //   recordStatus: '已提交未审核',
+      // }, {
+      //   number:'3',
+      //   recordID: 'c',
+      //   createTime: '2019-11-18 16:33:36.0',
+      //   recordStatus: '审核未通过',
+      // }, {
+      //   number:'4',
+      //   recordID: 'd',
+      //   createTime: '2019-11-19 16:33:36.0',
+      //   recordStatus: '审核通过未确认',
+      // }, {
+      //   number:'5',
+      //   recordID: 'e',
+      //   createTime: '2019-11-20 16:33:36.0',
+      //   recordStatus: '已确认',
+      // }, {
+      //   number:'6',
+      //   recordID: 'e',
+      //   createTime: '2019-11-21 16:33:36.0',
+      //   recordStatus: '收单完成',
+      // }]
 
     }
   },

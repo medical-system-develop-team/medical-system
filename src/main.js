@@ -8,10 +8,12 @@ import axios from 'axios'
 axios.defaults.withCredentials = true
 import {setCookie,getCookie,delCookie} from '@/assets/cookie.js'
 import Router from 'vue-router'
+import htmlToPdf from '@/components/utils/htmlToPdf'
 
 Vue.config.productionTip = false
 Vue.prototype.$cookieStore={setCookie,getCookie,delCookie}
 
+Vue.use(htmlToPdf)
 Vue.use(ElementUI)
 const originalPush = Router.prototype.push
 Router.prototype.push = function push(location) {
