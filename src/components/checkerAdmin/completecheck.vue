@@ -66,7 +66,7 @@
           <template slot-scope="scope">
             <el-button
             size="mini"
-            @click="handleCheck(scope.$index, scope.row)">审核</el-button>
+            @click="handleCheck(scope.$index, scope.row)">详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -77,12 +77,13 @@
 </template>
 
 <script>
+import { axiospost } from '@/api/index.js'
 import axios from 'axios'
   export default {
     data() {
         //sturec:[]
       return {
-          id:'0',
+          id:'8',
           usermessage:['学生','职工','退休','离休','医照'],
           recording:[{
             recordId:'111',
@@ -103,11 +104,17 @@ import axios from 'axios'
           var _this = this
           const param={id:_this.id}
           console.log("发送数据：",param) 
-          axios.post('/checkerAdmin/recording',param)
+          axios.post('/checker/recording',param)
             .then(function (res) {
-              console.log(res);
-              _this.recording = res
-              _this.pageTotal = _this.recording.length
+              //console.log(res);
+              if(res.date === 400){
+                this.$message.error(res.msg || '查询失败')
+                return
+              }else{
+                _this.recording = res
+                console.log("接收数据：",_this.recording) 
+                _this.pageTotal = _this.recording.length
+              }
             })
             .catch(function (error) {
               console.log(error);
