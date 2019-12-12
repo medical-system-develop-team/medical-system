@@ -116,7 +116,22 @@ export default {
           this.$router.push('/stdhome')
         }
         else if (res.code  === 400) { 
-          this.$message.error(res.code || '提交失败')
+          this.$message.error('提交失败')
+        }
+        else if (res.code  === 401) { 
+          this.$message.error('提交数据不能为空')
+        }
+        else if (res.code  === 402) { 
+          this.$message.error('转诊日期不能超过挂号日期')
+        }
+        else if (res.code  === 403) { 
+          this.$message.error('挂号日期不能超过药费日期')
+        }
+        else if (res.code  === 405) { 
+          this.$message.error('挂号费必须为正')
+        }
+        else if (res.code  === 406) { 
+          this.$message.error('药费必须为正')
         }
       })
     },
