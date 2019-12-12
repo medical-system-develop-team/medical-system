@@ -26,9 +26,13 @@
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          <div  v-if="scope.row.recordStatus !== '已确认' && scope.row.recordStatus !== '收单完成' && scope.row.recordStatus !== ''">
+          <div  v-if="scope.row.recordStatus !== '已确认' && scope.row.recordStatus !== '收单完成' && scope.row.recordStatus !== '审核通过未确认' && scope.row.recordStatus !== ''">
             <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          </div>
+          <div  v-if="scope.row.recordStatus == '审核通过未确认'">
+            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">查看</el-button>
+            <el-button size="mini" type="danger" @click="handleConfirm(scope.$index, scope.row)">确认</el-button>
           </div>
           <div  v-if="scope.row.recordStatus == '已确认' || scope.row.recordStatus == '收单完成'">
             <el-button size="mini" @click="handleCreate(scope.$index, scope.row)">生成报销单</el-button>
@@ -53,39 +57,39 @@ export default {
   },
   data() {
     return {
-      //recordData: [], 
+      recordData: [], 
 
-      recordData: [{
-        number:'1',
-        recordID: 'a',
-        createTime: '2019-11-16 16:33:36.0',
-        recordStatus: '暂存',
-      }, {
-        number:'2',
-        recordID: 'b',
-        createTime: '2019-11-17 16:33:36.0',
-        recordStatus: '已提交未审核',
-      }, {
-        number:'3',
-        recordID: 'c',
-        createTime: '2019-11-18 16:33:36.0',
-        recordStatus: '审核未通过',
-      }, {
-        number:'4',
-        recordID: 'd',
-        createTime: '2019-11-19 16:33:36.0',
-        recordStatus: '审核通过未确认',
-      }, {
-        number:'5',
-        recordID: 'e',
-        createTime: '2019-11-20 16:33:36.0',
-        recordStatus: '已确认',
-      }, {
-        number:'6',
-        recordID: 'e',
-        createTime: '2019-11-21 16:33:36.0',
-        recordStatus: '收单完成',
-      }]
+      // recordData: [{
+      //   number:'1',
+      //   recordID: 'a',
+      //   createTime: '2019-11-16 16:33:36.0',
+      //   recordStatus: '暂存',
+      // }, {
+      //   number:'2',
+      //   recordID: 'b',
+      //   createTime: '2019-11-17 16:33:36.0',
+      //   recordStatus: '已提交未审核',
+      // }, {
+      //   number:'3',
+      //   recordID: 'c',
+      //   createTime: '2019-11-18 16:33:36.0',
+      //   recordStatus: '审核未通过',
+      // }, {
+      //   number:'4',
+      //   recordID: 'd',
+      //   createTime: '2019-11-19 16:33:36.0',
+      //   recordStatus: '审核通过未确认',
+      // }, {
+      //   number:'5',
+      //   recordID: 'e',
+      //   createTime: '2019-11-20 16:33:36.0',
+      //   recordStatus: '已确认',
+      // }, {
+      //   number:'6',
+      //   recordID: 'e',
+      //   createTime: '2019-11-21 16:33:36.0',
+      //   recordStatus: '收单完成',
+      // }]
 
     }
   },
@@ -115,6 +119,18 @@ export default {
         }
         else if (res.code  === 400) { 
           this.$message.error('删除失败')
+        }
+      })
+    },
+    handleConfirm(index, row){
+      const url = '' // ConfirmByID
+      commonApi(url, { recordID:row.recordID }).then(res => {  // 根据recordID请求数据
+        if (res.code === 200) {  // 后台确认成功
+          this.$message.success('确认成功')
+          this.getRecordsList();
+        }
+        else if (res.code  === 400) { 
+          this.$message.error('确认失败')
         }
       })
     },

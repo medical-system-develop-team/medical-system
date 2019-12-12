@@ -76,11 +76,8 @@ export default {
     //报销记录列表页面编辑跳转，给报销记录赋值
     const url = '/CompileRecord' // getRecordByID
     commonApi(url, { recordID: this.recordId }).then(res => {  // 根据recordID请求数据
-      if (res.code === 200) {  // 请求成功
-        this.recordArr = res.records
-        this.waishangArr = res.waishangArr
-      }
-      
+      this.recordArr = res.records
+      this.waishangArr = res.waishangArr      
     })
   },
   watch: {
