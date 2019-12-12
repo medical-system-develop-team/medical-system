@@ -12,7 +12,7 @@
       <div style="text-align: center;">
         <h2>审核报销凭证</h2>
         <small>类型:{{message}}</small>
-        <el-form :inline="true" style="margin-top: 5px;text-align:left;margin-left: 6.5vw;" > 
+        <el-form :inline="true" label-width="200px" style="margin-top: 5px;" > 
           <el-form-item  label="医事服务费自负比例：">
             <el-input size="mini" v-model="registerPercentage"   :readonly=showcheckcomplete></el-input>
           </el-form-item>
@@ -28,7 +28,7 @@
             <b style="font-size:15px;">转诊单{{index+1}}</b>
           </div>
           <div class="content" style="margin-top:10px;">
-            <el-form ref="form" :inline="true"  label-width="100px" class="demo-form-inline">
+            <el-form ref="form" :inline="true"  label-width="100px" class="demo-form-inline" style='text-align:left;'>
               <el-form-item label="医院：">
                 <el-input size="small" v-model="item.changehospitalIn" :readonly="true"></el-input>
               </el-form-item>
@@ -36,14 +36,14 @@
                 <el-input size="small"  v-model="item.changehospitalDate" :readonly="true"></el-input>
               </el-form-item><br>
               <el-form-item >
-                <label>转诊单：</label><br>
+                <label style="margin-left: 20vw;">转诊单：</label><br>
                 <!-- <div class="imageBox" style="margin-top: 10px;"> -->
                   <el-image 
-                    style="width: 100px; height: 100px;"
+                    style="width: 100px; height: 100px;margin-left: 18vw;"
                     :src="item.changehospitalImage" 
                     :preview-src-list="item.changehospitalImage">
                   </el-image><br>
-                  <el-button type="primary" size="mini" style="margin-top:5px;" onclick="handleImgDirection();">旋转90°</el-button>
+                  <el-button type="primary" size="mini" style="margin-top:5px;margin-left: 19vw;" onclick="handleImgDirection();">旋转90°</el-button>
                 <!-- </div> -->
               </el-form-item>
             </el-form>
@@ -75,7 +75,7 @@
                 <el-input size="small" v-model="item.registerCost" :readonly="true"></el-input>
               </el-form-item>
               <el-form-item label="自费：" >
-                <el-input size="small"  v-model="item.Zifei" @focus="zifeijisuan1(item)" :readonly=showcheckcomplete></el-input>
+                <el-input size="small"  v-model="item.zifei" @focus="zifeijisuan1(item)" :readonly=showcheckcomplete></el-input>
               </el-form-item>
               <el-form-item label="日期：">
                 <el-input size="small" v-model="item.registerDate" :readonly="true"></el-input>
@@ -84,14 +84,14 @@
                 <el-input size="small"  v-model="item.registerExplaination" :readonly="true"></el-input>
               </el-form-item>
               <el-form-item >
-                <label style="margin-left: 23vw;">医事服务费（挂号费）：</label>
+                <label style="margin-left: 19vw;">医事服务费（挂号费）：</label>
                 <div class="imageBox" style="margin-top: 10px;">
                   <el-image 
-                    style="width: 100px; height: 100px; margin-left: 25vw;"
+                    style="width: 100px; height: 100px; margin-left: 20vw;"
                     :src="item.registerImage" 
                     :preview-src-list="item.registerImage">
                   </el-image><br>
-                  <el-button type="primary" size="mini" style="margin-top:5px;  margin-left: 26vw;" onclick="handleImgDirection();">旋转90°</el-button>
+                  <el-button type="primary" size="mini" style="margin-top:5px;  margin-left: 21vw;" onclick="handleImgDirection();">旋转90°</el-button>
                 </div>
               </el-form-item>
             </el-form>
@@ -130,14 +130,14 @@
                 <el-input size="small"  v-model="item.billExplaination" :readonly="true"></el-input>
               </el-form-item><br>
               <el-form-item >
-                <label style="margin-left: 21vw;">药费单据:</label><br>
+                <label style="margin-left: 14vw;">药费单据:</label><br>
                 <!-- <div class="imageBox" style="margin-top: 10px;"> -->
                   <el-image 
-                    style="width: 100px; height: 100px; margin-left: 20vw;"
+                    style="width: 100px; height: 100px; margin-left: 13vw;"
                     :src="item.billImage" 
                     :preview-src-list="item.billImage">
                   </el-image><br>
-                  <el-button type="primary" size="mini" style="margin-top:5px;  margin-left: 21vw;" onclick="handleImgDirection();">旋转90°</el-button>
+                  <el-button type="primary" size="mini" style="margin-top:5px;  margin-left: 14vw;" onclick="handleImgDirection();">旋转90°</el-button>
                 <!-- </div> -->
               </el-form-item>
               <el-form-item >
@@ -334,7 +334,7 @@ import axios from 'axios'
 
         },
         checkpass(){
-          axiospost('/checkerpass', {
+          const param={
             recordid:this.recordid,
             medicalPercentage: this.medicalPercentage,
             registerPercentage:this.registerPercentage,
@@ -343,8 +343,11 @@ import axios from 'axios'
             billList:this.bill,
             Form :this.Form,
             beizhu:this.beizhu,
-            recordmoney:this.recordmoney
-          })
+            recordmoney:this.recordmoney,
+            code:1
+          }
+          console.log("发送数据：",param)
+          axiospost('/checker/sendcheck', param)
           .then(function (res) {
             console.log(res);
             if(res.code == 200) {
@@ -353,12 +356,20 @@ import axios from 'axios'
           })
         },
         checkback(){
-           axios.post('/checkerback', {
-            recordid:this.recordid,
-            medicalPercentage: this.medicalPercentage,
-            registerPercentage:this.registerPercentage,
-            beizhu:this.beizhu
-          })
+          const param={
+          recordid:this.recordid,
+          medicalPercentage: this.medicalPercentage,
+          registerPercentage:this.registerPercentage,
+          changehospitalList:this.changehospital,
+          registerList:this.register,
+          billList:this.bill,
+          Form :this.Form,
+          beizhu:this.beizhu,
+          recordmoney:this.recordmoney,
+          code:0
+          }
+          console.log("发送数据：",param)
+          axiospost('/checker/sendcheck', param)
           .then(function (res) {
             console.log(res);
             if(res.code == 200) {
