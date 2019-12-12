@@ -77,12 +77,13 @@
 </template>
 
 <script>
+import { axiospost } from '@/api/index.js'
 import axios from 'axios'
   export default {
     data() {
         //sturec:[]
       return {
-          id:'1',
+          id:'7',
           usermessage:['学生','职工','退休','离休','医照'],
           recording:[{
             recordId:'111',
@@ -111,11 +112,17 @@ import axios from 'axios'
           var _this = this
           const param={id:_this.id}
           console.log("发送数据：",param) 
-          axios.post('/checkerAdmin/recording',param)
-            .then(function (res) {
-              console.log(res);
-              _this.recording = res
-              _this.pageTotal = _this.recording.length
+          axiospost('/checker/recording',param)
+            .then(function (res) {             
+              //console.log("返回数据：",res);
+              if(res.date === 400){
+                this.$message.error(res.msg || '查询失败')
+                return
+              }else{
+                _this.recording = res
+                console.log("接收数据：",_this.recording) 
+                _this.pageTotal = _this.recording.length
+              }
             })
             .catch(function (error) {
               console.log(error);
@@ -126,19 +133,7 @@ import axios from 'axios'
           this.$router.push({path: '/checkerAdmin/recdetail', query:{message:this.usermessage[row.userType-1],id:row.recordId,showcheck:true,showcheckcomplete:false,lasturl:'/checkerAdmin/recording',recordtype:'待'}})
       }
     },
-    mounted: function () {
-      
-      /* var _this = this   //很重要！！
-      axios.get('/findall')
-        .then(function (res) {
-          console.log(res);
-          _this.sturec = res.data
-         })
-        .catch(function (error) {
-          console.log(error);
-        }); */
-    },
-    
+    mounted: function () {},  
   }
   
 </script>
