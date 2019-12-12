@@ -146,7 +146,7 @@
     </template>
     <UserInfo :dialogAdd="dialogAdd" @update="getUserInfo"></UserInfo>
     <UserEdit :dialogEdit="dialogEdit" :form="form" @updateEdit="getUserInfo"></UserEdit>
-    <BatchIn :dialogBatchIn="dialogBatchIn" @updatebatchin="getUserInfo"></BatchIn>
+    <BatchIn :dialogBatchIn="dialogBatchIn" @updatebatchin="getBatchUser"></BatchIn>
   </div>
 </template>
 <script>
@@ -235,6 +235,17 @@
         }else{
           this.userData.splice(0, 0,val)
         }
+      },
+      getBatchUser(){
+        axiospost(`/getBatchUser`).then(res =>{
+            if(res.code==400){
+              this.$message.error('查询用户失败！')              
+            }else{
+              this.userData= res
+              this.pageTotal = this.userData.length
+            }   
+          //this.getUserInfo()    //删除数据，更新视图
+          })
       },
     
       handleDelete(index,row) {

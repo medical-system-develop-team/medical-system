@@ -49,7 +49,7 @@ export default {
     dialogFormAdd(formdong) {
       this.$refs[formdong].validate((valid) => {
         if (valid) {
-          //this.$emit('update',this.formDate);
+          this.$emit('update',this.formDate);
           this.formDate  = {}
           axiospost('/departadd',this.formDate).then(res => {
             console.log('发送数据：',this.formDate)

@@ -11,12 +11,12 @@
       <div style="text-align: center;">
         <h2>审核报销凭证</h2>
         <small>类型:{{message}}</small>
-        <el-form ref="form" :inline="true" label-width="200px" style="margin-top: 5px;"> 
-          <el-form-item  label="医事服务费自负比例：">
-            <el-input size="mini" v-model="registerPercentage" :readonly=showcheckcomplete></el-input>
+        <el-form ref="form" :model="Percentage" :inline="true" label-width="200px" style="margin-top: 5px;" :rules="rules"> 
+          <el-form-item  label="医事服务费自负比例：" prop="registerPercentage">
+            <el-input size="mini" oninput = "value=value.replace(/[^\d.]/g,'')" v-model="Percentage.registerPercentage" :readonly=showcheckcomplete></el-input>
           </el-form-item>
-          <el-form-item label="医药费自负比例：">
-            <el-input size="mini"  v-model="medicalPercentage" :readonly=showcheckcomplete></el-input>
+          <el-form-item label="医药费自负比例：" prop="medicalPercentage">
+            <el-input size="mini" oninput = "value=value.replace(/[^\d.]/g,'')" v-model="Percentage.medicalPercentage" :readonly=showcheckcomplete></el-input>
           </el-form-item>
         </el-form>
       </div>  
@@ -221,7 +221,25 @@
   import { axiospost } from '@/api/index.js'
   import axios from 'axios'
   export default {
+    
     data() {
+      var validateregister = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入0到1间的小数'));
+        } else {
+          /* if(!Number.isInteger(value)) {
+            callback(new Error('请输入数字'))
+          }else{ */
+            if(value < 0) {
+              callback(new Error('输入小于0'))
+            }else if(value > 1){
+              callback(new Error('输入大于1'))
+            }else {         
+              callback();
+            }
+          }
+        /* } */
+      };
       return {
         recordId:'',
         usertype:'',
@@ -229,8 +247,10 @@
         lasturl:'',
         message:'',
         usertypemessage:['学生','职工','退休','离休','医照'],
-        registerPercentage:'0.2',
-        medicalPercentage:'0.2',
+        Percentage:{
+          registerPercentage:0.111313,
+          medicalPercentage:0.1111311,
+          },
         beizhu:'',
         recordmoney:'',
         showcheck:true,
@@ -239,7 +259,15 @@
         changehospital:[{}],
         register:[{registerDepartment:111,registerCost:100},{registerDepartment:222,registerCost:10}],
         bill:[{billCost:100},{billCost:10}],
-        Form:{}
+        Form:{},
+        rules: {
+          registerPercentage: [
+            { validator: validateregister, trigger: 'blur' }
+          ],
+          medicalPercentage: [
+            { validator: validateregister, trigger: 'blur' }
+          ]
+        }
       }
     },
     created(){
@@ -263,8 +291,8 @@
                 this.$message.error(res.msg || '查询失败')
                 return
               }else{
-                _this.registerPercentage = res.registerPercentage//医事服务费自负比例医药费自负比例
-                _this.medicalPercentage = res.medicalPercentage
+                _this.Percentage.registerPercentage = res.registerPercentage//医事服务费自负比例医药费自负比例
+                _this.Percentage.medicalPercentage = res.medicalPercentage
                 _this.beizhu = res.beizhu
                 _this.changehospital = res.changehospitalList
                 _this.register = res.registerList
@@ -285,8 +313,8 @@
         checkpass(){
           const param={
             recordid:this.recordid,
-            medicalPercentage: this.medicalPercentage,
-            registerPercentage:this.registerPercentage,
+            medicalPercentage: this.Percentage.medicalPercentage,
+            registerPercentage:this.Percentage.registerPercentage,
             changehospitalList:this.changehospital,
             registerList:this.register,
             billList:this.bill,
@@ -307,8 +335,8 @@
         checkback(){
           const param={
           recordid:this.recordid,
-          medicalPercentage: this.medicalPercentage,
-          registerPercentage:this.registerPercentage,
+          medicalPercentage: this.Percentage.medicalPercentage,
+          registerPercentage:this.Percentage.registerPercentage,
           changehospitalList:this.changehospital,
           registerList:this.register,
           billList:this.bill,
@@ -332,8 +360,8 @@
         recheck(){
           const param={
           recordid:this.recordid,
-          medicalPercentage: this.medicalPercentage,
-          registerPercentage:this.registerPercentage,
+          medicalPercentage: this.Percentage.medicalPercentage,
+          registerPercentage:this.Percentage.registerPercentage,
           changehospitalList:this.changehospital,
           registerList:this.register,
           billList:this.bill,
@@ -355,7 +383,7 @@
           if(this.showcheck){
             for(let i=0;i<this.register.length;i++){
               console.log("服务自费：",this.register[i].registerCost)  
-              this.register[i].registerSelfCost= this.register[i].registerCost * this.registerPercentage
+              this.register[i].registerSelfCost= this.register[i].registerCost * this.Percentage.registerPercentage
               this.register[i].registerSelfCost = this.register[i].registerSelfCost.toFixed(2)
               console.log("计算的服务自费：",this.register[i].registerSelfCost)
               this.register.splice(i, 1,this.register[i])
@@ -366,7 +394,7 @@
           if(this.showcheck){
             for(let i=0;i<this.bill.length;i++){
               console.log("药费自费：",this.bill[i].billCost)  
-              this.bill[i].billSelfCost= this.bill[i].billCost * this.registerPercentage
+              this.bill[i].billSelfCost= this.bill[i].billCost * this.Percentage.medicalPercentage
               this.bill[i].billSelfCost = this.bill[i].billSelfCost.toFixed(2)
               console.log("计算的药费自费：",this.bill[i].billSelfCost)
               this.bill.splice(i, 1,this.bill[i])
@@ -378,10 +406,10 @@
           if(this.showcheck){
             this.recordmoney = 0 ;
             for(let i=0;i<this.register.length;i++){
-              this.recordmoney += this.register[i].registerCost * (1-this.registerPercentage)
+              this.recordmoney += this.register[i].registerCost * (1-this.Percentage.registerPercentage)
             }
             for(let i=0;i<this.bill.length;i++){
-              this.recordmoney += this.bill[i].billCost * (1-this.medicalPercentage)
+              this.recordmoney += this.bill[i].billCost * (1-this.Percentage.medicalPercentage)
             }
             this.recordmoney = this.recordmoney.toFixed(2)
             console.log("报销金额：",this.recordmoney)

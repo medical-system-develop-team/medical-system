@@ -139,7 +139,7 @@ import axios from 'axios'
           axiospost('/checker/recording',param)//用户类型学生、职工。。。。           
             .then(function (res) {             
               //console.log("返回数据：",res);
-              if(res.date === 400){
+              if(res.code === 400){
                 this.$message.error(res.msg || '查询失败')
                 return
               }else{

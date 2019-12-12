@@ -10,34 +10,19 @@
 
     <div style='margin-top: 20px;'>
       <el-form :inline="true" :model="record"  size="mini" label-width="100px" label="right" style="text-align:left;">
-        <el-form-item label="用户名" >            
-            <el-input v-model="record.username" placeholder="用户名"></el-input>         
-        </el-form-item>
-        <el-form-item label="工资号" style="margin-left: 1vw;">
-          <el-input v-model="record.salaryid" placeholder="用户工资号" style="width:92%;"></el-input>
-        </el-form-item>        
-      </el-form>
-
-      <el-form :inline="true" :model="record"  size="mini" label-width="100px" label="right" style="text-align:left;">       
-        <el-form-item label="性别">
-          <el-select v-model="record.sex" placeholder="性别" style="width:92%">
-            <el-option label="男" value="boy"></el-option>
-            <el-option label="女" value="girle"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="年龄">
+        <el-form-item label="用户" style="margin-left: 10vw;" >
           <el-col :span="11">
-            <el-input v-model="record.age1" placeholder="最小年龄" style="width: 100%;"></el-input>
+            <el-input placeholder="用户名" v-model="record.username"></el-input>
           </el-col>
           <el-col class="line" :span="2" style="text-align:center;">-</el-col>
           <el-col :span="11">
-            <el-input placeholder="最大年龄" v-model="record.age2" style="width: 100%;"></el-input>
+            <el-input placeholder="用户号" v-model="record.userid"></el-input>
           </el-col>
-        </el-form-item>    
-        <el-form-item label="部门">
-          <el-input v-model="record.depart" placeholder="部门"></el-input>
-        </el-form-item>      
-        <el-form-item label="审核人" style="margin-left: 1vw;" >
+        </el-form-item>       
+      </el-form>
+
+      <el-form :inline="true" :model="record"  size="mini" label-width="100px" label="right" style="text-align:left;">       
+        <el-form-item label="审核人" style="margin-left: 10vw;" >
           <el-col :span="11">
             <el-input placeholder="审核人" v-model="record.checker"></el-input>
           </el-col>
@@ -46,8 +31,8 @@
             <el-input placeholder="审核人编号" v-model="record.checkerid"></el-input>
           </el-col>
         </el-form-item>          
-        <el-form-item label="报销类型" >
-          <el-select v-model="record.type" placeholder="报销类型" style="width:92%" >
+        <el-form-item label="报销类型" style="margin-left: 10vw;">
+          <el-select v-model="record.recordtype" placeholder="报销类型" style="width:86%" >
             <el-option label="学生报销类型" value="student"></el-option>
             <el-option label="在职职工报销类型" value="worker"></el-option>
             <el-option label="退休人员报销类型" value="retired"></el-option>
@@ -55,16 +40,7 @@
             <el-option label="特殊群体报销类型" value="teshu"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="报销金额" >
-            <el-col :span="11">
-              <el-input  placeholder="最小费用" v-model="record.cost1" ></el-input>
-            </el-col>
-            <el-col class="line" :span="2" style="text-align:center;">-</el-col>
-            <el-col :span="11">
-              <el-input  placeholder="最大费用" v-model="record.cost2" ></el-input>
-            </el-col>
-        </el-form-item>
-        <el-form-item label="就医医院">
+        <!-- <el-form-item label="就医医院">
           <el-autocomplete
             class="inline-input"
             v-model="record.hospital"
@@ -72,17 +48,8 @@
             placeholder="就医医院"
             @select="handleSelect">
           </el-autocomplete>
-        </el-form-item>
-        <el-form-item label="报销时间" style="margin-left: 1vw;">
-          <el-col :span="9">
-            <el-date-picker type="date" placeholder="选择起始日期" v-model="record.date1" style="width: 105%;"></el-date-picker>
-          </el-col>
-          <el-col class="line" :span="2" style="text-align:center;">-</el-col>
-          <el-col :span="9">
-            <el-date-picker type="date" placeholder="选择结束日期" v-model="record.date2" style="width: 105%;"></el-date-picker>
-          </el-col>
-        </el-form-item>          
-        <el-form-item label="就医科室">
+        </el-form-item> -->     
+        <!-- <el-form-item label="就医科室">
           <el-autocomplete
             class="inline-input"
             v-model="record.keshi"
@@ -90,17 +57,8 @@
             placeholder="就医科室"
             @select="handleSelect">
           </el-autocomplete>
-        </el-form-item>
-        <el-form-item label="医事服务费"  style="margin-left: 1vw;">
-          <el-col :span="11">
-            <el-input  placeholder="最小费用" v-model="record.servercost1" style="width: 100%;"></el-input>
-          </el-col>
-          <el-col class="line" :span="2" style="text-align:center;">-</el-col>
-          <el-col :span="11">
-            <el-input  placeholder="最大费用" v-model="record.servercost2" style="width: 100%;"></el-input>
-          </el-col>
-        </el-form-item>  
-        <el-form-item   style="margin-left: 1.7%;">
+        </el-form-item> -->
+        <el-form-item   style="margin-left: 13%;">
           <el-button type="primary" size="mini" @click="onSubmit">查询</el-button>
         </el-form-item>                       
       </el-form>
@@ -199,22 +157,10 @@
         keSearch:[],
         record: {
           username: '',
-          type: '',
-          salaryid:'',
-          sex:'',
-          age1:'',
-          age2:'',
-          date1:'',
-          date2:'',
-          depart:'',
-          servercost1:'',
-          servercost2:'',
-          hospital:'',
-          keshi:'',
-          cost1:'',
-          cost2:'',
+          userid:'',
           checker:'',
-          checkerid:''
+          checkerid:'',
+          recordtype:''
         },
         recordData:[{
           id:'131231231',
@@ -294,11 +240,17 @@
       onSubmit() {
         var _this = this
         axiospost('/findrecording',_this.record)
-          .then(function (res) {
-            console.log(res);
-            _this.recordData = res
-            _this.pageTotal = _this.recordData.length
-          })
+          .then(function (res) {             
+              //console.log("返回数据：",res);
+              if(res.code === 400){
+                this.$message.error(res.msg || '查询失败')
+                return
+              }else{
+                _this.recordData = res
+                console.log("接收数据：",_this.recordData) 
+                _this.pageTotal = _this.recordData.length
+              }
+            })
           .catch(function (error) {
             console.log(error);
           });
