@@ -83,8 +83,8 @@ export default {
     },
     handleAvatarSuccess(index) {
       return (res, file) => {
-        //  this.localValue[index].zhuangzhenImg = URL.createObjectURL(file.raw);
-         this.localValue[index].zhuangzhenImg = res;
+         this.localValue[index].zhuangzhenImg = URL.createObjectURL(file.raw);
+        // this.localValue[index].zhuangzhenImg = res;
       }
     },
     //尝试图片旋转和压缩

@@ -96,7 +96,7 @@ export default {
     },
     handleAvatarSuccess(index, idx) {
       return (res, file) => {
-        this.localValue[index].fuwufeiArr[idx].yishiImg = res;
+        this.localValue[index].fuwufeiArr[idx].yishiImg = URL.createObjectURL(file.raw);
       }
     },
     beforeAvatarUpload(file) {

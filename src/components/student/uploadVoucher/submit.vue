@@ -70,7 +70,8 @@ export default {
   methods: {
     handleAvatarSuccess(key) {
       return (res, file) => {
-        this.waishangArr[key] = res;
+      
+        this.waishangArr[key] = URL.createObjectURL(file.raw);
       }
     },
     beforeAvatarUpload(file) {
