@@ -99,7 +99,7 @@ export default {
     },
     handleAvatarSuccess(index, idx, i, key) {
       return (res, file) => {
-        this.localValue[index].fuwufeiArr[idx].yaofeiArr[i][key] = res;
+        this.localValue[index].fuwufeiArr[idx].yaofeiArr[i][key] =URL.createObjectURL(file.raw);
       }
     },
     beforeAvatarUpload(file) {

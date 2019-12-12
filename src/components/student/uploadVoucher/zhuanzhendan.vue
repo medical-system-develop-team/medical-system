@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import fileUtil from '@/components/utils/fileUtil.js'
+
 export default {
   name: 'zhuanzhendan',
   components: {},
@@ -81,21 +83,59 @@ export default {
     },
     handleAvatarSuccess(index) {
       return (res, file) => {
-        // this.localValue[index].zhuangzhenImg = URL.createObjectURL(file.raw);
-        this.localValue[index].zhuangzhenImg = res;
+         this.localValue[index].zhuangzhenImg = URL.createObjectURL(file.raw);
+        // this.localValue[index].zhuangzhenImg = res;
       }
     },
+    //尝试图片旋转和压缩
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';
       const isLt2M = file.size / 1024 / 1024 < 2;
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!');
+      if(!isJPG || !isLt2M){
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG 格式!');
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!');
+        }
+        return isJPG && isLt2M;
       }
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
+      else {
+        //这里beforeUpload方法可以返回一个Promise，我们可以通过resolve将处理过后的文件上传；
+        return new Promise((resolve) => {
+          fileUtil.getOrientation(file).then((orient) => {
+            if (orient && orient === 6) {
+              let reader = new FileReader()
+              let img = new Image()
+              reader.onload = (e) => {
+                  img.src = e.target.result
+                  img.onload = function () {
+                      const data = fileUtil.rotateImage(img, img.width, img.height)
+                      const newFile = fileUtil.dataURLtoFile(data, file.name)
+                      resolve(newFile)
+                  }
+              }
+              reader.readAsDataURL(file)
+            } else {
+              resolve(file)
+            }
+          })
+        })
       }
-      return isJPG && isLt2M;
+      
     },
+    
+    // beforeAvatarUpload(file) {
+    //   const isJPG = file.type === 'image/jpeg';
+    //   const isLt2M = file.size / 1024 / 1024 < 2;
+    //   if (!isJPG) {
+    //     this.$message.error('上传头像图片只能是 JPG 格式!');
+    //   }
+    //   if (!isLt2M) {
+    //     this.$message.error('上传头像图片大小不能超过 2MB!');
+    //   }
+    //   return isJPG && isLt2M;
+    // },
     validateRequiredRule(msg) {
       return { required: true, message: msg, trigger: 'change' }
     },
