@@ -102,7 +102,7 @@ import axios from 'axios'
     methods: {
         request(){
           var _this = this
-          const param={id:_this.recordid}
+          const param={id:_this.id}
           console.log("发送数据：",param) 
           axiospost('/checker/recording',param)
             .then(function (res) {

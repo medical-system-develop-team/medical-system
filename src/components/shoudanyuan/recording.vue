@@ -49,7 +49,7 @@
             <span>{{ scope.row.userNumber}}</span>
           </template>
         </el-table-column>
-                <el-table-column
+        <el-table-column
           label="申请时间"
           width="150">
           <template slot-scope="scope">
@@ -72,6 +72,10 @@
             <el-button
             size="mini"
             @click="handleCheck(scope.$index, scope.row)">详情</el-button>
+            <el-button
+            size="mini"
+            type="danger"
+            @click="shoudan(scope.$index, scope.row)">收单</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -119,6 +123,23 @@
               console.log(error);
             });
 
+        },
+        shoudan(index,row){
+            var _this = this
+          const param={id:_this.recordid}//报销记录编号
+          console.log("发送数据：",param) 
+          axiospost('/shoudanyuan/shoudan',param)
+            .then(function (res) {
+              if(res.date === 400){
+                this.$message.error('收单失败')
+                return
+              }else{
+                this.$message.success('收单成功')
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
         },
       handleCheck(index,row){
           this.$router.push({path: '/shoudanyuan/recdetail',query:{id:row.recordId}})
