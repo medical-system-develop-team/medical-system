@@ -8,15 +8,15 @@
             欢迎{{admin}}<i class="el-icon-caret-bottom el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>个人信息</el-dropdown-item>
-            <el-dropdown-item>退出登录</el-dropdown-item>
+            <el-dropdown-item></el-dropdown-item>
+            <el-dropdown-item></el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </span>
     </div>  
     
     <el-container style="height: 100vh; solid #eee" >
-      <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+      <el-aside width="200px" style="background-color: #545c64">
         <el-menu 
           default-active="1"
           class="el-menu-vertical-demo" 
@@ -27,7 +27,7 @@
           <el-menu-item index="1"><i class="el-icon-s-grid"></i>报销列表</el-menu-item>
           <el-submenu index="3">
             <template slot="title"><i class="el-icon-user-solid"></i>修改个人信息</template>
-              <el-menu-item index="3-1">基础信息修改</el-menu-item>
+              <!-- <el-menu-item index="3-1">基础信息修改</el-menu-item> -->
               <el-menu-item index="3-2">个人密码修改</el-menu-item>
           </el-submenu>
           <el-menu-item index="4"><i class="el-icon-delete"></i>退出报销系统</el-menu-item>
