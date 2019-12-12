@@ -8,7 +8,7 @@
     </div>
     <el-form ref="form" :inline="true" class="demo-form-inline">
       <el-form-item label="报销编号">
-        <el-input v-model="id" size="mini" placeholder="请输入报销记录号"></el-input>
+        <el-input v-model="recordid" size="mini" placeholder="请输入报销记录号"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" size="mini" @click="onSubmit">查询</el-button>
@@ -71,7 +71,7 @@
           <template slot-scope="scope">
             <el-button
             size="mini"
-            @click="handleCheck(scope.$index, scope.row)">审核</el-button>
+            @click="handleCheck(scope.$index, scope.row)">详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -86,7 +86,7 @@
     data() {
         //sturec:[]
       return {
-          id:'',
+          recordid:'',
           usermessage:['学生','职工','退休','离休','医照'],
           recording:[{
             recordId:'111',
@@ -102,7 +102,7 @@
     methods: {
         onSubmit(){
           var _this = this
-          const param={id:_this.id}//报销记录编号
+          const param={id:_this.recordid}//报销记录编号
           console.log("发送数据：",param) 
           axiospost('/shoudanyuan/recording',param)
             .then(function (res) {
@@ -124,19 +124,7 @@
           this.$router.push({path: '/shoudanyuan/recdetail',query:{id:row.recordId}})
       }
     },
-    mounted: function () {
-      
-      /* var _this = this   //很重要！！
-      axios.get('/findall')
-        .then(function (res) {
-          console.log(res);
-          _this.sturec = res.data
-         })
-        .catch(function (error) {
-          console.log(error);
-        }); */
-    },
-    
+    mounted: function () {},    
   }
   
 </script>

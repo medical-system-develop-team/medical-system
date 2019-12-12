@@ -6,9 +6,14 @@
         <el-breadcrumb-item>已审核列表</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <div class="completecheck">
-      <p>已审核列表</p>
-    </div> 
+    <el-form ref="form" :inline="true" class="demo-form-inline">
+      <el-form-item label="报销编号">
+        <el-input v-model="recordid" size="mini" placeholder="请输入报销记录号"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" size="mini" @click="onSubmit">查询</el-button>
+      </el-form-item>
+    </el-form> 
     <template>
       <el-table
         :data="recording"
@@ -84,6 +89,7 @@ import axios from 'axios'
         //sturec:[]
       return {
           id:'8',
+          recordid:'',
           usermessage:['学生','职工','退休','离休','医照'],
           recording:[{
             recordId:'111',
@@ -100,27 +106,46 @@ import axios from 'axios'
         this.request()
       },
     methods: {
-        request(){
-          var _this = this
-          const param={id:_this.id}
-          console.log("发送数据：",param) 
-          axios.post('/checker/recording',param)
-            .then(function (res) {
-              //console.log(res);
-              if(res.date === 400){
-                this.$message.error(res.msg || '查询失败')
-                return
-              }else{
-                _this.recording = res
-                console.log("接收数据：",_this.recording) 
-                _this.pageTotal = _this.recording.length
-              }
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
+      request(){
+        var _this = this
+        const param={id:_this.id}
+        console.log("发送数据：",param) 
+        axios.post('/checker/recording',param)
+          .then(function (res) {
+            //console.log(res);
+            if(res.date === 400){
+              this.$message.error(res.msg || '查询失败')
+              return
+            }else{
+              _this.recording = res
+              console.log("接收数据：",_this.recording) 
+              _this.pageTotal = _this.recording.length
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
 
-        },
+      },
+      onSubmit(){
+        var _this = this
+        const param={id:_this.recordid}//报销记录编号
+        console.log("发送数据：",param) 
+        axiospost('/checkrecord',param)
+          .then(function (res) {
+            if(res.date === 400){
+              this.$message.error(res.msg || '查询失败')
+              return
+            }else{
+              _this.recording = res
+              console.log("接收数据：",_this.recording) 
+              //_this.pageTotal = _this.recording.length
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      },
       handleCheck(index,row){
           this.$router.push({path: '/checkerAdmin/recdetail', query:{message:this.usermessage[row.userType-1],id:row.recordId,showcheck:false,showcheckcomplete:true,lasturl:'/checkerAdmin/completecheck',recordtype:'已'}})
       }
