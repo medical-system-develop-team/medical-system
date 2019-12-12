@@ -36,6 +36,7 @@
       <el-button type="primary" size="small" @click="submit">提交</el-button>
       <el-button type="danger" size="small" v-if="hasAddWaishangshuoming" @click="reset">重置</el-button>
       <el-button type="primary" size="small" @click="preStep">上一步</el-button>
+      <el-button type="primary" size="small" @click="backhome">返回到首页</el-button>
     </div>
   </div>
 </template>
@@ -134,6 +135,9 @@ export default {
           this.$message.error('药费必须为正')
         }
       })
+    },
+    backhome() {
+      this.$router.push('/stdhome')
     },
     /**
      * @desc 获取最终要提交给后台的参数
