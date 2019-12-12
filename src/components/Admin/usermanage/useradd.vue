@@ -235,11 +235,6 @@
         }else{
           this.userData.splice(0, 0,val)
         }
-        /* axiospost('http://localhost:3000/data').then(res => {         
-          this.userData = res.userdate;
-          this.pageInfo.pageTotal=this.userData.length;
-          //this.total = res.date.total
-        }) */
       },
     
       handleDelete(index,row) {
@@ -249,7 +244,6 @@
         })
         .then(() => {
           this.userData.splice(index, 1)
-          //this.$axios.delete(`http://localhost:3000/data/${row.id}`).then(res =>{
           axiospost(`/deleteuser`,{id:row.id}).then(res =>{
             if(res.code==200){
               this.$message.success('删除用户成功')
@@ -266,25 +260,26 @@
             type: 'warning'
         })
         .then(() => {
-            /*const ids = this.rowIds.map(item => item.id).toString() 
-            const para = { ids: ids }
-            console.log('发送数据：',para) */
-            for(let j = 0; j <this.multipleSelection.length;j++){
-              for(let i = 0; i <this.userData.length;i++){
-                if(this.multipleSelection[j]==this.userData[i].userid){
-                  this.userData.splice(i, 1)
+          for(let j = 0; j <this.multipleSelection.length;j++){
+            for(let i = 0; i <this.userData.length;i++){
+              if(this.multipleSelection[j]==this.userData[i].userid){
+                this.userData.splice(i, 1)
+              }   
+            }
+          }
+          console.log('发送数据：',this.multipleSelection)
+          axiospost('/deleteids',this.multipleSelection).then(res => {
+            if(res.code==200){
+              this.$message.success('批量删除用户成功')
+              for(let j = 0; j <this.multipleSelection.length;j++){
+                for(let i = 0; i <this.userData.length;i++){
+                  if(this.multipleSelection[j]==this.userData[i].userid){
+                    this.userData.splice(i, 1)
+                  }   
                 }
-                 
               }
             }
-            console.log('发送数据：',this.multipleSelection)
-            axiospost('/deleteids',this.multipleSelection).then(res => {
-                this.$message({
-                    message: '批量删除成功',
-                    type: 'success'
-                })
-                this.getUserInfo()
-            })
+          })
         })
         .catch(() => {})
       },

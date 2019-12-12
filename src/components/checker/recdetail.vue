@@ -33,7 +33,7 @@
                 <el-input size="small" v-model="item.changehospitalIn" :readonly="true"></el-input>
               </el-form-item>
               <el-form-item label="日期：">
-                <el-input size="small"  v-model="item.date" :readonly="true"></el-input>
+                <el-input size="small"  v-model="item.changehospitalDate" :readonly="true"></el-input>
               </el-form-item><br>
               <el-form-item >
                 <label>转诊单：</label><br>
@@ -74,14 +74,11 @@
               <el-form-item label="金额：" >
                 <el-input size="small" v-model="item.registerCost" :readonly="true"></el-input>
               </el-form-item>
-              <el-form-item label="自费：" v-if="showcheckcomplete">
-                <el-input size="small"  v-model="item.zifei" :readonly=showcheckcomplete></el-input>
-              </el-form-item>
-              <el-form-item label="自费：" v-if="showcheck">
-                <el-input size="small"  v-model="fuwuzifei" @focus="zifeijisuan1(item)" :readonly=showcheckcomplete></el-input>
+              <el-form-item label="自费：" >
+                <el-input size="small"  v-model="item.Zifei" @focus="zifeijisuan1(item)" :readonly=showcheckcomplete></el-input>
               </el-form-item>
               <el-form-item label="日期：">
-                <el-input size="small" v-model="item.date" :readonly="true"></el-input>
+                <el-input size="small" v-model="item.registerDate" :readonly="true"></el-input>
               </el-form-item>
               <el-form-item label="说明：">
                 <el-input size="small"  v-model="item.registerExplaination" :readonly="true"></el-input>
@@ -109,19 +106,16 @@
           <div class="content" style="margin-top:10px;">
             <el-form ref="form" :inline="true" class="demo-form-inline" label-width="100px" style='text-align:left;'>
               <el-form-item label="医院：">
-                <el-input size="small" v-model="item.hospital" :readonly="true"></el-input>
+                <el-input size="small" v-model="item.billHospital" :readonly="true"></el-input>
               </el-form-item>
               <el-form-item label="科室：">
-                <el-input size="small"  v-model="item.depart" :readonly="true"></el-input>
+                <el-input size="small"  v-model="item.billDepartment" :readonly="true"></el-input>
               </el-form-item>
               <el-form-item label="金额：">
                 <el-input size="small" v-model="item.billCost" :readonly="true"></el-input>
               </el-form-item>
-              <el-form-item label="自费负担：" v-if="showcheckcomplete">
-                <el-input size="small"  v-model="item.zifei" :readonly=showcheckcomplete></el-input>
-              </el-form-item>
-              <el-form-item label="自费负担：" v-if="showcheck">
-                <el-input size="small"  v-model="yaozifei" @focus="zifeijisuan2(item)" :readonly=showcheckcomplete></el-input>
+              <el-form-item label="自费负担：" ><!-- //v-if="showcheckcomplete" -->
+                <el-input size="small"  v-model="item.zifei" @focus="zifeijisuan2(item)" :readonly=showcheckcomplete></el-input>
               </el-form-item>
               <!-- <el-form-item label="特殊负担：">
                 <el-input size="small" v-model="item.specialfee" :readonly=showcheckcomplete></el-input>
@@ -130,10 +124,10 @@
                 <el-input size="small"  v-model="item.partfee" :readonly=showcheckcomplete></el-input>
               </el-form-item> -->
               <el-form-item label="日期：">
-                <el-input size="small" v-model="item.date" :readonly="true"></el-input>
+                <el-input size="small" v-model="item.billDate" :readonly="true"></el-input>
               </el-form-item>
               <el-form-item label="说明：">
-                <el-input size="small"  v-model="item.shuoming" :readonly="true"></el-input>
+                <el-input size="small"  v-model="item.billExplaination" :readonly="true"></el-input>
               </el-form-item><br>
               <el-form-item >
                 <label style="margin-left: 21vw;">药费单据:</label><br>
@@ -176,14 +170,14 @@
             <el-button type="primary" size="mini" style="margin-top: 10px;" onclick="handleImgDirection();">旋转90°</el-button>
           </div> -->
         </div>
-        <div v-for="(item, index) in Form" :key="index+'4'" style="margin-top: 10px;" >
+        <div :model="Form" style="margin-top: 10px;" >
           <el-form label-width="100px" style='text-align:left;'>        
             <el-form-item  label="外伤说明：">
               <el-col :span="18">  
                 <el-input    
                   type="textarea"
                   :rows="2"
-                  v-model="item.formText" 
+                  v-model="Form.formText" 
                   :readonly=true>
                 </el-input>
               </el-col>  
@@ -195,8 +189,8 @@
               <!-- <div class="imageBox" style="margin-top: 10px;"> -->
                 <el-image 
                   style="width: 100px; height: 100px; "
-                  :src="item.gaizhangImage" 
-                  :preview-src-list="item.gaizhangImage">
+                  :src="Form.gaizhangImage" 
+                  :preview-src-list="Form.gaizhangImage">
                 </el-image><br>
                 <el-button type="primary" size="mini" style="margin-top:5px;" onclick="handleImgDirection();">旋转90°</el-button>
                 <!-- </div> -->
@@ -206,8 +200,8 @@
                 <!-- <div class="imageBox" style="margin-top: 10px;"> -->
                   <el-image 
                     style="width: 100px; height: 100px; margin-left: 5vw;"
-                    :src="item.teshuImage" 
-                    :preview-src-list="item.teshuImage">
+                    :src="Form.teshuImage" 
+                    :preview-src-list="Form.teshuImage">
                   </el-image><br>
                   <el-button type="primary" size="mini" style="margin-top:5px;  margin-left: 6vw;" onclick="handleImgDirection();">旋转90°</el-button>
                 <!-- </div> -->
@@ -232,7 +226,17 @@
         </div>
 
         <div style="margin-top: 10px;" >
-          <el-form label-width="100px"  style='text-align:left;'>              
+          <el-form label-width="100px"  style='text-align:left;'>
+            <el-form-item label="报销金额：" v-if="showcheckcomplete">
+              <el-col :span="18"> 
+                <el-input size="small"  v-model="recordmoney" :readonly=showcheckcomplete></el-input>
+              </el-col>
+            </el-form-item>
+            <el-form-item label="报销金额：" v-if="showcheck">
+              <el-col :span="18"> 
+                <el-input size="small"  v-model="recordmoney" @focus="recordmoneyjisuan()" :readonly=showcheckcomplete></el-input>
+              </el-col>
+            </el-form-item>           
             <el-form-item  label="备注："> 
               <el-col :span="18"> 
                 <el-input 
@@ -249,7 +253,7 @@
         
         <el-form :inline="true" class="demo-form-inline add-form" v-if="showcheck">
           <el-form-item class="btnRight">
-            <el-button type="success" size ="mini" icon="view" style="margin-right: 20px;" @click='back()'>返回列表</el-button>
+            <el-button type="success" size ="mini" icon="view" style="margin-right: 30px;" @click='back()'>返回列表</el-button>
             <el-button type="warning" size ="mini" icon="view" @click="checkpass();">审核完成</el-button>
             <el-button type="danger" size ="mini" icon="view" @click="checkback();">审核退回</el-button>
           </el-form-item>
@@ -273,22 +277,21 @@ import axios from 'axios'
         //sturec:[]
       return {
         imageurl:[],
-        id:'',
+        recordid:'',
         usertype:'',
         message:'',
-        fuwuzifei:'0',
-        yaozifei:'10',
         usertypemessage:['学生','职工','退休','离休','医照'],
         lasturl:'',
           
         beizhu:'',
+        recordmoney:'',
         showcheck:true,
         showcheckcomplete:false,
         recording:[],
         changehospital:[{}],
-        register:[{}],
-        bill:[{}],
-        Form:[{}],
+        register:[{registerDepartment:111,registerCost:100},{registerDepartment:222,registerCost:10}],
+        bill:[{billCost:100},{billCost:10}],
+        Form:{},
         registerPercentage:'0.2',
         medicalPercentage:'0.2'
 
@@ -299,29 +302,30 @@ import axios from 'axios'
       },
     methods: {
         deatils(){
-          this.id =this.$route.query.id//报销记录编号
+          this.recordid =this.$route.query.id//报销记录编号
           this.usertype = this.$route.query.usertype
           this.message = this.$route.query.message
           this.lasturl = this.$route.query.lasturl
           this.showcheck = this.$route.query.showcheck
           this.showcheckcomplete = this.$route.query.showcheckcomplete
           var _this = this
-          const param={recordId:_this.id}
+          const param={recordId:_this.recordid}
           console.log("发送数据：",param) 
           axiospost('/recording/detail',param)
             .then(function (res) {
               console.log(res);
-              if(res.zhuanzhendan === 400){
+              if(res.code === 400){
                 this.$message.error(res.msg || '查询失败')
                 return
               }else{
-                _this.Percentage = res.Percentage//医事服务费自负比例医药费自负比例
+                _this.registerPercentage = res.registerPercentage//医事服务费自负比例医药费自负比例
+                _this.medicalPercentage = res.medicalPercentage
                 _this.beizhu = res.beizhu
-                _this.changehospital = res.changehospital
-                _this.register = res.register
-                _this.bill = res.bill
+                _this.changehospital = res.changehospitalList
+                _this.register = res.registerList
+                _this.bill = res.billList
                 _this.Form = res.Form
-                _this.message = _this.usertypemessage[res.usertype+1]
+                _this.recordmoney = res.recordmoney
               }
             })
             .catch(function (error) {
@@ -331,26 +335,33 @@ import axios from 'axios'
         },
         checkpass(){
           axiospost('/checkerpass', {
+            recordid:this.recordid,
             medicalPercentage: this.medicalPercentage,
             registerPercentage:this.registerPercentage,
-            beizhu:this.beizhu
+            changehospitalList:this.changehospital,
+            registerList:this.register,
+            billList:this.bill,
+            Form :this.Form,
+            beizhu:this.beizhu,
+            recordmoney:this.recordmoney
           })
           .then(function (res) {
             console.log(res);
-            if(res.code == 1) {
+            if(res.code == 200) {
               this.$message.success('审核成功')
             } 
           })
         },
         checkback(){
            axios.post('/checkerback', {
+            recordid:this.recordid,
             medicalPercentage: this.medicalPercentage,
             registerPercentage:this.registerPercentage,
             beizhu:this.beizhu
           })
           .then(function (res) {
             console.log(res);
-            if(res.code == 1) {
+            if(res.code == 200) {
               this.$message.success('退回成功')
             } 
           })
@@ -359,19 +370,37 @@ import axios from 'axios'
           this.$router.push({path: '/checker/recording', query:{id:this.usertype}})
         },
         zifeijisuan1(item){
-          console.log("fuwuzifei");
           if(this.showcheck){
-            this.fuwuzifei = item.registerCost * this.registerPercentage
+            for(let i=0;i<this.register.length;i++){
+              console.log("服务自费：",this.register[i].registerCost)  
+              this.register[i].zifei= this.register[i].registerCost * this.registerPercentage
+              console.log("计算的服务自费：",this.register[i].zifei)
+              this.register.splice(i, 1,this.register[i])
+            }
           }
-          console.log("fuwuzifei",this.fuwuzifei);
         },
         zifeijisuan2(item){
-          console.log("yaofeizifei");
           if(this.showcheck){
-            this.yaozifei = item.billCost * this.medicalPercentage
+            for(let i=0;i<this.bill.length;i++){
+              console.log("药费自费：",this.bill[i].billCost)  
+              this.bill[i].zifei= this.bill[i].billCost * this.registerPercentage
+              console.log("计算的药费自费：",this.bill[i].zifei)
+              this.bill.splice(i, 1,this.bill[i])
+            }
           }
-          
-          console.log("yaofeizifei",this.yaozifei);
+        },
+        recordmoneyjisuan(){
+          console.log("报销金额");
+          if(this.showcheck){
+            this.recordmoney = 0 ;
+            for(let i=0;i<this.register.length;i++){
+              this.recordmoney += this.register[i].registerCost * (1-this.registerPercentage)
+            }
+            for(let i=0;i<this.bill.length;i++){
+              this.recordmoney += this.bill[i].billCost * (1-this.medicalPercentage)
+            }
+            console.log("报销金额：",this.recordmoney)
+          }  
         },
         backcomplete(){
           this.$router.push({path: '/checker/completecheck'})

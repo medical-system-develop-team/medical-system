@@ -24,6 +24,8 @@
 </template>
 
 <script>
+  import axios from 'axios'
+  import { axiospost } from '@/api/index.js'
 export default {
   name: 'AddDepart',
   props:{
@@ -45,25 +47,27 @@ export default {
   },
   methods:{
     dialogFormAdd(formdong) {
-        this.$refs[formdong].validate((valid) => {
-          if (valid) {
-            this.$axios.post('http://localhost:3000/data',this.formDate).then(res => {
-                console.log('adasdasda',res)
-                this.$message({
-                    type:"success",
-                    message:"添加信息成功"
-                })
-                console.log(res)
-                this.dialogAdd.show = false;
-                this.$emit('update',this.formDate);   
- 
-           })
-            this.formDate  = ""
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        })
+      this.$refs[formdong].validate((valid) => {
+        if (valid) {
+          //this.$emit('update',this.formDate);
+          this.formDate  = {}
+          axiospost('/departadd',this.formDate).then(res => {
+            console.log('发送数据：',this.formDate)
+            console.log('接收数据：',res)
+            if(res.code==200){
+              this.$message.success('添加信息成功')
+              this.formDate  = {}
+              this.dialogAdd.show = false;
+              this.$emit('update',this.formDate);
+            }else{
+              this.$message.error(res.code || '添加失败！')
+            }  
+          })              
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      })
     }
   }
 }

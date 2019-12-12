@@ -115,7 +115,7 @@ import axios from 'axios'
 
         },
       handleCheck(index,row){
-          this.$router.push({path: '/checkerAdmin/recdetail', query:{id:row.recordId,showcheck:false,showcheckcomplete:true,lasturl:'/checkerAdmin/completecheck',recordtype:'已'}})
+          this.$router.push({path: '/checkerAdmin/recdetail', query:{message:this.usermessage[row.userType-1],id:row.recordId,showcheck:false,showcheckcomplete:true,lasturl:'/checkerAdmin/completecheck',recordtype:'已'}})
       }
     },
     mounted: function () {},

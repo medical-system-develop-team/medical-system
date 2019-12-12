@@ -1,12 +1,6 @@
 <template>
   <div class="myInfo">
-    <div>
-      <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item></el-breadcrumb-item>
-        <el-breadcrumb-item>修改个人信息</el-breadcrumb-item>
-        <el-breadcrumb-item>基础信息修改</el-breadcrumb-item>
-      </el-breadcrumb>
-    </div>
+    <navmenu />
     <h1>修改个人信息</h1>
     <el-form class = "infoForm" ref="form" :model="myInfoForm" label-width="80px">
       <el-form-item label="工资号">
@@ -15,7 +9,7 @@
       <el-form-item label="姓    名">
          <el-input v-model="myInfoForm.name"></el-input>
       </el-form-item>  
-      <el-form-item label="性    别">
+      <el-form-item label="性    别" style="text-align: left;">
         <el-select v-model="myInfoForm.sex" placeholder="请选择性别">
           <el-option label="男" value="man"></el-option>
           <el-option label="女" value="woman"></el-option>
@@ -30,7 +24,7 @@
       <el-form-item label="联系电话">
          <el-input v-model="myInfoForm.phone"></el-input>
       </el-form-item>  
-      <el-form-item>
+      <el-form-item style="text-align: center;">
         <el-button type="primary" @click="onSubmit">提交</el-button>
       </el-form-item>
   </el-form>
@@ -40,12 +34,15 @@
 
 <script>
 // @ is an alias to /src
+import navmenu from '@/components/student/navmenu.vue'
 import { serviceMyInfoSubmit } from '@/api/index.js'
 import { getUserInfo } from '@/api/index.js'
 
 export default {
     name: 'myInfo',
-    components: {},
+    components: {
+      navmenu
+    },
     data() {
       return {
         myInfoForm: {
@@ -84,7 +81,19 @@ export default {
                 this.$router.push('/stdhome')
                 this.getInfo()
               }
-          }
+              else if (response.code === 401) {
+                console.log(this.myInfoForm)
+                this.$message.success('修改失败，数据不能为空')
+              }
+              else if (response.code === 402) {
+                console.log(this.myInfoForm)
+                this.$message.success('修改失败，身份证信息错误')
+              }
+              else{
+                console.log(this.myInfoForm)
+                this.$message.success('修改失败，电话号码格式错误')
+              }
+            }
           )
         })
       }
@@ -92,9 +101,17 @@ export default {
   }
 </script>
 
-<style>
-.infoForm {
+<style lang="less" scoped>
+.myInfo{
+  .infoForm {
   width: 600px;
-  margin:auto;
+  padding: 50px 60px 20px 10px;
+  margin: auto;
+  border-radius: 5px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  position: relative;
+  // text-align: left;
+  float: center;
+  }
 }
 </style>

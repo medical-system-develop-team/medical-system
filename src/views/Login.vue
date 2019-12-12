@@ -46,7 +46,7 @@ export default {
     }
   },
   methods: {
-    onLogin() {
+     onLogin() {
       this.$refs.form.validate( valid => {
         this.$cookieStore.setCookie( 'username' ,this.loginForm.username,1)
         this.$cookieStore.setCookie( 'password' ,this.loginForm.password,1)
@@ -57,15 +57,15 @@ export default {
           response => {
             console.log('Login 接口返回数据为：', response)
             if (response.code === 400) {
-              this.$message.error(response.code || '用户不存在')
+              this.$message.error('用户不存在')
               return
             }
             if (response.code === 300) {
-              this.$message.error(response.code || '用户名或密码错误')
+              this.$message.error('用户名或密码错误')
               return
             }
             if (response.code === 600) {
-              this.$message.error(response.code || '系统错误')
+              this.$message.error('用户名为数字组合')
               return
             }
             if (response.code === 200) { //学生用户
