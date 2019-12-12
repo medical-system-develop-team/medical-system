@@ -126,5 +126,7 @@ export default {
 </script>
 
 <style lang="less">
-
+.reimbursement {
+    margin-top: 60px;
+}
 </style>

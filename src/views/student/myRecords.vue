@@ -26,9 +26,13 @@
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          <div  v-if="scope.row.recordStatus !== '已确认' && scope.row.recordStatus !== '收单完成' && scope.row.recordStatus !== ''">
+          <div  v-if="scope.row.recordStatus !== '已确认' && scope.row.recordStatus !== '收单完成' && scope.row.recordStatus !== '审核通过未确认' && scope.row.recordStatus !== ''">
             <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          </div>
+          <div  v-if="scope.row.recordStatus == '审核通过未确认'">
+            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">查看</el-button>
+            <el-button size="mini" type="danger" @click="handleConfirm(scope.$index, scope.row)">确认</el-button>
           </div>
           <div  v-if="scope.row.recordStatus == '已确认' || scope.row.recordStatus == '收单完成'">
             <el-button size="mini" @click="handleCreate(scope.$index, scope.row)">生成报销单</el-button>
@@ -115,6 +119,18 @@ export default {
         }
         else if (res.code  === 400) { 
           this.$message.error('删除失败')
+        }
+      })
+    },
+    handleConfirm(index, row){
+      const url = '' // ConfirmByID
+      commonApi(url, { recordID:row.recordID }).then(res => {  // 根据recordID请求数据
+        if (res.code === 200) {  // 后台确认成功
+          this.$message.success('确认成功')
+          this.getRecordsList();
+        }
+        else if (res.code  === 400) { 
+          this.$message.error('确认失败')
         }
       })
     },
