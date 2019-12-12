@@ -356,6 +356,7 @@
             for(let i=0;i<this.register.length;i++){
               console.log("服务自费：",this.register[i].registerCost)  
               this.register[i].registerSelfCost= this.register[i].registerCost * this.registerPercentage
+              this.register[i].registerSelfCost = this.register[i].registerSelfCost.toFixed(2)
               console.log("计算的服务自费：",this.register[i].registerSelfCost)
               this.register.splice(i, 1,this.register[i])
             }
@@ -366,6 +367,7 @@
             for(let i=0;i<this.bill.length;i++){
               console.log("药费自费：",this.bill[i].billCost)  
               this.bill[i].billSelfCost= this.bill[i].billCost * this.registerPercentage
+              this.bill[i].billSelfCost = this.bill[i].billSelfCost.toFixed(2)
               console.log("计算的药费自费：",this.bill[i].billSelfCost)
               this.bill.splice(i, 1,this.bill[i])
             }
@@ -381,6 +383,7 @@
             for(let i=0;i<this.bill.length;i++){
               this.recordmoney += this.bill[i].billCost * (1-this.medicalPercentage)
             }
+            this.recordmoney = this.recordmoney.toFixed(2)
             console.log("报销金额：",this.recordmoney)
           }  
         },
