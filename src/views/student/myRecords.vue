@@ -125,7 +125,7 @@ export default {
     handleConfirm(index, row){
       const url = '/ConfirmRecord' // ConfirmByID
       commonApi(url, { recordID:row.recordID }).then(res => {  // 根据recordID请求数据
-        if (res.code === 200) {  // 后台确认成功
+        if (res.code === 1) {  // 后台确认成功
           this.$message.success('确认成功')
           this.getRecordsList();
         }
