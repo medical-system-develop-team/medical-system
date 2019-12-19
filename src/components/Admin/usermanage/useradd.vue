@@ -27,7 +27,7 @@
     </div> -->
     <template>
       <el-table
-        :data="userData"
+        :data="userData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
         stripe
         style="width: 100%"
         @select="handleSelectionChange"
@@ -38,16 +38,16 @@
           align='center'
           width="60">
         </el-table-column>
-        <!-- <el-table-column
+        <el-table-column
           type="index"
           width="20">
-        </el-table-column> -->
-        <el-table-column 
+        </el-table-column>
+        <!-- <el-table-column 
           prop="id" 
           label="序号"  
           align="center" 
           width="50">
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           label="用户号"
           align="center"
@@ -141,7 +141,15 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination background layout="total"  :total="pageTotal">
+      <el-pagination 
+        align='center' 
+        @size-change="handleSizeChange" 
+        @current-change="handleCurrentChange"  
+        :current-page="currentPage"  
+        :page-sizes="[1,5,10,15]"
+        :page-size="pagesize"   
+        layout="total,jumper,prev, pager, next,sizes" 
+        :total="userData.length">
       </el-pagination>
     </template>
     <UserInfo :dialogAdd="dialogAdd" @update="getUserInfo"></UserInfo>
@@ -180,10 +188,12 @@
         dialogBatchIn:{
           show : false
         },
+        currentPage:1,
+        pagesize:5,
         pageTotal: 0,
         edit:false,
         indexNum:'',
-        batchdelindex:[],
+        //batchdelindex:[],
         searchBtnDisabled : true ,
         form:{    //编辑信息
           /* id:'',
@@ -255,6 +265,7 @@
         })
         .then(() => {
           this.userData.splice(index, 1)
+          this.$message.success('删除用户成功')
           axiospost(`/deleteuser`,{id:row.id}).then(res =>{
             if(res.code==200){
               this.$message.success('删除用户成功')
@@ -278,10 +289,13 @@
               }   
             }
           }
+          this.$message.success('批量删除用户成功')
+          this.batchdelable = true;
           console.log('发送数据：',this.multipleSelection)
           axiospost('/deleteids',this.multipleSelection).then(res => {
             if(res.code==200){
               this.$message.success('批量删除用户成功')
+              this.batchdelable = true;
               for(let j = 0; j <this.multipleSelection.length;j++){
                 for(let i = 0; i <this.userData.length;i++){
                   if(this.multipleSelection[j]==this.userData[i].userid){
@@ -304,26 +318,26 @@
       },
       handleSelectionChange(val) {
         this.multipleSelection=[]
-        this.batchdelindex=[]
-        console.log("handleSelectionChange:  ",this.multipleSelection,this.batchdelindex)
+        //this.batchdelindex=[]
+        console.log("handleSelectionChange111:  ",this.multipleSelection)
         val.forEach((item) => {
           this.multipleSelection.push(item.userid)
-          this.batchdelindex.push(item.id)
-          console.log("handleSelectionChange:  ",this.multipleSelection,this.batchdelindex)  
+          //this.batchdelindex.push(item.id)
+          console.log("handleSelectionChange222:  ",this.multipleSelection)  
           //this.rowIds.push(item.id); 
         });
         this.setbatchdelable(val);
       },
       selectAll(val){
         this.multipleSelection=[]
-        this.batchdelindex=[]
-        console.log("selectCancel:  ",this.multipleSelection,this.batchdelindex)
+        //this.batchdelindex=[]
+        console.log("selectAll111:  ",this.multipleSelection)
         val.forEach((item) => {
           this.multipleSelection.push(item.userid)
-          this.batchdelindex.push(item.id)
-          console.log("selectAll:  ",this.multipleSelection,this.batchdelindex)  
+         // this.batchdelindex.push(item.id)
+          console.log("selectAll222:  ",this.multipleSelection)  
           //this.rowIds.push(item.id); 
-        });
+        }); 
         this.setbatchdelable(val);
       },
       setbatchdelable(val){
@@ -337,6 +351,12 @@
       rowClassName({row, rowIndex}) {
     //把每一行的索引放进row.id
          row.id = rowIndex+1;
+      },
+      handleSizeChange:function(size){
+          this.pagesize=size;
+      },
+      handleCurrentChange:function(currentPage){
+          this.currentPage=currentPage;
       }
     }
   }

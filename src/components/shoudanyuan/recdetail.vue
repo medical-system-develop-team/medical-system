@@ -41,8 +41,10 @@
               <label>转诊单：</label><br>
                 <el-image 
                   style="width: 100px; height: 100px;"
-                  :src="item.changehospitalImage" 
-                  :preview-src-list="[item.changehospitalImage]">
+                  :src="imageurl" 
+                  :preview-src-list="[imageurl]">
+                  <!-- :src="item.changehospitalImage" 
+                  :preview-src-list="[item.changehospitalImage]"> -->
                 </el-image><br>
               </el-form-item>
             </el-form>
@@ -76,11 +78,13 @@
             </el-form>
             <el-form label-width="100px" :inline="true">
               <el-form-item >
-                <label>医事服务费（挂号费）：</label>
+                <label>医事服务费（挂号费）：</label><br>
                 <el-image 
                   style="width: 100px; height: 100px;"
-                  :src="item.registerImage" 
-                  :preview-src-list="[item.registerImage]">
+                  :src="imageurl" 
+                  :preview-src-list="[imageurl]">
+                  <!-- :src="item.registerImage" 
+                  :preview-src-list="[item.registerImage]"> -->
                 </el-image><br>
               </el-form-item>
             </el-form>
@@ -123,16 +127,20 @@
                 <label>药费单据:</label><br>
                 <el-image 
                   style="width: 100px; height: 100px;"
-                  :src="item.billImage" 
-                  :preview-src-list="[item.billImage]">
+                  :src="imageurl" 
+                  :preview-src-list="[imageurl]">
+                  <!-- :src="item.billImage" 
+                  :preview-src-list="[item.billImage]"> -->
                 </el-image><br>
               </el-form-item>
               <el-form-item >
                 <label>处方:</label><br>
                 <el-image 
                   style="width: 100px; height: 100px;"
-                  :src="item.billPrescriptionImage" 
-                  :preview-src-list="[item.billPrescriptionImage]">
+                  :src="imageurl" 
+                  :preview-src-list="[imageurl]">
+                  <!-- :src="item.billPrescriptionImage" 
+                  :preview-src-list="[item.billPrescriptionImage]"> -->
                 </el-image><br>
               </el-form-item>
             </el-form>
@@ -157,16 +165,20 @@
               <label>签字盖章证明：</label><br>
               <el-image 
                 style="width: 100px; height: 100px; "
-                :src="Form.gaizhangImage" 
-                :preview-src-list="[Form.gaizhangImage]">
+                :src="imageurl" 
+                :preview-src-list="[imageurl]">
+                <!-- :src="Form.gaizhangImage" 
+                :preview-src-list="[Form.gaizhangImage]"> -->
               </el-image><br>
             </el-form-item>
             <el-form-item >
               <label style="margin-left: 5vw;">特殊用药说明：</label><br>
               <el-image 
                 style="width: 100px; height: 100px; margin-left: 5vw;"
-                :src="Form.teshuImage" 
-                :preview-src-list="[Form.teshuImage]">
+                :src="imageurl" 
+                :preview-src-list="[imageurl]">
+                <!-- :src="Form.teshuImage" 
+                :preview-src-list="[Form.teshuImage]"> -->
               </el-image><br>
             </el-form-item>             
           </el-form>
@@ -189,6 +201,7 @@
         <el-form :inline="true" class="demo-form-inline add-form">
           <el-form-item class="btnRight">
             <el-button type="success" size ="mini" icon="view" style="margin-right: 20px;" @click='back()'>返回</el-button>
+            <el-button size="mini" type="danger" @click="shoudan()" :disabled="runcheck">收单</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -203,8 +216,10 @@
     data() {
         //sturec:[]
       return {
+        imageurl:require('../../../static/img/0.jpg'),
         recordid:'',
         message:'',
+        runcheck:false,
         registerPercentage:'',
         medicalPercentage:'0.2',
         beizhu:'',
@@ -250,6 +265,31 @@
               console.log(error);
             });
 
+        },
+        shoudan(index,row){
+          var _this = this
+          this.$confirm('确认收单?', '提示', {
+              type: 'warning'
+          })
+          .then(() => {
+            const param={id:_this.recordid}//报销记录编号
+            console.log("发送数据：",param) 
+            this.$message.success('收单成功')
+            this.runcheck = true
+            axiospost('/shoudanyuan/shoudan',param)
+            .then(function (res) {
+              if(res.code === 400){
+                this.$message.error('收单失败')
+                return
+              }else{
+                this.$message.success('收单成功')
+                this.runcheck = true
+              }
+            }) 
+          })          
+          .catch(function (error) {
+            console.log(error);
+          });
         },
         back(){
           this.$router.push({path: '/shoudanyuan/recording'})

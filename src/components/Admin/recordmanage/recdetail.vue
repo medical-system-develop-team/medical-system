@@ -4,7 +4,7 @@
       <div style="text-align: center;">
         <h2>报销信息</h2>
         <small>类型:{{message}}</small>
-        <el-form ref="form" :inline="true"  style="margin-top: 5px;text-align:left;margin-left: 8.5vw;"> 
+        <el-form ref="form" :inline="true" label-width="200px"  style="margin-top: 5px;text-align:left;margin-left: 8.5vw;"> 
           <el-form-item  label="医事服务费自负比例：">
             <el-input size="mini" v-model="registerPercentage" :readonly="true"></el-input>
           </el-form-item>
@@ -22,23 +22,25 @@
             <b style="font-size:15px;">转诊单{{index+1}}</b>
           </div>
           <div class="content" style="margin-top:10px;">
-            <el-form ref="form" :inline="true"   label-width="100px"  class="demo-form-inline" >
+            <el-form ref="form" :inline="true"   label-width="100px"  class="demo-form-inline" style='text-align:left;' >
               <el-form-item label="医院：">
                 <el-input size="small" v-model="item.changehospitalIn" :readonly="true"></el-input>
               </el-form-item>
               <el-form-item label="日期：">
                 <el-input size="small"  v-model="item.changehospitalDate" :readonly="true"></el-input>
               </el-form-item><br>
+            </el-form>
+            <el-form label-width="100px" :inline="true">
               <el-form-item >
                 <label>转诊单：</label><br>
                 <!-- <div class="imageBox" style="margin-top: 10px;"> -->
                   <el-image 
                     style="width: 100px; height: 100px;"
-                    :src="item.changehospitalImage" 
-                    :preview-src-list="item.changehospitalImage">
+                    :src="imageurl" 
+                    :preview-src-list="[imageurl]">
+                    <!-- :src="item.changehospitalImage" 
+                    :preview-src-list="item.changehospitalImage"> -->
                   </el-image><br>
-                  <el-button type="primary" size="mini" style="margin-top:5px;" onclick="handleImgDirection();">旋转90°</el-button>
-                <!-- </div> -->
               </el-form-item>
             </el-form>
           </div>      
@@ -68,15 +70,18 @@
               <el-form-item label="说明：">
                 <el-input size="small"  v-model="item.registerExplaination" :readonly="true"></el-input>
               </el-form-item>
+            </el-form>
+            <el-form label-width="100px" :inline="true">
               <el-form-item >
-                <label style="margin-left: 23vw;">医事服务费（挂号费）：</label>
+                <label>医事服务费（挂号费）：</label>
                 <div class="imageBox" style="margin-top: 10px;">
                   <el-image 
-                    style="width: 100px; height: 100px; margin-left: 25vw;"
-                    :src="item.registerImage" 
-                    :preview-src-list="item.registerImage">
+                    style="width: 100px; height: 100px;"
+                    :src="imageurl" 
+                    :preview-src-list="[imageurl]">
+                    <!-- :src="item.registerImage" 
+                    :preview-src-list="item.registerImage"> -->
                   </el-image><br>
-                  <el-button type="primary" size="mini" style="margin-top:5px;  margin-left: 26vw;" onclick="handleImgDirection();">旋转90°</el-button>
                 </div>
               </el-form-item>
             </el-form>
@@ -113,27 +118,29 @@
               <el-form-item label="说明：">
                 <el-input size="small"  v-model="item.billExplaination" :readonly="true"></el-input>
               </el-form-item><br>
+            </el-form>
+            <el-form label-width="100px" :inline="true">
               <el-form-item >
-                <label style="margin-left: 21vw;">药费单据:</label><br>
+                <label>药费单据:</label><br>
               <!-- <div class="imageBox" style="margin-top: 10px;"> -->
                 <el-image 
-                  style="width: 100px; height: 100px; margin-left: 20vw;"
-                  :src="item.billImage" 
-                  :preview-src-list="item.billImage">
+                  style="width: 100px; height: 100px;"
+                  :src="imageurl" 
+                    :preview-src-list="[imageurl]">
+                  <!-- :src="item.billImage" 
+                  :preview-src-list="item.billImage"> -->
                 </el-image><br>
-                <el-button type="primary" size="mini" style="margin-top:5px;  margin-left: 21vw;" onclick="handleImgDirection();">旋转90°</el-button>
-              <!-- </div> -->
               </el-form-item>
               <el-form-item >
                 <label style="margin-left: 7vw;">处方:</label><br>
               <!-- <div class="imageBox" style="margin-top: 10px;"> -->
                 <el-image 
                   style="width: 100px; height: 100px; margin-left: 5vw;"
-                  :src="item.billPrescriptionImage" 
-                  :preview-src-list="item.billPrescriptionImage">
+                  :src="imageurl" 
+                  :preview-src-list="[imageurl]">
+                  <!-- :src="item.billPrescriptionImage" 
+                  :preview-src-list="item.billPrescriptionImage"> -->
                 </el-image><br>
-                <el-button type="primary" size="mini" style="margin-top:5px;  margin-left: 6vw;" onclick="handleImgDirection();">旋转90°</el-button>
-                <!-- </div> -->
               </el-form-item>
             </el-form>
           </div> 
@@ -158,22 +165,22 @@
               <!-- <div class="imageBox" style="margin-top: 10px;"> -->
               <el-image 
                 style="width: 100px; height: 100px; "
-                :src="Form.gaizhangImage" 
-                :preview-src-list="Form.gaizhangImage">
+                :src="imageurl" 
+                :preview-src-list="[imageurl]">
+                <!-- :src="Form.gaizhangImage" 
+                :preview-src-list="Form.gaizhangImage"> -->
               </el-image><br>
-              <el-button type="primary" size="mini" style="margin-top:5px;" onclick="handleImgDirection();">旋转90°</el-button>
-              <!-- </div> -->
             </el-form-item>
             <el-form-item >
               <label style="margin-left: 5vw;">特殊用药说明：</label><br>
               <!-- <div class="imageBox" style="margin-top: 10px;"> -->
                 <el-image 
                   style="width: 100px; height: 100px; margin-left: 5vw;"
-                  :src="Form.teshuImage" 
-                  :preview-src-list="Form.teshuImage">
+                  :src="imageurl" 
+                  :preview-src-list="[imageurl]">
+                  <!-- :src="Form.teshuImage" 
+                  :preview-src-list="Form.teshuImage"> -->
                 </el-image><br>
-                <el-button type="primary" size="mini" style="margin-top:5px;  margin-left: 6vw;" onclick="handleImgDirection();">旋转90°</el-button>
-              <!-- </div> -->
             </el-form-item>             
           </el-form>
         </div>
@@ -214,6 +221,7 @@
   export default {
     data() {
       return {
+        imageurl:require('../../../../static/img/0.jpg'),
         recordid:'',//报销记录编号
         message:'',
         registerPercentage:'',

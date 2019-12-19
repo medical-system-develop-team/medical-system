@@ -40,8 +40,10 @@
                 <label>转诊单：</label><br>
                 <el-image 
                   style="width: 100px; height: 100px;"
-                  :src="item.changehospitalImage" 
-                  :preview-src-list="[item.changehospitalImage]">
+                  :src="imageurl" 
+                  :preview-src-list="[imageurl]">
+                  <!-- :src="item.changehospitalImage" 
+                  :preview-src-list="[item.changehospitalImage]"> -->
                 </el-image><br>
               </el-form-item>
             </el-form>
@@ -79,8 +81,10 @@
                 <div class="imageBox" style="margin-top: 10px;">
                   <el-image 
                     style="width: 100px; height: 100px;"
-                    :src="item.registerImage" 
-                    :preview-src-list="[item.registerImage]">
+                    :src="imageurl" 
+                    :preview-src-list="[imageurl]">
+                    <!-- :src="item.registerImage" 
+                    :preview-src-list="[item.registerImage]"> -->
                   </el-image><br>
                 </div>
               </el-form-item>
@@ -124,16 +128,20 @@
                 <label>药费单据:</label><br>
                 <el-image 
                   style="width: 100px; height: 100px;"
-                  :src="item.billImage" 
-                  :preview-src-list="[item.billImage]">
+                  :src="imageurl" 
+                  :preview-src-list="[imageurl]">
+                  <!-- :src="item.billImage" 
+                  :preview-src-list="[item.billImage]"> -->
                 </el-image><br>
               </el-form-item>
               <el-form-item >
                 <label style="margin-left: 7vw;">处方:</label><br>
                 <el-image 
                   style="width: 100px; height: 100px; margin-left: 5vw;"
-                  :src="item.billPrescriptionImage" 
-                  :preview-src-list="[item.billPrescriptionImage]">
+                  :src="imageurl" 
+                  :preview-src-list="[imageurl]">
+                  <!-- :src="item.billPrescriptionImage" 
+                  :preview-src-list="[item.billPrescriptionImage]"> -->
                 </el-image><br>
               </el-form-item>
             </el-form>
@@ -158,16 +166,20 @@
               <label>签字盖章证明：</label><br>
               <el-image 
                 style="width: 100px; height: 100px; "
-                :src="Form.gaizhangImage" 
-                :preview-src-list="[Form.gaizhangImage]">
+                :src="imageurl" 
+                :preview-src-list="[imageurl]">
+                <!-- :src="Form.gaizhangImage" 
+                :preview-src-list="[Form.gaizhangImage]"> -->
               </el-image><br>
               </el-form-item>
               <el-form-item >
                 <label style="margin-left: 5vw;">特殊用药说明：</label><br>
                 <el-image 
                   style="width: 100px; height: 100px; margin-left: 5vw;"
-                  :src="Form.teshuImage" 
-                  :preview-src-list="[Form.teshuImage]">
+                  :src="imageurl" 
+                  :preview-src-list="[imageurl]">
+                  <!-- :src="Form.teshuImage" 
+                  :preview-src-list="[Form.teshuImage]"> -->
                 </el-image><br>
               </el-form-item>             
           </el-form>
@@ -202,13 +214,13 @@
         <el-form :inline="true" class="demo-form-inline add-form" v-if="showcheck">
           <el-form-item class="btnRight">
             <el-button type="success" size ="mini" icon="view" style="margin-right: 20px;" @click='back()'>返回列表</el-button>
-            <el-button type="warning" size ="mini" icon="view" @click="checkpass();">审核完成</el-button>
-            <el-button type="danger" size ="mini" icon="view" @click="checkback();">审核退回</el-button>
+            <el-button type="warning" size ="mini" icon="view" @click="checkpass();" :disabled="runcheck">审核完成</el-button>
+            <el-button type="danger" size ="mini" icon="view" @click="checkback();" :disabled="runcheck">审核退回</el-button>
           </el-form-item>
         </el-form>
         <el-form :inline="true" class="demo-form-inline add-form" v-if="showcheckcomplete">
           <el-form-item class="btnRight">
-            <el-button type="danger" size ="mini" icon="view" @click="recheck();">重新审核</el-button>
+            <el-button type="danger" size ="mini" icon="view" @click="recheck();" :disabled="runcheck">重新审核</el-button>
             <el-button type="success" size ="mini" icon="view" style="margin-right: 20px;" @click='backcomplete()'>返回列表</el-button>
           </el-form-item>
         </el-form>
@@ -241,11 +253,13 @@
         /* } */
       };
       return {
+        imageurl:require('../../../static/img/0.jpg'),
         recordId:'',
         usertype:'',
         recordtype:'',
         lasturl:'',
         message:'',
+        runcheck:false,
         usertypemessage:['学生','职工','退休','离休','医照'],
         Percentage:{
           registerPercentage:0.111313,
@@ -311,7 +325,11 @@
 
         },
         checkpass(){
-          const param={
+          this.$confirm('确认审核?', '提示', {
+              type: 'warning'
+          })
+          .then(() => {
+            const param={
             recordid:this.recordid,
             medicalPercentage: this.Percentage.medicalPercentage,
             registerPercentage:this.Percentage.registerPercentage,
@@ -322,62 +340,82 @@
             beizhu:this.beizhu,
             recordmoney:this.recordmoney,
             code:1
-          }
-          console.log("发送数据：",param)
-          axiospost('/sendcheck', param)
-          .then(function (res) {
-            console.log(res);
-            if(res.code == 200) {
-              this.$message.success('审核成功')
-            } 
-          })
+            }
+            console.log("发送数据：",param)
+            this.$message.success('审核成功')
+            this.runcheck = true
+            axiospost('/sendcheck', param)
+            .then(function (res) {
+              console.log(res);
+              if(res.code == 200) {
+                this.$message.success('审核成功')
+                this.runcheck = true
+              } 
+            })
+          })          
         },
         checkback(){
-          const param={
-          recordid:this.recordid,
-          medicalPercentage: this.Percentage.medicalPercentage,
-          registerPercentage:this.Percentage.registerPercentage,
-          changehospitalList:this.changehospital,
-          registerList:this.register,
-          billList:this.bill,
-          form :this.Form,
-          beizhu:this.beizhu,
-          recordmoney:this.recordmoney,
-          code:0
-          }
-          console.log("发送数据：",param)
-          axiospost('/sendcheck', param)
-          .then(function (res) {
-            console.log(res);
-            if(res.code == 200) {
-              this.$message.success('退回成功')
-            } 
+           this.$confirm('确认退回?', '提示', {
+              type: 'warning'
           })
+          .then(() => {
+            const param={
+            recordid:this.recordid,
+            medicalPercentage: this.Percentage.medicalPercentage,
+            registerPercentage:this.Percentage.registerPercentage,
+            changehospitalList:this.changehospital,
+            registerList:this.register,
+            billList:this.bill,
+            form :this.Form,
+            beizhu:this.beizhu,
+            recordmoney:this.recordmoney,
+            code:0
+            }
+            console.log("发送数据：",param)
+            this.$message.success('退回成功')
+            this.runcheck = true
+            axiospost('/sendcheck', param)
+            .then(function (res) {
+              console.log(res);
+              if(res.code == 200) {
+                this.$message.success('退回成功')
+                this.runcheck = true
+              } 
+            })
+          })          
         },
         back(){
           this.$router.push({path: '/checkerAdmin/recording'})
         },
         recheck(){
-          const param={
-          recordid:this.recordid,
-          medicalPercentage: this.Percentage.medicalPercentage,
-          registerPercentage:this.Percentage.registerPercentage,
-          changehospitalList:this.changehospital,
-          registerList:this.register,
-          billList:this.bill,
-          form :this.Form,
-          beizhu:this.beizhu,
-          recordmoney:this.recordmoney,
-          code:2
-          }
-          console.log("发送数据：",param)
-          axiospost('/sendcheck', param)
+           this.$confirm('确认退回重新审核?', '提示', {
+            type: 'warning'
+          })
+          .then(() => {
+            const param={
+            recordid:this.recordid,
+            medicalPercentage: this.Percentage.medicalPercentage,
+            registerPercentage:this.Percentage.registerPercentage,
+            changehospitalList:this.changehospital,
+            registerList:this.register,
+            billList:this.bill,
+            form :this.Form,
+            beizhu:this.beizhu,
+            recordmoney:this.recordmoney,
+            code:2
+            }
+            console.log("发送数据：",param)
+            this.$message.success('重新审核退回成功')
+            this.runcheck = true
+            axiospost('/sendcheck', param)
             .then(function (res) {
               console.log(res);
               if(res.code == 200) {
                 this.$message.success('重新审核退回成功')
+                this.runcheck = true
               } 
             })
+          })          
         },
         zifeijisuan1(item){
           if(this.showcheck){

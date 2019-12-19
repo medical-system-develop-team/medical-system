@@ -68,7 +68,7 @@
 
      <template>
       <el-table
-        :data="recordData"
+        :data="recordData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
         stripe
         style="width: 100%">
         <el-table-column
@@ -141,7 +141,15 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination background layout="total"  :total="pageInfo.pageTotal">
+      <el-pagination 
+        align='center' 
+        @size-change="handleSizeChange" 
+        @current-change="handleCurrentChange"  
+        :current-page="currentPage"  
+        :page-sizes="[1,5,10,15]"
+        :page-size="pagesize"   
+        layout="total,jumper,prev, pager, next,sizes" 
+        :total="recordData.length">
       </el-pagination>
     </template>
   </div>
@@ -155,6 +163,9 @@
         usertype:['学生','职工','退休','离休','医照'],
         HostSearch:[],
         keSearch:[],
+        currentPage:1,
+        pagesize:5,
+        pageTotal: 0,
         record: {
           username: '',
           userid:'',
@@ -236,6 +247,12 @@
           { "value": "传染科"},
           { "value": "皮肤科"},
         ];
+      },
+      handleSizeChange:function(size){
+          this.pagesize=size;
+      },
+      handleCurrentChange:function(currentPage){
+          this.currentPage=currentPage;
       },
       onSubmit() {
         var _this = this

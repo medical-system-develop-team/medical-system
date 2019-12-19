@@ -81,6 +81,7 @@
         this.$refs[formEdit].validate((valid) => {
           if (valid) {
             this.$emit('updateEdit',this.form);
+            this.$message.success('修改信息成功')
             axiospost(`/useredit`,this.form).then(res => {
               console.log('发送数据：',this.form)
               console.log('接收数据：',res)

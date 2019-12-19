@@ -20,7 +20,7 @@
     </el-form>
     <div class="table_container">
       <el-table
-        :data="userData"
+        :data="userData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
         stripe
         style="width: 100%">
         
@@ -117,6 +117,16 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-pagination 
+        align='center' 
+        @size-change="handleSizeChange" 
+        @current-change="handleCurrentChange"  
+        :current-page="currentPage"  
+        :page-sizes="[1,5,10,15]"
+        :page-size="pagesize"   
+        layout="total,jumper,prev, pager, next,sizes" 
+        :total="userData.length">
+      </el-pagination>
       <UserEdit :dialogEdit="dialogEdit" :form="form" @updateEdit="getUserInfo"></UserEdit>
     </div>
   </div>
@@ -140,6 +150,9 @@
         },
         edit:false,
         indexNum:'',
+        currentPage:1,
+        pagesize:5,
+        pageTotal: 0,
         form:{    //编辑信息
           //id:'',
           username:'',
@@ -188,6 +201,13 @@
        // })
       //console.log('submit!');
       },
+      
+      handleSizeChange:function(size){
+          this.pagesize=size;
+      },
+      handleCurrentChange:function(currentPage){
+          this.currentPage=currentPage;
+      },
 
       getUserInfo(val) {
         if(this.edit){
@@ -228,6 +248,7 @@
         })
         .then(() => {
           this.userData.splice(index, 1)
+          this.$message.success('删除用户成功')
           axiospost(`/deleteuser`,{id:row.id}).then(res =>{
             if(res.code==200){
               this.$message.success('删除用户成功')

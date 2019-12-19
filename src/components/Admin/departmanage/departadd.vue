@@ -125,7 +125,8 @@
             type: 'warning'
         })
         .then(() => {
-          //this.departData.splice(index, 1)
+          this.departData.splice(index, 1)
+          this.$message.success('删除部门成功')
           axiospost(`/deletedepart`,{id:row.id}).then(res =>{
             if(res.code==200){
               this.$message.success('删除部门成功')

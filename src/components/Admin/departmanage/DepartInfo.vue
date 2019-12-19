@@ -50,15 +50,16 @@ export default {
       this.$refs[formdong].validate((valid) => {
         if (valid) {
           this.$emit('update',this.formDate);
-          this.formDate  = {}
+          //this.formDate  = {}
+          this.$message.success('添加信息成功')
           axiospost('/departadd',this.formDate).then(res => {
             console.log('发送数据：',this.formDate)
             console.log('接收数据：',res)
             if(res.code==200){
-              this.$message.success('添加信息成功')
+              this.$message.success('添加信息成功')             
+              this.$emit('update',this.formDate);
               this.formDate  = {}
               this.dialogAdd.show = false;
-              this.$emit('update',this.formDate);
             }else{
               this.$message.error(res.code || '添加失败！')
             }  

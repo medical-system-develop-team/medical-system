@@ -42,8 +42,10 @@
                 <!-- <div class="imageBox" style="margin-top: 10px;"> -->
                   <el-image 
                     style="width: 100px; height: 100px;"
-                    :src="item.changehospitalImage" 
-                    :preview-src-list="[item.changehospitalImage]">
+                    :src="imageurl" 
+                    :preview-src-list="[imageurl]">
+                    <!-- :src="item.changehospitalImage" 
+                    :preview-src-list="[item.changehospitalImage]"> -->
                   </el-image><br>
                   <!-- <el-button type="primary" size="mini" style="margin-top:5px;" onclick="handleImgDirection();">旋转90°</el-button> -->
                 <!-- </div> -->
@@ -83,8 +85,10 @@
                 <div class="imageBox" style="margin-top: 10px;">
                   <el-image 
                     style="width: 100px; height: 100px;"
-                    :src="item.registerImage" 
-                    :preview-src-list="[item.registerImage]">
+                    :src="imageurl" 
+                    :preview-src-list="[imageurl]">
+                    <!-- :src="item.registerImage" 
+                    :preview-src-list="[item.registerImage]"> -->
                   </el-image><br>
                   <!-- <el-button type="primary" size="mini" style="margin-top:5px;" onclick="handleImgDirection();">旋转90°</el-button> -->
                 </div>
@@ -131,8 +135,10 @@
                 <!-- <div class="imageBox" style="margin-top: 10px;"> -->
                   <el-image 
                     style="width: 100px; height: 100px;"
-                    :src="item.billImage" 
-                    :preview-src-list="[item.billImage]">
+                    :src="imageurl" 
+                    :preview-src-list="[imageurl]">
+                    <!-- :src="item.billImage" 
+                    :preview-src-list="[item.billImage]"> -->
                   </el-image><br>
                   <!-- <el-button type="primary" size="mini" style="margin-top:5px;" onclick="handleImgDirection();">旋转90°</el-button> -->
                 <!-- </div> -->
@@ -142,8 +148,10 @@
                 <!-- <div class="imageBox" style="margin-top: 10px;"> -->
                   <el-image 
                     style="width: 100px; height: 100px; margin-left: 5vw;"
-                    :src="item.billPrescriptionImage" 
-                    :preview-src-list="[item.billPrescriptionImage]">
+                    :src="imageurl" 
+                    :preview-src-list="[imageurl]">
+                    <!-- :src="item.billPrescriptionImage" 
+                    :preview-src-list="[item.billPrescriptionImage]"> -->
                   </el-image><br>
                   <!-- <el-button type="primary" size="mini" style="margin-top:5px;  margin-left: 6vw;" onclick="handleImgDirection();">旋转90°</el-button> -->
                 <!-- </div> -->
@@ -170,8 +178,10 @@
               <!-- <div class="imageBox" style="margin-top: 10px;"> -->
                 <el-image 
                   style="width: 100px; height: 100px; "
-                  :src="Form.gaizhangImage" 
-                  :preview-src-list="[Form.gaizhangImage]">
+                  :src="imageurl" 
+                  :preview-src-list="[imageurl]">
+                  <!-- :src="Form.gaizhangImage" 
+                  :preview-src-list="[Form.gaizhangImage]"> -->
                 </el-image><br>
                 <!-- <el-button type="primary" size="mini" style="margin-top:5px;" onclick="handleImgDirection();">旋转90°</el-button> -->
                 <!-- </div> -->
@@ -181,8 +191,10 @@
                 <!-- <div class="imageBox" style="margin-top: 10px;"> -->
                   <el-image 
                     style="width: 100px; height: 100px; margin-left: 5vw;"
-                    :src="Form.teshuImage" 
-                    :preview-src-list="[Form.teshuImage]">
+                    :src="imageurl" 
+                    :preview-src-list="[imageurl]">
+                    <!-- :src="Form.teshuImage" 
+                    :preview-src-list="[Form.teshuImage]"> -->
                   </el-image><br>
                   <!-- <el-button type="primary" size="mini" style="margin-top:5px;  margin-left: 6vw;" onclick="handleImgDirection();">旋转90°</el-button> -->
                 <!-- </div> -->
@@ -219,8 +231,8 @@
         <el-form :inline="true" class="demo-form-inline add-form" v-if="showcheck">
           <el-form-item class="btnRight">
             <el-button type="success" size ="mini" icon="view" style="margin-right: 30px;" @click='back()'>返回列表</el-button>
-            <el-button type="warning" size ="mini" icon="view" @click="checkpass();">审核完成</el-button>
-            <el-button type="danger" size ="mini" icon="view" @click="checkback();">审核退回</el-button>
+            <el-button type="warning" size ="mini" icon="view" @click="checkpass();" :disabled="runcheck">审核完成</el-button>
+            <el-button type="danger" size ="mini" icon="view" @click="checkback();" :disabled="runcheck">审核退回</el-button>
           </el-form-item>
         </el-form>
         <el-form :inline="true" class="demo-form-inline add-form" v-if="showcheckcomplete">
@@ -257,7 +269,7 @@ import axios from 'axios'
         /* } */
       };
       return {
-        imageurl:[],
+        imageurl:require('../../../static/img/0.jpg'),
         recordid:'',
         usertype:'',
         message:'',
@@ -267,6 +279,7 @@ import axios from 'axios'
         recordmoney:'0',
         showcheck:true,
         showcheckcomplete:false,
+        runcheck:false,
         recording:[],
         changehospital:[{}],
         register:[{registerDepartment:111,registerCost:10},{registerDepartment:222,registerCost:100}],
@@ -328,6 +341,9 @@ import axios from 'axios'
 
         },
         checkpass(){
+          this.$confirm('确认审核?', '提示', {
+            type: 'warning'
+        }).then(() => {
           const param={
             recordid:this.recordid,
             medicalPercentage: this.Percentage.medicalPercentage,
@@ -341,35 +357,48 @@ import axios from 'axios'
             code:1
           }
           console.log("发送数据：",param)
+          this.$message.success('审核成功')
+          this.runcheck = true
           axiospost('/sendcheck', param)
-            .then(function (res) {
-              console.log(res);
-              if(res.code == 200) {
-                this.$message.success('审核成功')
-              } 
-            })
+          .then(function (res) {
+            console.log(res);
+            if(res.code == 200) {
+              this.$message.success('审核成功')
+              this.runcheck = true
+            } 
+          })
+        })
+          
         },
         checkback(){
-          const param={
-          recordid:this.recordid,
-          medicalPercentage: this.Percentage.medicalPercentage,
-          registerPercentage:this.Percentage.registerPercentage,
-          changehospitalList:this.changehospital,
-          registerList:this.register,
-          billList:this.bill,
-          form :this.Form,
-          beizhu:this.beizhu,
-          recordmoney:this.recordmoney,
-          code:0
-          }
-          console.log("发送数据：",param)
-          axiospost('/sendcheck', param)
+          this.$confirm('确认退回?', '提示', {
+            type: 'warning'
+          }).then(() => {
+            const param={
+            recordid:this.recordid,
+            medicalPercentage: this.Percentage.medicalPercentage,
+            registerPercentage:this.Percentage.registerPercentage,
+            changehospitalList:this.changehospital,
+            registerList:this.register,
+            billList:this.bill,
+            form :this.Form,
+            beizhu:this.beizhu,
+            recordmoney:this.recordmoney,
+            code:0
+            }
+            console.log("发送数据：",param)
+            this.$message.success('退回成功')
+            this.runcheck = true
+            axiospost('/sendcheck', param)
             .then(function (res) {
               console.log(res);
               if(res.code == 200) {
                 this.$message.success('退回成功')
+                this.runcheck = true
+
               } 
             })
+          })         
         },
         back(){
           this.$router.push({path: '/checker/recording', query:{id:this.usertype}})

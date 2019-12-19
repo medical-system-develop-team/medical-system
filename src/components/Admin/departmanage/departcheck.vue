@@ -72,7 +72,7 @@
       </el-table>
 
       <el-table
-        :data="userData"
+        :data="userData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
         stripe
         style="width: 100%">
         <el-table-column
@@ -158,6 +158,16 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-pagination 
+        align='center' 
+        @size-change="handleSizeChange" 
+        @current-change="handleCurrentChange"  
+        :current-page="currentPage"  
+        :page-sizes="[1,5,10,15]"
+        :page-size="pagesize"   
+        layout="total,jumper,prev, pager, next,sizes" 
+        :total="userData.length">
+      </el-pagination>
       <DepartEdit :dialogEdit="dialogEdit" :form="form" @updateEdit="getDepartInfo"></DepartEdit>
     </template>
   </div>
@@ -197,6 +207,9 @@
           number:'13',
           oldname:'131',
         }],
+        currentPage:1,
+        pagesize:5,
+        pageTotal: 0,
         userData:[{
           id:'131231231',
           username:'1231313',
@@ -242,6 +255,13 @@
         }
       },
 
+      handleSizeChange:function(size){
+          this.pagesize=size;
+      },
+      handleCurrentChange:function(currentPage){
+          this.currentPage=currentPage;
+      },
+
       handleEdit(index,row){  //编辑
         this.dialogEdit.show = true ;  //显示弹
         this.edit=true;
@@ -259,7 +279,8 @@
             type: 'warning'
         })
         .then(() => {
-          //this.departData.splice(index, 1)
+          this.departData.splice(index, 1)
+          this.$message.success('删除部门成功')
           axiospost(`/deletedepart`,{id:row.id}).then(res =>{
             if(res.code==200){
               this.$message.success('删除部门成功')

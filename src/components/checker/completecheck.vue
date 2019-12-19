@@ -11,7 +11,7 @@
     </div> 
     <template>
       <el-table
-        :data="recording"
+        :data="recording.slice((currentPage-1)*pagesize,currentPage*pagesize)"
         stripe
         style="width: 100%">
         <el-table-column
@@ -70,7 +70,15 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination background layout="total"  :total="pageTotal">
+      <el-pagination
+        align='center' 
+        @size-change="handleSizeChange" 
+        @current-change="handleCurrentChange"  
+        :current-page="currentPage"  
+        :page-sizes="[1,5,10,15]"
+        :page-size="pagesize"   
+        layout="total,jumper,prev, pager, next,sizes" 
+        :total="recording.length">
       </el-pagination>
     </template>
   </div>
@@ -83,16 +91,55 @@ import axios from 'axios'
     data() {
         //sturec:[]
       return {
-          id:'6',
-          usermessage:['学生','职工','退休','离休','医照'],
-          recording:[{
-            recordId:'111',
-            userName:'dadad',
-            userNumber:'12321123',
-            recordTime:'19910228',
-            userType:'2'
-          }],
-          pageTotal: 0
+        id:'6',
+        currentPage:1,
+        pagesize:5,
+        usermessage:['学生','职工','退休','离休','医照'],
+        recording:[
+            {
+              recordId:'111',
+              userName:'dadad',
+              userNumber:'12321123',
+              recordTime:'19910228',
+              userType:'2'
+            },
+            {
+              recordId:'112',
+              userName:'dadad',
+              userNumber:'12321123',
+              recordTime:'19910228',
+              userType:''
+            },
+            {
+              recordId:'1113',
+              userName:'dadad',
+              userNumber:'12321123',
+              recordTime:'19910228',
+              userType:''
+            },
+            {
+              recordId:'1114',
+              userName:'dadad',
+              userNumber:'12321123',
+              recordTime:'19910228',
+              userType:''
+            },
+            {
+              recordId:'1115',
+              userName:'dadad',
+              userNumber:'12321123',
+              recordTime:'19910228',
+              userType:''
+            },
+            {
+              recordId:'1116',
+              userName:'dadad',
+              userNumber:'12321123',
+              recordTime:'19910228',
+              userType:''
+            }
+          ],
+        pageTotal: 0
       }
     },
     watch: {},
@@ -123,8 +170,15 @@ import axios from 'axios'
         },
       recorddetail(index,row){
           this.$router.push({path: '/checker/recdetail', query:{id:row.recordId,showcheck:false,showcheckcomplete:true,message:this.usermessage[row.userType-1],lasturl:'/checker/completecheck'}})
+      },
+      handleSizeChange:function(size){
+          this.pagesize=size;
+      },
+      handleCurrentChange:function(currentPage){
+          this.currentPage=currentPage;
       }
     },
+    
     mounted: function () {},
     
   }
