@@ -21,10 +21,10 @@
 
 ``` bash
 // 需要配饰 ssh-key，才能使用下面命令
-git clone git@github.com:meiQinQ/medical-system.git
+git clone git@github.com:medical-system-develop-team/medical-system.git
 
 // 如果未配置 ssh-key，可以使用如下命令
-git clone https://github.com/meiQinQ/medical-system.git
+git clone https://github.com/medical-system-develop-team/medical-system.git
 ```
 ### 2. 本地搭建运行环境
 
